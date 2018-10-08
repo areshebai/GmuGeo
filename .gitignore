@@ -3,4 +3,12 @@
 ################################################################################
 
 /.vs
+/GMUFloodForecastPortal/.vs
+/GMUFloodForecastPortal/bin
+/GMUFloodForecastPortal/obj
+/GMUFloodForecastPortal/Properties/PublishProfiles/GMUFloodForecastPortal - Web Deploy.pubxml.user
+/GMUFloodForecastPortal/GMUFloodForecastPortal.csproj.user
+/Resources/jqwidgets-ver6.0.6.zip
 /Resources/VIIRS_floodmap_Aug15_2018.zip
+
+

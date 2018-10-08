@@ -1,0 +1,12 @@
+Reference the Tag Helpers, install it from
+https://www.nuget.org/packages/jQWidgets.AspNetCore.Mvc.TagHelpers/
+In package manager console, run: Install-Package jQWidgets.AspNetCore.Mvc.TagHelpers -Version 2.0.1
+
+1. Install visual studio 2017 or visual Studio Code. ASP.net Core web development must be install.
+
+2. Portal project is create as ASP.net Core Web Application using razor page.
+
+3. jQWidgets is downloaded for free for our project. Copy the downloaded script to our project folder.
+4. Install jQWidgets.AspNetCore.Mvc.TagHelpers nuget package to current project.
+https://www.jqwidgets.com/asp.net-core-mvc-tag-helpers-documentation/
+

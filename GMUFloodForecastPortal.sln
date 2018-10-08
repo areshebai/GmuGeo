@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMUFloodForecastPortal", "GMUFloodForecastPortal\GMUFloodForecastPortal.csproj", "{D4C431C7-A4A9-4367-83F7-7F8A9EA0CE73}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D4C431C7-A4A9-4367-83F7-7F8A9EA0CE73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4C431C7-A4A9-4367-83F7-7F8A9EA0CE73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4C431C7-A4A9-4367-83F7-7F8A9EA0CE73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4C431C7-A4A9-4367-83F7-7F8A9EA0CE73}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4E29C0B0-7D8F-43F3-8D8E-E7296FE307E1}
+	EndGlobalSection
+EndGlobal
