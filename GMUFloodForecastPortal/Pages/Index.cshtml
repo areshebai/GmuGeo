@@ -145,8 +145,10 @@
             };
             var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 
-            map.data.loadGeoJson(
-                'https://storage.googleapis.com/mapsdevsite/json/google.json');
+            var ctaLayer = new google.maps.KmlLayer({
+                url: 'https://sites.google.com/site/gmukmls/kmls/MOSAIC_WATER_VIIRS_Prj_SVI_npp_d20170831_t1841_t1844_cspp_dev_105_3855_2966_01.kml',
+                map: map
+            });
         }
     </script>
 
