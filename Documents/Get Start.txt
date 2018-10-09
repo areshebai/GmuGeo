@@ -10,3 +10,5 @@ In package manager console, run: Install-Package jQWidgets.AspNetCore.Mvc.TagHel
 4. Install jQWidgets.AspNetCore.Mvc.TagHelpers nuget package to current project.
 https://www.jqwidgets.com/asp.net-core-mvc-tag-helpers-documentation/
 
+5. https://sites.google.com/site/gmukmls/kmls to host online kml files
+
