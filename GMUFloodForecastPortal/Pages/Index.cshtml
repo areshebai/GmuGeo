@@ -15,6 +15,7 @@
 <script src="~/jqwidgets/jqxinput.js"></script>
 <script src="~/jqwidgets/jqxcombobox.js"></script>
 <script src="~/jqwidgets/jqxcheckbox.js"></script>
+
 @using jQWidgets.AspNetCore.Mvc.TagHelpers
 
 @model IndexModel
@@ -22,87 +23,94 @@
     ViewData["Title"] = "Home page";
 
     List<object> panels = new List<object>()
-{
-"{size: '290px'}",
-};
+    {
+        "{size: '290px'}",
+    };
 }
 
-<div class="mainContainer" style="height:100%; width:100%; padding:0; margin: 0; position:relative">
-    <jqx-splitter id="mainContainer" resizable="false" height="100%" width="100%" panels="panels">
+<div class="mainContainer">
+    <jqx-splitter resizable="false" height="100%" width="100%" panels="panels" split-bar-size="2">
         <jqx-splitter-panel>
-            <jqx-navigation-bar animation-type="fade" height="100%">
+            <div style="height: 40%">
+                <label>Layers</label>
+            </div>
+            <jqx-navigation-bar animation-type="fade" height="60%">
                 <jqx-navigation-bar-panel>
-                    <jqx-navigation-bar-panel-header>Date and Time</jqx-navigation-bar-panel-header>
+                    <jqx-navigation-bar-panel-header>Absolute Date and Time</jqx-navigation-bar-panel-header>
                     <jqx-navigation-bar-panel-body>
-                        <div style="margin-top: 10px">
+                        <div class="nav-panel">
                             <div>
-                                <label>Date</label>
+                                <label>From</label>
+                                <div>
+                                    <div style="float:left; margin-top: 2px">
+                                        <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now"></jqx-date-time-input>
+                                    </div>
+                                    <div style="float:left; margin-top: 8px; margin-left: 5px">
+                                        <label style="height: 30px">UTC</label>
+                                    </div>
+                                    <div class="clearall"></div>
+                                </div>
+                                <label>TO</label>
+                                <div>
+                                    <div style="float: left; margin-top: 2px">
+                                        <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now.AddMinutes(5)"></jqx-date-time-input>
+                                    </div>
+                                    <div style="float:left; margin-top: 8px; margin-left: 5px">
+                                        <label style="height: 30px">UTC</label>
+                                    </div>
+                                </div>
+                                <div class="clearall"></div>
                             </div>
-                            <div style="float:left; margin-top: 2px">
-                                <jqx-date-time-input animation-type="fade" width="120" height="30"></jqx-date-time-input>
+                            <div class="clearall"></div>
+                            <hr class="seperator" />
+                            <div class="applyselection">
+                                <jqx-button id="Apply_DateTimePeriod">Apply Changes</jqx-button>
                             </div>
-                            <div style="float:left; margin-top: 8px; margin-left: 5px">
-                                <label style="height: 30px">TO</label>
-                            </div>
-                            <div style="float: left; margin-top: 2px; margin-left: 5px">
-                                <jqx-date-time-input animation-type="fade" width="120" height="30"></jqx-date-time-input>
-                            </div>
-                        </div>
-                        <div style="clear: both"></div>
-                        <div style="margin-top: 5px">
-                            <div>
-                                <label>Time</label>
-                            </div>
-                            <div style="float:left; margin-top: 2px">
-                                <jqx-date-time-input animation-type="fade" width="120" height="30" show-calendar-button="false" show-time-button="true" format-string="HH:mm:ss" value="DateTime.Now"></jqx-date-time-input>
-                            </div>
-                            <div style="float:left; margin-top: 8px; margin-left: 5px">
-                                <label style="height: 30px">TO</label>
-                            </div>
-                            <div style="float: left; margin-top: 2px; margin-left: 5px">
-                                <jqx-date-time-input animation-type="fade" width="120" height="30" show-calendar-button="false" show-time-button="true" format-string="HH:mm:ss" value="DateTime.Now.AddMinutes(5)"></jqx-date-time-input>
-                            </div>
-                        </div>
-                        <div style="clear: both"></div>
-                        <jqx-button>Apply</jqx-button>
-                    </jqx-navigation-bar-panel-body>
-                </jqx-navigation-bar-panel>
-                <jqx-navigation-bar-panel>
-                    <jqx-navigation-bar-panel-header>Navigate Period</jqx-navigation-bar-panel-header>
-                    <jqx-navigation-bar-panel-body>
-                        <label>Set Date and Time:</label>
-                        <jqx-date-time-input animation-type="fade" width="285" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now"></jqx-date-time-input>
-                        <label style="margin-top:8px">From/To:</label>
-                        <div>
-                            <div style="float:left">
-                                <jqx-input width="50" height="25" value="24"></jqx-input>
-                            </div>
-                            <div style="float:left; margin-left:8px">
-                                <jqx-drop-down-list width="70" height="25" instance="getStepInstance()"></jqx-drop-down-list>
-                            </div>
-                            <div style="float:left; margin-left:8px">
-                                <jqx-drop-down-list width="70" height="25" instance="getDirectionInstance()"></jqx-drop-down-list>
-                            </div>
-                        </div>
-                        <div style="clear:both"></div>
-                        <label style="margin-top:8px">Every:</label>
-                        <div>
-                            <div style="float:left">
-                                <jqx-input width="50" height="25" value="1"></jqx-input>
-                            </div>
-                            <div style="float:left; margin-left:8px">
-                                <jqx-drop-down-list width="70" height="25" instance="getStepInstance2()"></jqx-drop-down-list>
-                            </div>
-                        </div>
-                        <div style="clear:both"></div>
-                        <div style="margin-top:20px; margin-left:120px">
-                            <jqx-button>Apply</jqx-button>
                         </div>
                     </jqx-navigation-bar-panel-body>
                 </jqx-navigation-bar-panel>
                 <jqx-navigation-bar-panel>
-                    <jqx-navigation-bar-panel-header>Choose Layer</jqx-navigation-bar-panel-header>
-                    <jqx-navigation-bar-panel-body><label style="padding: 15px;">Body 3</label></jqx-navigation-bar-panel-body>
+                    <jqx-navigation-bar-panel-header>Relative Date and Time</jqx-navigation-bar-panel-header>
+                    <jqx-navigation-bar-panel-body>
+                        <div class="nav-panel">
+                            <label>Standard</label>
+                            <div>
+                                <div style="float: left; margin-top: 2px">
+                                    <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now.AddMinutes(5)"></jqx-date-time-input>
+                                </div>
+                                <div style="float:left; margin-top: 8px; margin-left: 5px">
+                                    <label style="height: 30px">UTC</label>
+                                </div>
+                            </div>
+                            <label>Range and Direction</label>
+                            <div>
+                                <div style="float:left">
+                                    <jqx-input width="50" height="25" value="24"></jqx-input>
+                                </div>
+                                <div style="float:left; margin-left:8px">
+                                    <jqx-drop-down-list width="70" height="25" instance="getStepInstance()"></jqx-drop-down-list>
+                                </div>
+                                <div style="float:left; margin-left:8px">
+                                    <jqx-drop-down-list width="70" height="25" instance="getDirectionInstance()"></jqx-drop-down-list>
+                                </div>
+                            </div>
+                            <div style="clear:both"></div>
+                            <label style="margin-top: 10px">Every:</label>
+                            <div>
+                                <div style="float:left">
+                                    <jqx-input width="50" height="25" value="1"></jqx-input>
+                                </div>
+                                <div style="float:left; margin-left:8px">
+                                    <jqx-drop-down-list width="70" height="25" instance="getStepInstance2()"></jqx-drop-down-list>
+                                </div>
+                            </div>
+                            <div style="clear:both"></div>
+                            <hr class="seperator" />
+                            <div class="applyselection">
+                                <jqx-button>Apply Changes</jqx-button>
+                            </div>
+                        </div>
+                    </jqx-navigation-bar-panel-body>
                 </jqx-navigation-bar-panel>
             </jqx-navigation-bar>
         </jqx-splitter-panel>
@@ -113,44 +121,21 @@
 </div>
 
 @section scripts {
-    <script type="text/javascript">
-        function getDirectionInstance(instance) {
-            instance["addItem"]('Ago');
-            instance["addItem"]('Later');
-            instance["selectIndex"](0);
-        }
-
-    function getStepInstance(instance) {
-        instance["addItem"]('Days');
-        instance["addItem"]('Hours');
-        instance["addItem"]('Minutes');
-        instance["selectIndex"](1);
-    }
-    function getStepInstance2(instance) {
-        instance["addItem"]('Days');
-        instance["addItem"]('Hours');
-        instance["addItem"]('Minutes');
-        instance["selectIndex"](1);
-    }
-    </script>
-
-    <!-- Create a callback to boot our application. -->
     <script>
-        function myMap() {
-            var mapProp = {
-                center: new google.maps.LatLng(38.8315141, -77.3140937),
-                zoom: 15,
-                mapTypeId: 'hybrid',
-                disableDefaultUI: true
-            };
-            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+            $('#Apply_DateTimePeriod').on('click', function (event) {
+                var mapProp = {
+                    center: new google.maps.LatLng(38.8315141, -77.3140937),
+                    zoom: 15,
+                    mapTypeId: 'hybrid',
+                    disableDefaultUI: true
+                };
+                var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+                var ctaLayer = new google.maps.KmlLayer({
+                    url: 'https://sites.google.com/site/gmukmls/kmls/MOSAIC_WATER_VIIRS_Prj_SVI_npp_d20170831_t1841_t1844_cspp_dev_105_3855_2966_01.kml',
+                    map: map
+                });
+        });
 
-            var ctaLayer = new google.maps.KmlLayer({
-                url: 'https://sites.google.com/site/gmukmls/kmls/MOSAIC_WATER_VIIRS_Prj_SVI_npp_d20170831_t1841_t1844_cspp_dev_105_3855_2966_01.kml',
-                map: map
-            });
-        }
     </script>
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa4mPMDM-mSm7kKGOybaZF8OG_LnZ7M-o&callback=myMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa4mPMDM-mSm7kKGOybaZF8OG_LnZ7M-o&callback=initMap"></script>
 }
