@@ -12,3 +12,4 @@ https://www.jqwidgets.com/asp.net-core-mvc-tag-helpers-documentation/
 
 5. https://sites.google.com/site/gmukmls/kmls to host online kml files
 
+Azure virtual machine: PineApples18
