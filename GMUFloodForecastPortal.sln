@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMUFloodForecastPortal", "GMUFloodForecastPortal\GMUFloodForecastPortal.csproj", "{D4C431C7-A4A9-4367-83F7-7F8A9EA0CE73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMUFloodForecastPortal", "GMUFloodForecastPortal\GMUFloodForecastPortal.csproj", "{D4C431C7-A4A9-4367-83F7-7F8A9EA0CE73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiffToKml", "GMUFloodForecastService\TiffToKmlService\TiffToKml\TiffToKml.csproj", "{59439671-9BC5-4B02-8FF6-82C38BB865C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiffToKml.Net", "GMUFloodForecastService\TiffToKmlService\TiffToKml.Net\TiffToKml.Net\TiffToKml.Net.csproj", "{7D1BB484-E9EB-491D-A2BB-ACC171C40D77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{D4C431C7-A4A9-4367-83F7-7F8A9EA0CE73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4C431C7-A4A9-4367-83F7-7F8A9EA0CE73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4C431C7-A4A9-4367-83F7-7F8A9EA0CE73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59439671-9BC5-4B02-8FF6-82C38BB865C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59439671-9BC5-4B02-8FF6-82C38BB865C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59439671-9BC5-4B02-8FF6-82C38BB865C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59439671-9BC5-4B02-8FF6-82C38BB865C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D1BB484-E9EB-491D-A2BB-ACC171C40D77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D1BB484-E9EB-491D-A2BB-ACC171C40D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D1BB484-E9EB-491D-A2BB-ACC171C40D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D1BB484-E9EB-491D-A2BB-ACC171C40D77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
