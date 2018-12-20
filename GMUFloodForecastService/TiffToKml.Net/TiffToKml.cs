@@ -292,8 +292,8 @@ namespace TiffToKml.Net
 
         private List<string> GetGeoTiffFiles()
         {
-            // Example string: ftp://13.78.149.47:21/2018/08/15
-            string url = GetFileServerUrl("13.78.149.47", 21, new DateTime(2018, 8, 15));
+            // Example string: ftp://13.78.149.101:21/2018/08/15
+            string url = GetFileServerUrl("13.78.149.101", 21, new DateTime(2018, 8, 15));
             FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create(url);
             ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
             ftpRequest.Credentials = GetFileServerCredential();
