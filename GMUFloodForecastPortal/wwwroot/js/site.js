@@ -19,6 +19,8 @@ function getStepInstance2(instance) {
     instance["selectIndex"](1);
 }
 
+var g_map;
+
 function initMap() {
     var mapProp = {
         center: new google.maps.LatLng(38.8315141, -77.3140937),
@@ -26,7 +28,7 @@ function initMap() {
         mapTypeId: 'hybrid',
         disableDefaultUI: true
     };
-    var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+    g_map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 
     /*
     var ctaLayer = new google.maps.KmlLayer({
