@@ -11,7 +11,8 @@ namespace TiffToKml.Net
         static void Main(string[] args)
         {
             TiffToKml instance = new TiffToKml();
-            instance.Execute();
+            // instance.Execute();
+            instance.JoinImage();
         }
     }
 }

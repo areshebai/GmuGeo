@@ -143,12 +143,12 @@
         $('#Apply_DateTimePeriod').on('click', function (event) {
             var mapProp = {
                 center: new google.maps.LatLng({ lat: 0, lng: -105 }),
-                zoom: 12,
+                zoom: 3,
                 mapTypeId: 'hybrid',
                 disableDefaultUI: true
             };
             // var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-            var ctaLayer = new google.maps.KmlLayer('http://13.78.149.101/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_010000_54.kml');
+            var ctaLayer = new google.maps.KmlLayer('http://13.78.149.101/kmls/2018/08/cspp-viirs-flood-globally_20180815_100000_130.kml');
             ctaLayer.setMap(g_map);
         });
 

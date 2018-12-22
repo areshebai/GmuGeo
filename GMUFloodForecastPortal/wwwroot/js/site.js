@@ -24,7 +24,7 @@ var g_map;
 function initMap() {
     var mapProp = {
         center: new google.maps.LatLng(38.8315141, -77.3140937),
-        zoom: 15,
+        zoom: 8,
         mapTypeId: 'hybrid',
         disableDefaultUI: true
     };
