@@ -57,6 +57,11 @@ body {
     margin-top: 10px;
 }
 
+.nav-info-panel {
+    margin-left: 5px;
+    margin-top: 10px;
+}
+
 .clearall {
     clear: both;
 }

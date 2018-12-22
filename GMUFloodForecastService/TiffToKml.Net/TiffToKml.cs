@@ -36,6 +36,28 @@ namespace TiffToKml.Net
         {
         }
 
+
+        public Image JoinImage()
+        {
+            string imageFileName1 = @"D:\Test\Images\cspp-viirs-flood-globally_20180815_100000_113.png";
+            string imageFileName2 = @"D:\Test\Images\cspp-viirs-flood-globally_20180815_100000_114.png";
+            string imageFileName3 = @"D:\Test\Images\cspp-viirs-flood-globally_20180815_100000_115.png";
+            Image image1 = Image.FromFile(imageFileName1);
+            Image image2 = Image.FromFile(imageFileName2);
+            Image image3 = Image.FromFile(imageFileName3);
+
+            int imgHeight = 0, imgWidth = 0;
+            imgWidth = image1.Width + image2.Width + image3.Width;
+            imgHeight = Math.Max(image1.Height, image2.Height);
+            Bitmap joinedBitmap = new Bitmap(imgWidth, imgHeight);
+            Graphics graph = Graphics.FromImage(joinedBitmap);
+            graph.DrawImage(image1, 0, 0, image1.Width, image1.Height);
+            graph.DrawImage(image2, image1.Width, 0, image2.Width, image2.Height);
+            graph.DrawImage(image3, image1.Width+image2.Width, 0, image3.Width, image3.Height);
+            joinedBitmap.Save(@"D:\Test\Images\cspp-viirs-flood-globally_20180815_100000_113_115.png");
+            return joinedBitmap;
+        }
+
         public void Execute()
         {
             GdalConfiguration.ConfigureGdal();
