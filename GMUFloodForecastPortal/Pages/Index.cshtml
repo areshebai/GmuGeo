@@ -148,18 +148,19 @@
                 disableDefaultUI: true
             };
 
-            //var ctaLayer = new google.maps.KmlLayer('http://13.78.141.105/kmls/2018/08/cspp-viirs-flood-globally_20180815_010000_69.kml');
+            //var ctaLayer = new google.maps.KmlLayer('http://13.78.138.134/kmls/2018/08/cspp-viirs-flood-globally_20180815_010000_69.kml');
             //ctaLayer.setMap(g_map);
 
-            
-            var ctaLayer52 = new google.maps.KmlLayer('https://sites.google.com/site/gmukmls/kmls/cspp-viirs-flood-globally_20180815_010000_68.kml');
-            ctaLayer52.setMap(g_map);
+            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+            displayDailyKmls(map);
+            // var ctaLayer52 = new google.maps.KmlLayer('https://sites.google.com/site/gmukmls/kmls/cspp-viirs-flood-globally_20180815_010000_68.kml');
+            // ctaLayer52.setMap(g_map);
             /*
-            var ctaLayer53 = new google.maps.KmlLayer('http://13.78.141.105/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_010000_53.kml');
+            var ctaLayer53 = new google.maps.KmlLayer('http://13.78.138.134/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_010000_53.kml');
             ctaLayer53.setMap(g_map);
-            var ctaLayer54 = new google.maps.KmlLayer('http://13.78.141.105/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_010000_54.kml');
+            var ctaLayer54 = new google.maps.KmlLayer('http://13.78.138.134/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_010000_54.kml');
             ctaLayer54.setMap(g_map);
-            var ctaLayer55 = new google.maps.KmlLayer('http://13.78.141.105/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_010000_55.kml');
+            var ctaLayer55 = new google.maps.KmlLayer('http://13.78.138.134/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_010000_55.kml');
             ctaLayer55.setMap(g_map);
             */
         });

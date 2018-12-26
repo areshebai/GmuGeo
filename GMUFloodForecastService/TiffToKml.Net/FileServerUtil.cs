@@ -51,23 +51,100 @@ namespace TiffToKml.Net
             }
         }
 
+        public static int GetBlockIndexFromFileName(string fileName)
+        {
+            string name = Path.GetFileNameWithoutExtension(fileName);
+
+            string[] elements = name.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (elements.Length != 4)
+            {
+                throw new Exception();
+            }
+
+            return Convert.ToInt32(elements[3]);
+        }
+
+        public static DateTime GetDateFromFileName(string fileName)
+        {
+            string name = Path.GetFileNameWithoutExtension(fileName);
+
+            string[] elements = name.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (elements.Length != 4)
+            {
+                throw new Exception();
+            }
+
+            return new DateTime(Convert.ToInt32(elements[1].Substring(0, 4)), Convert.ToInt32(elements[1].Substring(4, 2)), Convert.ToInt32(elements[1].Substring(6, 2)));
+        }
+
+        public static int GetHourFromFileName(string fileName)
+        {
+            string name = Path.GetFileNameWithoutExtension(fileName);
+
+            string[] elements = name.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (elements.Length != 4)
+            {
+                throw new Exception();
+            }
+
+            return Convert.ToInt32(elements[2].Substring(0, 2));
+        }
+
+        public static void SaveDailyLatestKmlAndPng(string savedDirectory, string kmlFileName)
+        {
+            DateTime fileDate = GetDateFromFileName(kmlFileName);
+            int bIndex = GetBlockIndexFromFileName(kmlFileName);
+            string[] existedFiles = Directory.GetFiles(savedDirectory, string.Format("*_{0}.kml", bIndex));
+
+            if (existedFiles.Length > 1)
+            {
+                throw new Exception();
+            }
+
+            if (existedFiles.Length == 0)
+            {
+                File.Copy(kmlFileName, Path.Combine(savedDirectory, Path.GetFileNameWithoutExtension(kmlFileName) + ".kml"));
+                File.Copy(kmlFileName.Replace(".kml", ".png"), Path.Combine(savedDirectory, Path.GetFileNameWithoutExtension(kmlFileName) + ".png"));
+            }
+
+            if (existedFiles.Length == 1)
+            {
+                DateTime date = GetDateFromFileName(existedFiles[0]);
+                if (fileDate.Ticks > date.Ticks)
+                {
+                    File.Delete(existedFiles[0]);
+                    File.Delete(existedFiles[0].Replace(".kml", ".png"));
+                    File.Copy(kmlFileName, Path.Combine(savedDirectory, Path.GetFileNameWithoutExtension(kmlFileName) + ".kml"));
+                    File.Copy(kmlFileName.Replace(".kml", ".png"), Path.Combine(savedDirectory, Path.GetFileNameWithoutExtension(kmlFileName) + ".png"));
+                }
+            }
+        }
+
         public static void ProcessSourceFileFromFTPServer(string serverFilePath, string savedDirectory)
         {
             string fileName = Path.GetFileName(serverFilePath);
             string tempFilePath = Path.GetTempPath();
-            string tempFileName = Path.Combine(tempFilePath, fileName);
 
             // Download zip file to temp folder
+            string tempFileName = Path.Combine(tempFilePath, fileName);
             DownloadAndSaveFile(serverFilePath, tempFileName);
 
             // Unzip downloaded zip file
-            DirectoryInfo targetDirectory = Directory.CreateDirectory(Path.Combine(tempFilePath, "uncompress"));
-            ZipFile.ExtractToDirectory(tempFileName, targetDirectory.FullName);
+            string unCompressFolder = Path.Combine(tempFilePath, "uncompress");
+            if (Directory.Exists(unCompressFolder))
+            {
+                Directory.Delete(unCompressFolder, true);
+            }
+            Directory.CreateDirectory(unCompressFolder);
+            ZipFile.ExtractToDirectory(tempFileName, unCompressFolder);
 
             // Delete downloaded zip file
             File.Delete(tempFileName);
 
-            string[] kmlFileNames = Directory.GetFiles(targetDirectory.FullName, "*.kml");
+            string[] kmlFileNames = Directory.GetFiles(unCompressFolder, "*.kml");
             for (int i = 0; i < kmlFileNames.Length; i++)
             {
                 // cspp-viirs-flood-globally_20180815_010000_54.kml
@@ -77,6 +154,7 @@ namespace TiffToKml.Net
 
                 if (elements.Length != 4)
                 {
+                    // 0: cspp-viirs-flood-globally, 1: 20180815_010000_54, 2: 010000, 3: 54
                     throw new Exception();
                 }
 
@@ -98,13 +176,21 @@ namespace TiffToKml.Net
                     Directory.CreateDirectory(rawfolderPath);
                 }
 
-                File.Copy(Path.Combine(directoryName, name) + ".kml", Path.Combine(disfolderPath, name) + ".kml");
-                File.Copy(Path.Combine(directoryName, name) + ".png", Path.Combine(disfolderPath, name) + ".png");
-                File.Copy(Path.Combine(directoryName, name) + ".tif", Path.Combine(rawfolderPath, name) + ".tif");
+                string unifolderPath = Path.Combine(folderPath, "uni");
+                if (!Directory.Exists(unifolderPath))
+                {
+                    Directory.CreateDirectory(unifolderPath);
+                }
+
+                File.Copy(Path.Combine(directoryName, name) + ".kml", Path.Combine(disfolderPath, name) + ".kml", true);
+                File.Copy(Path.Combine(directoryName, name) + ".png", Path.Combine(disfolderPath, name) + ".png", true);
+                File.Copy(Path.Combine(directoryName, name) + ".tif", Path.Combine(rawfolderPath, name) + ".tif", true);
+
+                SaveDailyLatestKmlAndPng(unifolderPath, kmlFileNames[i]);
             }
 
             // Delete temp uncompress directory
-            Directory.Delete(targetDirectory.FullName, true);
+            Directory.Delete(unCompressFolder, true);
         }
     }
 }
