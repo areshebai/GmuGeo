@@ -12,7 +12,8 @@ namespace TiffToKml.Net
         {
             TiffToKml instance = new TiffToKml();
             // instance.Execute();
-            instance.JoinImage();
+            // instance.DownloadAndSaveFiles();
+            instance.JoinImages(@"C:\Temp\2018\08\15\dis", 1);
         }
     }
 }

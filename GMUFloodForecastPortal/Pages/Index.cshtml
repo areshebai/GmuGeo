@@ -147,35 +147,63 @@
                 mapTypeId: 'hybrid',
                 disableDefaultUI: true
             };
-            // var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-            var ctaLayer = new google.maps.KmlLayer('http://13.78.149.101/kmls/2018/08/cspp-viirs-flood-globally_20180815_100000_130.kml');
-            ctaLayer.setMap(g_map);
+
+            //var ctaLayer = new google.maps.KmlLayer('http://13.78.141.105/kmls/2018/08/cspp-viirs-flood-globally_20180815_010000_69.kml');
+            //ctaLayer.setMap(g_map);
+
+            
+            var ctaLayer52 = new google.maps.KmlLayer('https://sites.google.com/site/gmukmls/kmls/cspp-viirs-flood-globally_20180815_010000_68.kml');
+            ctaLayer52.setMap(g_map);
+            /*
+            var ctaLayer53 = new google.maps.KmlLayer('http://13.78.141.105/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_010000_53.kml');
+            ctaLayer53.setMap(g_map);
+            var ctaLayer54 = new google.maps.KmlLayer('http://13.78.141.105/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_010000_54.kml');
+            ctaLayer54.setMap(g_map);
+            var ctaLayer55 = new google.maps.KmlLayer('http://13.78.141.105/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_010000_55.kml');
+            ctaLayer55.setMap(g_map);
+            */
         });
 
         $('#PreviousStep').on('click', function (event) {
             var mapProp = {
-                center: new google.maps.LatLng({ lat: 0, lng: -105 }),
-                zoom: 12,
+                center: new google.maps.LatLng({ lat: 60, lng: -150 }),
+                zoom: 5,
                 mapTypeId: 'hybrid',
                 disableDefaultUI: true
             };
-            // var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-            var ctaLayer = new google.maps.KmlLayer('http://13.78.149.101/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_040000_77.kml');
-            ctaLayer.setMap(g_map);
+
+            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+            if (hour === 0 || hour === 1) {
+                hour = 23;
+            }
+            else {
+                hour = hour -1
+            }
+
+            AddKmlLayer(hour, map, false);
         });
 
         $('#NextStep').on('click', function (event) {
             var mapProp = {
-                center: new google.maps.LatLng({ lat: 0, lng: -105 }),
-                zoom: 12,
+                center: new google.maps.LatLng({ lat: 60, lng: -150 }),
+                zoom: 5,
                 mapTypeId: 'hybrid',
                 disableDefaultUI: true
             };
-            // var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-            var ctaLayer = new google.maps.KmlLayer('http://13.78.149.101/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_130000_41.kml');
-            ctaLayer.setMap(g_map);
+
+            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+            if (hour === 0 || hour === 23) {
+                hour = 1;
+            }
+            else {
+                hour = hour + 1
+            }
+
+            AddKmlLayer(hour, map, false);
         });
-    // https://sites.google.com/site/gmukmls/kmls/MOSAIC_WATER_VIIRS_Prj_SVI_npp_d20170831_t1841_t1844_cspp_dev_105_3855_2966_01.kml
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa4mPMDM-mSm7kKGOybaZF8OG_LnZ7M-o&callback=initMap"></script>
 }
