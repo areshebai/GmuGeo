@@ -30,24 +30,8 @@
 
 <div class="mainContainer">
     <jqx-splitter resizable="false" height="100%" width="100%" panels="panels" split-bar-size="2">
-        <jqx-splitter-panel> <!-- Left navigation panel-->
-            <div style="height: 40%">
-                <!-- Left top informational div-->
-                <div class="nav-info-panel">
-                    <label>Information</label>
-                    <div>
-                        <label>Period</label>
-                        <label>From</label>
-                        <label>To</label>
-                        <label>Current</label>
-                    </div>
-                    <label>Operation</label>
-                    <div>
-                        <jqx-button width="100" id="PreviousStep"><< Previous</jqx-button>
-                        <jqx-button width="100" id="NextStep">Next >></jqx-button>
-                    </div>
-                </div>
-            </div>
+        <jqx-splitter-panel>
+            <!-- Left navigation panel-->
             <jqx-navigation-bar animation-type="fade" height="60%">
                 <jqx-navigation-bar-panel>
                     <jqx-navigation-bar-panel-header>Absolute Date and Time (UTC)</jqx-navigation-bar-panel-header>
@@ -57,25 +41,25 @@
                                 <label>From</label>
                                 <div>
                                     <div style="float:left; margin-top: 2px">
-                                        <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now"></jqx-date-time-input>
+                                        <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now" instance="getAbsoluteFromDateTimeInstance()"></jqx-date-time-input>
                                     </div>
                                     <!--
-                                    <div style="float:left; margin-top: 8px; margin-left: 5px">
-                                        <label style="height: 30px">UTC</label>
-                                    </div>
-                                    -->
+                            <div style="float:left; margin-top: 8px; margin-left: 5px">
+                                <label style="height: 30px">UTC</label>
+                            </div>
+                            -->
                                     <div class="clearall"></div>
                                 </div>
                                 <label>TO</label>
                                 <div>
                                     <div style="float: left; margin-top: 2px">
-                                        <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now.AddMinutes(5)"></jqx-date-time-input>
+                                        <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now.AddMinutes(5)" instance="getAbsoluteToDateTimeInstance()"></jqx-date-time-input>
                                     </div>
                                     <!--
-                                    <div style="float:left; margin-top: 8px; margin-left: 5px">
-                                        <label style="height: 30px">UTC</label>
-                                    </div>
-                                    -->
+                            <div style="float:left; margin-top: 8px; margin-left: 5px">
+                                <label style="height: 30px">UTC</label>
+                            </div>
+                            -->
                                 </div>
                                 <div class="clearall"></div>
                             </div>
@@ -131,6 +115,30 @@
                     </jqx-navigation-bar-panel-body>
                 </jqx-navigation-bar-panel>
             </jqx-navigation-bar>
+            <div style="height: 40%">
+                <!-- Left bottom informational div-->
+                <div class="nav-info-panel">
+                    <label>Display</label>
+                    <div>
+                        <div style="clear:both">
+                            <label>Period From:</label>
+                            <span id="PeriodFrom"></span>
+                        </div>
+                        <div style="clear:both">
+                            <label>Period To:</label>
+                            <span id="PeriodTo"></span>
+                        </div>
+                        <div>
+                            <label>Hour:</label>
+                        </div>
+                    </div>
+                    <div>
+                        <jqx-button width="100" id="PreviousStep">< Previous</jqx-button>
+                        <span id="PeriodCurrentTime"></span>
+                        <jqx-button width="100" id="NextStep">Next ></jqx-button>
+                    </div>
+                </div>
+            </div>
         </jqx-splitter-panel>
         <jqx-splitter-panel> <!-- Right map panel-->
             <div id="googleMap" style="width:100%;height:100%"></div>
@@ -139,72 +147,79 @@
 </div>
 
 @section scripts {
-    <script>
-        $('#Apply_DateTimePeriod').on('click', function (event) {
-            var mapProp = {
-                center: new google.maps.LatLng({ lat: 0, lng: -105 }),
-                zoom: 3,
-                mapTypeId: 'hybrid',
-                disableDefaultUI: true
-            };
+<script>
+    function getAbsoluteFromDateTimeInstance(instance) {
+        g_absoluteFromDateTime = instance["getText"]();
+    }
 
-            //var ctaLayer = new google.maps.KmlLayer('http://13.78.138.134/kmls/2018/08/cspp-viirs-flood-globally_20180815_010000_69.kml');
-            //ctaLayer.setMap(g_map);
+    function getAbsoluteToDateTimeInstance(instance) {
+        g_absoluteToDateTime = instance["getText"]();
+    }
 
-            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-            displayDailyKmls(map);
-            // var ctaLayer52 = new google.maps.KmlLayer('https://sites.google.com/site/gmukmls/kmls/cspp-viirs-flood-globally_20180815_010000_68.kml');
-            // ctaLayer52.setMap(g_map);
-            /*
-            var ctaLayer53 = new google.maps.KmlLayer('http://13.78.138.134/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_010000_53.kml');
-            ctaLayer53.setMap(g_map);
-            var ctaLayer54 = new google.maps.KmlLayer('http://13.78.138.134/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_010000_54.kml');
-            ctaLayer54.setMap(g_map);
-            var ctaLayer55 = new google.maps.KmlLayer('http://13.78.138.134/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_010000_55.kml');
-            ctaLayer55.setMap(g_map);
-            */
-        });
+    $('#Apply_DateTimePeriod').on('click', function (event) {
 
-        $('#PreviousStep').on('click', function (event) {
-            var mapProp = {
-                center: new google.maps.LatLng({ lat: 60, lng: -150 }),
-                zoom: 5,
-                mapTypeId: 'hybrid',
-                disableDefaultUI: true
-            };
+        $('#PeriodFrom').html(g_absoluteFromDateTime);
+        $('#PeriodTo').html(g_absoluteToDateTime);
 
-            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        var fromDateTime = new Date(g_absoluteFromDateTime);
+        hour = fromDateTime.getHours();
+        $('#PeriodCurrentTime').html(hour);
 
-            if (hour === 0 || hour === 1) {
-                hour = 23;
-            }
-            else {
-                hour = hour -1
-            }
+        var mapProp = {
+            center: new google.maps.LatLng({ lat: 0, lng: -105 }),
+            zoom: 3,
+            mapTypeId: 'hybrid',
+            disableDefaultUI: true
+        };
 
-            AddKmlLayer(hour, map, false);
-        });
 
-        $('#NextStep').on('click', function (event) {
-            var mapProp = {
-                center: new google.maps.LatLng({ lat: 60, lng: -150 }),
-                zoom: 5,
-                mapTypeId: 'hybrid',
-                disableDefaultUI: true
-            };
+        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        displayDailyKmls(map);
+    });
 
-            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+    $('#PreviousStep').on('click', function (event) {
+        var mapProp = {
+            center: new google.maps.LatLng({ lat: 60, lng: -150 }),
+            zoom: 5,
+            mapTypeId: 'hybrid',
+            disableDefaultUI: true
+        };
 
-            if (hour === 0 || hour === 23) {
-                hour = 1;
-            }
-            else {
-                hour = hour + 1
-            }
+        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 
-            AddKmlLayer(hour, map, false);
-        });
+        if (hour === 0 || hour === 1) {
+            hour = 23;
+        }
+        else {
+            hour = hour -1
+        }
 
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa4mPMDM-mSm7kKGOybaZF8OG_LnZ7M-o&callback=initMap"></script>
+        $('#PeriodCurrentTime').html(hour);
+
+        AddKmlLayer(hour, map, false);
+    });
+
+    $('#NextStep').on('click', function (event) {
+        var mapProp = {
+            center: new google.maps.LatLng({ lat: 60, lng: -150 }),
+            zoom: 5,
+            mapTypeId: 'hybrid',
+            disableDefaultUI: true
+        };
+
+        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+        if (hour === 0 || hour === 23) {
+            hour = 1;
+        }
+        else {
+            hour = hour + 1
+        }
+
+        $('#PeriodCurrentTime').html(hour);
+        AddKmlLayer(hour, map, false);
+    });
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa4mPMDM-mSm7kKGOybaZF8OG_LnZ7M-o&callback=initMap"></script>
 }
