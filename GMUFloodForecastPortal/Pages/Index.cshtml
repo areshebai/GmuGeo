@@ -15,6 +15,7 @@
 <script src="~/jqwidgets/jqxinput.js"></script>
 <script src="~/jqwidgets/jqxcombobox.js"></script>
 <script src="~/jqwidgets/jqxcheckbox.js"></script>
+<script src="~/jqwidgets/jqxswitchbutton.js"></script>
 
 @using jQWidgets.AspNetCore.Mvc.TagHelpers
 
@@ -24,7 +25,7 @@
 
     List<object> panels = new List<object>()
     {
-        "{size: '290px'}",
+        "{size: '270px'}",
     };
 }
 
@@ -32,7 +33,7 @@
     <jqx-splitter resizable="false" height="100%" width="100%" panels="panels" split-bar-size="2">
         <jqx-splitter-panel>
             <!-- Left navigation panel-->
-            <jqx-navigation-bar animation-type="fade" height="60%">
+            <jqx-navigation-bar animation-type="fade" height="320">
                 <jqx-navigation-bar-panel>
                     <jqx-navigation-bar-panel-header>Absolute Date and Time (UTC)</jqx-navigation-bar-panel-header>
                     <jqx-navigation-bar-panel-body>
@@ -43,30 +44,20 @@
                                     <div style="float:left; margin-top: 2px">
                                         <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now" instance="getAbsoluteFromDateTimeInstance()"></jqx-date-time-input>
                                     </div>
-                                    <!--
-                            <div style="float:left; margin-top: 8px; margin-left: 5px">
-                                <label style="height: 30px">UTC</label>
-                            </div>
-                            -->
                                     <div class="clearall"></div>
                                 </div>
-                                <label>TO</label>
+                                <label style="margin-top: 10px">TO</label>
                                 <div>
                                     <div style="float: left; margin-top: 2px">
                                         <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now.AddMinutes(5)" instance="getAbsoluteToDateTimeInstance()"></jqx-date-time-input>
                                     </div>
-                                    <!--
-                            <div style="float:left; margin-top: 8px; margin-left: 5px">
-                                <label style="height: 30px">UTC</label>
-                            </div>
-                            -->
                                 </div>
                                 <div class="clearall"></div>
                             </div>
                             <div class="clearall"></div>
                             <hr class="seperator" />
                             <div class="applyselection">
-                                <jqx-button id="Apply_DateTimePeriod">Apply Changes</jqx-button>
+                                <jqx-button id="apply_DateTimePeriod">Apply Date&Time Selection</jqx-button>
                             </div>
                         </div>
                     </jqx-navigation-bar-panel-body>
@@ -80,11 +71,8 @@
                                 <div style="float: left; margin-top: 2px">
                                     <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now.AddMinutes(5)"></jqx-date-time-input>
                                 </div>
-                                <div style="float:left; margin-top: 8px; margin-left: 5px">
-                                    <label style="height: 30px">UTC</label>
-                                </div>
                             </div>
-                            <label>Range and Direction</label>
+                            <label style="margin-top: 10px">Range and Direction</label>
                             <div>
                                 <div style="float:left">
                                     <jqx-input width="50" height="25" value="24"></jqx-input>
@@ -106,36 +94,70 @@
                                     <jqx-drop-down-list width="70" height="25" instance="getStepInstance2()"></jqx-drop-down-list>
                                 </div>
                             </div>
-                            <div style="clear:both"></div>
+                            <div class="clearall"></div>
                             <hr class="seperator" />
                             <div class="applyselection">
-                                <jqx-button>Apply Changes</jqx-button>
+                                <jqx-button id="apply_DateTimePeriod_2">Apply Date&Time Selection</jqx-button>
                             </div>
                         </div>
                     </jqx-navigation-bar-panel-body>
                 </jqx-navigation-bar-panel>
             </jqx-navigation-bar>
-            <div style="height: 40%">
-                <!-- Left bottom informational div-->
-                <div class="nav-info-panel">
-                    <label>Display</label>
-                    <div>
-                        <div style="clear:both">
-                            <label>Period From:</label>
-                            <span id="PeriodFrom"></span>
-                        </div>
-                        <div style="clear:both">
-                            <label>Period To:</label>
-                            <span id="PeriodTo"></span>
-                        </div>
-                        <div>
-                            <label>Hour:</label>
-                        </div>
+            <!-- Left bottom informational div-->
+            <div class="nav-info-panel">
+                <div>
+                    <label class="panel-title">Position</label>
+                    <div style="clear:both">
+                        <label>Latitude:</label>
+                        <span id="currentLatitude"></span>
+                    </div>
+                    <div style="clear:both">
+                        <label>Longitude:</label>
+                        <span id="currentLongitude"></span>
+                    </div>
+                    <div style="clear:both">
+                        <label>District:</label>
+                        <span id="currentDistrict"></span>
+                    </div>
+                </div>
+                <div style="margin-top: 28px;">
+                    <label class="panel-title">Selected Date&Time</label>
+                    <div style="clear:both">
+                        <label>From:</label>
+                        <span id="PeriodFrom"></span>
+                    </div>
+                    <div style="clear:both">
+                        <label>To:</label>
+                        <span id="PeriodTo"></span>
                     </div>
                     <div>
-                        <jqx-button width="100" id="PreviousStep">< Previous</jqx-button>
-                        <span id="PeriodCurrentTime"></span>
-                        <jqx-button width="100" id="NextStep">Next ></jqx-button>
+                        <label>Hour:</label>
+                        <span style="width:40px" id="PeriodCurrentTime"></span>
+                        <jqx-button width="30" id="PreviousStep"><</jqx-button>
+                        <jqx-button width="30" id="NextStep">></jqx-button>
+                    </div>
+                </div>
+                <div>
+                    <div class="regions-panel">
+                        <label class="panel-title">Regions</label>
+                        <div>
+                            <div class="regions-panel-item">
+                                <label class="region-switch-label">East Asia</label>
+                                <jqx-switch-button id="region_eastasia" checked="false" on-label="Show" off-label="Hide" height="22" thumb-size="33%"></jqx-switch-button>
+                            </div>
+                            <div class="regions-panel-item">
+                                <label class="region-switch-label">Europ</label>
+                                <jqx-switch-button id="region_Europ" checked="false" on-label="Show" off-label="Hide" height="22" thumb-size="33%"></jqx-switch-button>
+                            </div>
+                            <div class="regions-panel-item">
+                                <label class="region-switch-label">North America</label>
+                                <jqx-switch-button id="region_northamerica" checked="true" on-label="Show" off-label="Hide" height="22" thumb-size="33%"></jqx-switch-button>
+                            </div>
+                            <div class="regions-panel-item">
+                                <label class="region-switch-label">Source America</label>
+                                <jqx-switch-button id="region_sourceamerica" checked="false" on-label="Show" off-label="Hide" height="22" thumb-size="33%"></jqx-switch-button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -156,7 +178,7 @@
         g_absoluteToDateTime = instance["getText"]();
     }
 
-    $('#Apply_DateTimePeriod').on('click', function (event) {
+    $('#apply_DateTimePeriod').on('click', function (event) {
 
         $('#PeriodFrom').html(g_absoluteFromDateTime);
         $('#PeriodTo').html(g_absoluteToDateTime);
@@ -174,7 +196,16 @@
 
 
         var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+        map.addListener('mousemove', function(e) {
+            mouseMoveOnMap(e)
+        });
+
         displayDailyKmls(map);
+    });
+
+    $('#apply_DateTimePeriod_2').on('click', function (event) {
+        alert("not implemented.")
     });
 
     $('#PreviousStep').on('click', function (event) {
@@ -186,6 +217,9 @@
         };
 
         var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        map.addListener('mousemove', function (e) {
+            mouseMoveOnMap(e)
+        });
 
         if (hour === 0 || hour === 1) {
             hour = 23;
@@ -208,6 +242,9 @@
         };
 
         var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        map.addListener('mousemove', function (e) {
+            mouseMoveOnMap(e)
+        });
 
         if (hour === 0 || hour === 23) {
             hour = 1;
