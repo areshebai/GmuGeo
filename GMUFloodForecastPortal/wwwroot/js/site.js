@@ -541,8 +541,20 @@ function AddKmlLayer(curhour, map, suppressInfoWindowsEnabled) {
 }
 
 function displayDailyKmls(map) {
+    $.ajax({
+        type: 'GET',
+        url: "api/Kml",
+        cache: false,
+        success: function (data) {
+            $.each(data, function (index, value) {
+                displayKmlLayer(map, value);
+            });
+        }
+    });
+
     // Get-ChildItem C:\GmuTemp\2018\08\15\uni | Where {$_.Name.Contains(".kml")}
     // $items | ForEach-Object { Write-Host ("displayKmlLayer(map, 'http://13.78.136.56/kmls/2018/08/15/uni/" + $_.Name + "`');")}
+    /*
     displayKmlLayer(map, 'http://13.78.136.56/kmls/2018/08/15/uni/cspp-viirs-flood-globally_20180815_010000_42.kml');
     displayKmlLayer(map, 'http://13.78.136.56/kmls/2018/08/15/uni/cspp-viirs-flood-globally_20180815_010000_43.kml');
     displayKmlLayer(map, 'http://13.78.136.56/kmls/2018/08/15/uni/cspp-viirs-flood-globally_20180815_010000_44.kml');
@@ -669,6 +681,7 @@ function displayDailyKmls(map) {
     displayKmlLayer(map, 'http://13.78.136.56/kmls/2018/08/15/uni/cspp-viirs-flood-globally_20180815_190000_26.kml');
     displayKmlLayer(map, 'http://13.78.136.56/kmls/2018/08/15/uni/cspp-viirs-flood-globally_20180815_210000_10.kml');
     displayKmlLayer(map, 'http://13.78.136.56/kmls/2018/08/15/uni/cspp-viirs-flood-globally_20180815_210000_9.kml');
+    */
 }
 
 function mouseMoveOnMap(event) {

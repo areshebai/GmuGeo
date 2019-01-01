@@ -37,6 +37,7 @@ namespace GMUFloodForecastPortal
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseMvc();
