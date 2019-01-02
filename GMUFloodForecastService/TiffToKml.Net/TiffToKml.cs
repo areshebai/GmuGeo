@@ -10,6 +10,7 @@ using System.Net;
 using OSGeo.GDAL;
 using Gdal = OSGeo.GDAL.Gdal;
 using Ogr = OSGeo.OGR.Ogr;
+using System.Drawing.Drawing2D;
 
 namespace TiffToKml.Net
 {
@@ -269,6 +270,44 @@ namespace TiffToKml.Net
 
             joinedBitmap.Save(@"C:\Temp\cspp-viirs-flood-globally_20180815_010000.png");
             return joinedBitmap;
+        }
+
+        public void ProcessImages(string sourcePath, int rate = 50)
+        {
+            string[] pngFiles = Directory.GetFiles(sourcePath, "*.png");
+
+            string targetPath = Path.Combine(sourcePath, rate.ToString());
+            if (Directory.Exists(targetPath))
+            {
+                Directory.Delete(targetPath, true);
+            }
+
+            Directory.CreateDirectory(targetPath);
+
+            for (int i = 0; i < pngFiles.Length; i++)
+            {
+                string fileName = pngFiles[i];
+                using (Image image = Image.FromFile(fileName))
+                {
+                    int newWidth = image.Width * rate / 100;
+                    int newHeight = image.Height * rate / 100;
+
+                    using (Bitmap newBitmap = new Bitmap(image, newWidth, newHeight))
+                    {
+                        Graphics graphic = Graphics.FromImage(newBitmap);
+                        graphic.CompositingQuality = CompositingQuality.HighQuality;
+                        graphic.SmoothingMode = SmoothingMode.HighQuality;
+                        graphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                        Rectangle imageRectangle = new Rectangle(0, 0, newWidth, newHeight);
+
+                        string newFileName = Path.Combine(targetPath, Path.GetFileName(fileName));
+                        Console.WriteLine(string.Format("Saving {0} to {1}", fileName, newFileName));
+
+                        graphic.DrawImage(image, imageRectangle);
+                        newBitmap.Save(newFileName);
+                    }
+                }
+            }
         }
     }
 }

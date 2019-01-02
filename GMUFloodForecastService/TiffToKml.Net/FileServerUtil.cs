@@ -95,7 +95,7 @@ namespace TiffToKml.Net
 
         public static void SaveDailyLatestKmlAndPng(string savedDirectory, string kmlFileName)
         {
-            DateTime fileDate = GetDateFromFileName(kmlFileName);
+            long fileLength = new FileInfo(kmlFileName.Replace(".kml", ".png")).Length;
             int bIndex = GetBlockIndexFromFileName(kmlFileName);
             string[] existedFiles = Directory.GetFiles(savedDirectory, string.Format("*_{0}.kml", bIndex));
 
@@ -112,8 +112,8 @@ namespace TiffToKml.Net
 
             if (existedFiles.Length == 1)
             {
-                DateTime date = GetDateFromFileName(existedFiles[0]);
-                if (fileDate.Ticks > date.Ticks)
+                long length = new FileInfo(existedFiles[0].Replace(".kml", ".png")).Length;
+                if (fileLength > length)
                 {
                     File.Delete(existedFiles[0]);
                     File.Delete(existedFiles[0].Replace(".kml", ".png"));
