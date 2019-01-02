@@ -12,7 +12,24 @@ namespace TiffToKml.Net
         {
             TiffToKml instance = new TiffToKml();
 
-            instance.DownloadAndSaveFiles();
+            bool downloadAndSaveFiles = false;
+            bool joinImages = false;
+            bool processImages = true;
+
+            if (downloadAndSaveFiles)
+            {
+                instance.DownloadAndSaveFiles();
+            }
+
+            if (joinImages)
+            {
+                instance.JoinImages("");
+            }
+
+            if (processImages)
+            {
+                instance.ProcessImages(@"C:\GmuTemp\2018\08\15\uni", 10);
+            }
         }
     }
 }
