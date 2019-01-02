@@ -187,19 +187,7 @@
         hour = fromDateTime.getHours();
         $('#PeriodCurrentTime').html(hour);
 
-        var mapProp = {
-            center: new google.maps.LatLng({ lat: 0, lng: -105 }),
-            zoom: 3,
-            mapTypeId: 'hybrid',
-            disableDefaultUI: true
-        };
-
-
-        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-
-        map.addListener('mousemove', function(e) {
-            mouseMoveOnMap(e)
-        });
+        var map = createMapInstance("googleMap");
 
         displayDailyKmls(map);
     });
@@ -209,18 +197,6 @@
     });
 
     $('#PreviousStep').on('click', function (event) {
-        var mapProp = {
-            center: new google.maps.LatLng({ lat: 60, lng: -150 }),
-            zoom: 5,
-            mapTypeId: 'hybrid',
-            disableDefaultUI: true
-        };
-
-        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-        map.addListener('mousemove', function (e) {
-            mouseMoveOnMap(e)
-        });
-
         if (hour === 0 || hour === 1) {
             hour = 23;
         }
@@ -230,22 +206,11 @@
 
         $('#PeriodCurrentTime').html(hour);
 
+        var map = createMapInstance("googleMap");
         AddKmlLayer(hour, map, false);
     });
 
     $('#NextStep').on('click', function (event) {
-        var mapProp = {
-            center: new google.maps.LatLng({ lat: 60, lng: -150 }),
-            zoom: 5,
-            mapTypeId: 'hybrid',
-            disableDefaultUI: true
-        };
-
-        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-        map.addListener('mousemove', function (e) {
-            mouseMoveOnMap(e)
-        });
-
         if (hour === 0 || hour === 23) {
             hour = 1;
         }
@@ -254,6 +219,8 @@
         }
 
         $('#PeriodCurrentTime').html(hour);
+
+        var map = createMapInstance("googleMap");
         AddKmlLayer(hour, map, false);
     });
 
