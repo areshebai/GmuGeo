@@ -13,7 +13,7 @@ namespace GMUFloodForecastPortal.Controllers
     [Route("api/Kml")]
     public class KmlController : Controller
     {
-        private readonly string kmlFullFilePathFormat = @"http://13.77.200.161/{0}";
+        private readonly string kmlFullFilePathFormat = @"http://13.78.237.85/{0}";
         // GET: api/Kml
         [HttpGet]
         public IEnumerable<string> Get()
