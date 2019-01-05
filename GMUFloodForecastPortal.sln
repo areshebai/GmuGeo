@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMUFloodForecastPortal", "G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiffToKml.Net", "GMUFloodForecastService\TiffToKml.Net\TiffToKml.Net.csproj", "{7D1BB484-E9EB-491D-A2BB-ACC171C40D77}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMUFFCommon", "GMUFFCommon\GMUFFCommon.csproj", "{A7B8BDB8-02DE-4D08-B052-AC624781359E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMUFFProcessor", "GMUFFProcessor\GMUFFProcessor.csproj", "{69822572-9084-4C8F-A2EC-6D047135C7F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{7D1BB484-E9EB-491D-A2BB-ACC171C40D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D1BB484-E9EB-491D-A2BB-ACC171C40D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D1BB484-E9EB-491D-A2BB-ACC171C40D77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7B8BDB8-02DE-4D08-B052-AC624781359E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7B8BDB8-02DE-4D08-B052-AC624781359E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7B8BDB8-02DE-4D08-B052-AC624781359E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7B8BDB8-02DE-4D08-B052-AC624781359E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69822572-9084-4C8F-A2EC-6D047135C7F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69822572-9084-4C8F-A2EC-6D047135C7F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69822572-9084-4C8F-A2EC-6D047135C7F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69822572-9084-4C8F-A2EC-6D047135C7F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

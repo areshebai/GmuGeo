@@ -28,10 +28,7 @@ function initMap() {
 
     var map = createMapInstance("googleMap");
 
-    displayKmlLayer(map, 'http://13.78.237.85/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_190000_17.kml');
-    displayKmlLayer(map, 'http://13.78.237.85/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_190000_18.kml');
-    displayKmlLayer(map, 'http://13.78.237.85/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_190000_19.kml');
-    displayKmlLayer(map, 'http://13.78.237.85/kmls/2018/08/15/cspp-viirs-flood-globally_20180815_190000_20.kml');
+    displayKmlLayer(map, 'http://13.78.237.85/kmls/Goes-16/dis/COM_ABI_WATER_20181229_2018363_0002_2352_6000_2600_142_001.kml');
 }
 
 function createMapInstance(mapElement) {

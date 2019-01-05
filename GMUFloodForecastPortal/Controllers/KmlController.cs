@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Net;
+using GMUFFCommon;
 
 namespace GMUFloodForecastPortal.Controllers
 {
@@ -14,18 +15,19 @@ namespace GMUFloodForecastPortal.Controllers
     public class KmlController : Controller
     {
         private readonly string kmlFullFilePathFormat = @"http://13.78.237.85/{0}";
+
         // GET: api/Kml
         [HttpGet]
         public IEnumerable<string> Get()
         {
             List<string> kmlFiles = new List<string>();
 
-            string serverUrl = GetFileServerUrl("13.78.149.101", 21, new DateTime(2018, 08, 15));
+            string serverUrl = FtpUtil.GetFileServerUrl("13.78.149.101", 21, new DateTime(2018, 08, 15));
             serverUrl += "/uni";
 
             FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create(serverUrl);
             ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
-            ftpRequest.Credentials = GetFileServerCredential();
+            ftpRequest.Credentials = FtpUtil.GetFileServerCredential();
 
             FtpWebResponse ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
 
@@ -57,34 +59,10 @@ namespace GMUFloodForecastPortal.Controllers
 
         private int compareKmlFilesByDistrictIndex(string fileName1, string fileName2)
         {
-            int dIndex1 = GetBlockIndexFromFileName(fileName1);
-            int dIndex2 = GetBlockIndexFromFileName(fileName2);
+            int dIndex1 = FileNameUtil.GetBlockIndexFromFileName(fileName1);
+            int dIndex2 = FileNameUtil.GetBlockIndexFromFileName(fileName2);
 
             return dIndex1.CompareTo(dIndex2);
-        }
-
-        private int GetBlockIndexFromFileName(string fileName)
-        {
-            string name = Path.GetFileNameWithoutExtension(fileName);
-
-            string[] elements = name.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (elements.Length != 4)
-            {
-                throw new Exception();
-            }
-
-            return Convert.ToInt32(elements[3]);
-        }
-
-        private NetworkCredential GetFileServerCredential()
-        {
-            return new NetworkCredential("tiffauthor", "07Apples");
-        }
-
-        private string GetFileServerUrl(string host, int port, DateTime date)
-        {
-            return string.Format("ftp://{0}:{1}/{2}", host, port, date.ToString("yyyy/MM/dd"));
         }
 
         // GET: api/Kml/5
@@ -93,12 +71,12 @@ namespace GMUFloodForecastPortal.Controllers
         {
             List<string> kmlFiles = new List<string>();
 
-            string serverUrl = GetFileServerUrl("13.78.149.101", 21, new DateTime(2018, 08, 15));
+            string serverUrl = FtpUtil.GetFileServerUrl("13.78.149.101", 21, new DateTime(2018, 08, 15));
             serverUrl += "/dis";
 
             FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create(serverUrl);
             ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
-            ftpRequest.Credentials = GetFileServerCredential();
+            ftpRequest.Credentials = FtpUtil.GetFileServerCredential();
 
             FtpWebResponse ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
 

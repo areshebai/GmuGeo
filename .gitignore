@@ -3,6 +3,10 @@
 ################################################################################
 
 /.vs
+/GMUFFCommon/bin
+/GMUFFCommon/obj
+/GMUFFProcessor/bin
+/GMUFFProcessor/obj
 /GMUFloodForecastPortal/.vs
 /GMUFloodForecastPortal/bin
 /GMUFloodForecastPortal/obj

@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TiffToKml.Net
+namespace GMUFFProcessor
 {
     class Program
     {
         static void Main(string[] args)
         {
-            TiffToKml instance = new TiffToKml();
+            MainProcessor instance = new MainProcessor();
 
             bool downloadAndSaveFiles = false;
             bool joinImages = false;
@@ -18,7 +14,7 @@ namespace TiffToKml.Net
 
             if (downloadAndSaveFiles)
             {
-                instance.DownloadAndSaveFiles();
+                instance.ProcessRawPackagesFromFtpServer();
             }
 
             if (joinImages)
