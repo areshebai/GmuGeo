@@ -3,48 +3,97 @@ using System.IO;
 
 namespace GMUFFCommon
 {
+    public enum DataFileType
+    {
+        GOES16 = 1,
+        J01,
+        SNNP
+    }
+
     public static class FileNameUtil
     {
-        public static int GetBlockIndexFromFileName(string fileName)
+        private static readonly char[] SplitCharacters = {'_', '.' };
+
+        public static int GetBlockIndexFromFileName(string fileName, DataFileType type = DataFileType.SNNP)
         {
             string name = Path.GetFileNameWithoutExtension(fileName);
 
-            string[] elements = name.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] elements = name.Split(SplitCharacters, StringSplitOptions.RemoveEmptyEntries);
 
-            if (elements.Length != 4)
+            int index = -1;
+            switch (type)
             {
-                throw new Exception();
+                case DataFileType.GOES16:
+                    break;
+                case DataFileType.J01:
+                case DataFileType.SNNP:
+                    if (elements.Length != 5)
+                    {
+                        throw new Exception();
+                    }
+                    index = Convert.ToInt32(elements[3]);
+                    break;
             }
 
-            return Convert.ToInt32(elements[3]);
+            return index;
         }
 
-        public static DateTime GetDateFromFileName(string fileName)
+        public static DateTime GetDateFromFileName(string fileName, DataFileType type = DataFileType.SNNP)
         {
             string name = Path.GetFileNameWithoutExtension(fileName);
 
-            string[] elements = name.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] elements = name.Split(SplitCharacters, StringSplitOptions.RemoveEmptyEntries);
 
-            if (elements.Length != 4)
+            DateTime date = new DateTime();
+            switch (type)
             {
-                throw new Exception();
+                case DataFileType.GOES16:
+                    if (elements.Length != 11)
+                    {
+                        throw new Exception();
+                    }
+                    date = new DateTime(Convert.ToInt32(elements[3].Substring(0, 4)), Convert.ToInt32(elements[3].Substring(4, 2)), Convert.ToInt32(elements[3].Substring(6, 2)));
+                    break;
+                case DataFileType.J01:
+                case DataFileType.SNNP:
+                    if (elements.Length != 5)
+                    {
+                        throw new Exception();
+                    }
+                    date = new DateTime(Convert.ToInt32(elements[1].Substring(0, 4)), Convert.ToInt32(elements[1].Substring(4, 2)), Convert.ToInt32(elements[1].Substring(6, 2)));
+                    break;
             }
 
-            return new DateTime(Convert.ToInt32(elements[1].Substring(0, 4)), Convert.ToInt32(elements[1].Substring(4, 2)), Convert.ToInt32(elements[1].Substring(6, 2)));
+            return date;
         }
 
-        public static int GetHourFromFileName(string fileName)
+        public static int GetHourFromFileName(string fileName, DataFileType type = DataFileType.SNNP)
         {
             string name = Path.GetFileNameWithoutExtension(fileName);
 
-            string[] elements = name.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] elements = name.Split(SplitCharacters, StringSplitOptions.RemoveEmptyEntries);
 
-            if (elements.Length != 4)
+            int hour = 0;
+            switch (type)
             {
-                throw new Exception();
+                case DataFileType.GOES16:
+                    if (elements.Length != 11)
+                    {
+                        throw new Exception();
+                    }
+                    hour = Convert.ToInt32(elements[5].Substring(0, 2));
+                    break;
+                case DataFileType.J01:
+                case DataFileType.SNNP:
+                    if (elements.Length != 5)
+                    {
+                        throw new Exception();
+                    }
+                    hour = Convert.ToInt32(elements[2].Substring(0, 2));
+                    break;
             }
 
-            return Convert.ToInt32(elements[2].Substring(0, 2));
+            return hour;
         }
     }
 }
