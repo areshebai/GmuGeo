@@ -13,3 +13,9 @@ https://www.jqwidgets.com/asp.net-core-mvc-tag-helpers-documentation/
 5. https://sites.google.com/site/gmukmls/kmls to host online kml files
 
 Azure virtual machine: PineApples18
+
+Hostname: dsun-trial.orc.gmu.edu
+
+Username: ywang95
+
+Password:9c3f-6ee2b2a492f3
