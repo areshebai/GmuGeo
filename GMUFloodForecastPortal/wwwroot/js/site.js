@@ -28,8 +28,8 @@ function initMap() {
 
     var map = createMapInstance("googleMap");
 
-    //displayKmlLayer(map, 'http://13.78.237.85/kmls/Goes-16/dis/COM_ABI_WATER_20181229_2018363_0002_2352_6000_2600_142_001.kml');
-    displayKmlLayer(map, 'https://dsun-trial.orc.gmu.edu/kmls/cspp-viirs-flood-globally_20180815_010000_53.kml');
+    displayKmlLayer(map, 'http://13.77.204.172/kmls/Goes-16/dis/COM_ABI_WATER_20181229_2018363_0002_2352_6000_2600_142_001.kml');
+    //displayKmlLayer(map, 'https://dsun-trial.orc.gmu.edu/kmls/cspp-viirs-flood-globally_20180815_010000_53.kml');
 }
 
 function createMapInstance(mapElement) {
