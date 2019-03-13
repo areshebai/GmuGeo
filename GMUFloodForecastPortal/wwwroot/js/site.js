@@ -91,7 +91,8 @@ function displayDailyKmls(map) {
         cache: false,
         success: function (data) {
             $.each(data, function (index, value) {
-                displayKmlLayer(map, value);
+                alert(value);
+                // displayKmlLayer(map, value);
             });
         }
     });

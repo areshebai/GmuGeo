@@ -35,9 +35,11 @@ namespace GMUFloodForecastPortal.Controllers
                 {
                     int satelliteId = reader.GetInt32(0);
                     string satelliteName = reader.GetString(1);
+                    kmlFiles.Add(satelliteName);
                 }
             }
 
+            /*
             string serverUrl = FtpUtil.GetFileServerUrl("13.78.149.101", 21, new DateTime(2018, 08, 15));
             serverUrl += "/uni";
 
@@ -69,7 +71,7 @@ namespace GMUFloodForecastPortal.Controllers
             }
 
             kmlFiles.Sort(compareKmlFilesByDistrictIndex);
-
+            */
             return kmlFiles;
         }
 
