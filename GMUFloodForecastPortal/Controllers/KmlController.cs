@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Net;
 using GMUFFCommon;
+using MySql.Data.MySqlClient;
 
 namespace GMUFloodForecastPortal.Controllers
 {
@@ -15,12 +16,27 @@ namespace GMUFloodForecastPortal.Controllers
     public class KmlController : Controller
     {
         private readonly string kmlFullFilePathFormat = @"http://13.78.237.85/{0}";
+        private readonly string DatabaseConnectionstring = @"server=127.0.0.1;userid=root;password=07Apples;database=gmuff;";
 
         // GET: api/Kml
         [HttpGet]
         public IEnumerable<string> Get()
         {
             List<string> kmlFiles = new List<string>();
+
+            using (MySqlConnection connection = new MySqlConnection(DatabaseConnectionstring))
+            {
+                connection.Open();
+                MySqlCommand command = new MySqlCommand();
+                command.Connection = connection;
+                command.CommandText = "SELECT * FROM gmuff.Satellites";
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    int satelliteId = reader.GetInt32(0);
+                    string satelliteName = reader.GetString(1);
+                }
+            }
 
             string serverUrl = FtpUtil.GetFileServerUrl("13.78.149.101", 21, new DateTime(2018, 08, 15));
             serverUrl += "/uni";
