@@ -14,8 +14,63 @@ https://www.jqwidgets.com/asp.net-core-mvc-tag-helpers-documentation/
 
 Azure virtual machine: PineApples18
 
-Hostname: dsun-trial.orc.gmu.edu
+Hostname: .gmu.edu
 
 Username: ywang95
 
 Password:9c3f-6ee2b2a492f3
+
+Website: https://jpssflood.gmu.edu/
+
+Webserver config: /etc/httpd/conf.d/gmuffapp.conf
+ Monitor webserver daemon /etc/systemd/system/kestrel-gmuffapp.service
+
+ # apachectl configtest
+
+Syntax OK
+
+ 
+
+The website gives 503 since 127.0.0.1:5000 is offline.
+
+ 
+
+# httpd -V
+
+Server version: Apache/2.4.34 (Red Hat)
+
+There is no password for root@localhost (mysql). (Mysql server listens on ‘localhost’ only).
+
+Your account is in ‘mysql’ group, which means you can connect to the mysql server by simply running ‘mysql’ command (or mysql -u root)
+
+ 
+
+$ mysql # or mysql -u root
+
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+
+Your MariaDB connection id is 8
+
+Server version: 10.3.13-MariaDB MariaDB Server
+
+ 
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+ 
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+ 
+
+MariaDB [(none)]>
+
+ 
+
+ 
+
+If you need to connect from your system using ‘mysql workbench’, configure connection as ‘Standard TCP/IP over SSH’, with
+
+SSH hostname:‘dsun-trial.orc.gmu.edu’
+
+MySQL Hostname: localhost
