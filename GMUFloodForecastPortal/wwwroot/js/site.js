@@ -19,17 +19,43 @@ function getStepInstance2(instance) {
     instance["selectIndex"](1);
 }
 
+function getProductInstance(instance) {
+    instance["addItem"]('VIIRS 375-m');
+    instance["addItem"]('ABI 1-km');
+    instance["addItem"]('AHI 1-km');
+    instance["addItem"]('Joint VIIRS/ABI/AHI');
+    instance["selectIndex"](1);
+}
+
+function getRegionInstance(instance) {
+    instance["addItem"]('East Asia');
+    instance["addItem"]('Europe');
+    instance["addItem"]('North Ammerica');
+    instance["addItem"]('Source Ammerica');
+    instance["selectIndex"](1);
+}
+
+function getImageTypeInstance(instance) {
+    instance["addItem"]('GeoTiff');
+    instance["addItem"]('HDF4');
+    instance["addItem"]('PNG');
+    instance["selectIndex"](1);
+}
+
+function getDownloadWindowInstance(instance) {
+    instance["bringToFront"]();
+}
+
 var hour;
 var g_absoluteFromDateTime;
 var g_absoluteToDateTime;
+var g_mapInstance;
+var g_viewFromDateTimeInstance;
 
 function initMap() {
     hour = 0;
-
     var map = createMapInstance("googleMap");
-
-    displayKmlLayer(map, 'http://13.77.204.172/kmls/Goes-16/dis/COM_ABI_WATER_20181229_2018363_0002_2352_6000_2600_142_001.kml');
-    //displayKmlLayer(map, 'https://dsun-trial.orc.gmu.edu/kmls/cspp-viirs-flood-globally_20180815_010000_53.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/cspp-viirs-flood-globally_20180815_010000_53.kml');
 }
 
 function createMapInstance(mapElement) {
@@ -92,7 +118,7 @@ function displayDailyKmls(map) {
         success: function (data) {
             $.each(data, function (index, value) {
                 alert(value);
-                // displayKmlLayer(map, value);
+                //displayKmlLayer(map, value);
             });
         }
     });

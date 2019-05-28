@@ -1,5 +1,5 @@
 ﻿/*
-CREATE SCHEMA gmuff
+CREATE SCHEMA jpssflood
 
 CREATE TABLE gmuff.satellites (
   'Id' INT NOT NULL AUTO_INCREMENT,

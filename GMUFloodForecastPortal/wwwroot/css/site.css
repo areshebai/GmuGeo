@@ -55,12 +55,13 @@ body {
 
 .nav-panel {
     margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .nav-info-panel {
     margin-left: 5px;
     margin-top: 10px;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
 }
 
 .clearall {
@@ -68,8 +69,9 @@ body {
 }
 
 .applyselection {
-    margin-top: 8px;
-    padding-left: 32px;
+    margin-top: 12px;
+    margin-left: 10px;
+    margin-bottom: 12px;
 }
 
 .regions-panel {
