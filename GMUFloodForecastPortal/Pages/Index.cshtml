@@ -43,13 +43,13 @@
                         <div class="nav-panel">
                             <div style="margin-top: 5px; margin-bottom:5px; margin-left: 10px">
                                 <div style="float:left; margin-top: 2px">
-                                    <jqx-radio-button checked="true">Hourly</jqx-radio-button>
+                                    <jqx-radio-button id="viewStepHourly" checked="true" group-name="ViewStep">Hourly</jqx-radio-button>
                                 </div>
                                 <div style="float:left; margin-top: 2px; margin-left: 8px">
-                                    <jqx-radio-button>Daily</jqx-radio-button>
+                                    <jqx-radio-button id="viewStepDaily" group-name="ViewStep">Daily</jqx-radio-button>
                                 </div>
                                 <div style="float:left; margin-top: 2px; margin-left: 8px">
-                                    <jqx-radio-button>5-Day</jqx-radio-button>
+                                    <jqx-radio-button id="viewStep5Day" group-name="ViewStep">5-Day</jqx-radio-button>
                                 </div>
                             </div>
                             <div class="clearall"></div>
@@ -57,7 +57,7 @@
                                 <label>From</label>
                                 <div>
                                     <div style="float:left; margin-top: 2px">
-                                        <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now" instance="getAbsoluteFromDateTimeInstance()"></jqx-date-time-input>
+                                        <jqx-date-time-input id="viewFromDatetime" animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now" instance="getAbsoluteFromDateTimeInstance()"></jqx-date-time-input>
                                     </div>
                                     <div class="clearall"></div>
                                 </div>
@@ -73,7 +73,7 @@
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>Region</label>
                                 <div>
-                                    <jqx-drop-down-list width="200" height="25" instance="getRegionInstance()"></jqx-drop-down-list>
+                                    <jqx-drop-down-list width="200" height="25" instance="getViewRegionInstance()"></jqx-drop-down-list>
                                 </div>
                                 <div class="clearall"></div>
                             </div>
@@ -81,7 +81,7 @@
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>Products</label>
                                 <div>
-                                    <jqx-drop-down-list width="200" height="25" instance="getProductInstance()"></jqx-drop-down-list>
+                                    <jqx-drop-down-list width="200" height="25" instance="getViewProductInstance()"></jqx-drop-down-list>
                                 </div>
                                 <div class="clearall"></div>
                             </div>
@@ -127,7 +127,7 @@
                                 <label>From</label>
                                 <div>
                                     <div style="float:left; margin-top: 2px">
-                                        <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now" instance="getAbsoluteFromDateTimeInstance()"></jqx-date-time-input>
+                                        <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now" on-change="viewFromDatetimeChange()"></jqx-date-time-input>
                                     </div>
                                     <div class="clearall"></div>
                                 </div>
@@ -192,23 +192,40 @@
 </div>
 
 @section scripts {
-<script>
+<script type="text/javascript">
+
     function getAbsoluteFromDateTimeInstance(instance) {
         g_viewFromDateTimeInstance = instance;
         g_absoluteFromDateTime = instance["getText"]();
     }
 
     function getAbsoluteToDateTimeInstance(instance) {
+        g_viewToDateTimeInstance = instance;
         g_absoluteToDateTime = instance["getText"]();
     }
 
+    function checked(event) {
+        alert(event);
+
+    }
+
     $('#apply_DateTimePeriod').on('click', function (event) {
+        var r = $('#viewStepHourly');
+        alert(r.attr('aria-checked'));
+        var selectedRegion = g_viewRegionInstance['getSelectedItem']();
+        var selectedProduct = g_viewProductInstance['getSelectedItem']();
 
-        $('#PeriodFrom').html(g_viewFromDateTimeInstance["getText"]());
-        $('#PeriodTo').html(g_absoluteToDateTime);
+        alert(selectedRegion.value + ';' + selectedProduct.value);
 
-        var fromDateTime = new Date(g_absoluteFromDateTime);
-        var toDateTime = new Date(g_absoluteToDateTime);
+        var fromDateText = g_viewFromDateTimeInstance['getText']();
+        var toDateText = g_viewToDateTimeInstance['getText']()
+
+        $('#PeriodFrom').html(fromDateText);
+        $('#PeriodTo').html(toDateText);
+
+        var fromDateTime = new Date(fromDateText);
+        var toDateTime = new Date(toDateText);
+
         // hour = fromDateTime.getHours();
         // $('#PeriodCurrentTime').html(hour);
 

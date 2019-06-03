@@ -1,4 +1,11 @@
 ﻿// Write your Javascript code.
+var hour;
+var g_mapInstance;
+var g_viewFromDateTimeInstance;
+var g_viewToDateTimeInstance;
+var g_viewRegionInstance;
+var g_viewProductInstance;
+
 function getDirectionInstance(instance) {
     instance["addItem"]('Ago');
     instance["addItem"]('Later');
@@ -19,7 +26,8 @@ function getStepInstance2(instance) {
     instance["selectIndex"](1);
 }
 
-function getProductInstance(instance) {
+function getViewProductInstance(instance) {
+    g_viewProductInstance = instance;
     instance["addItem"]('VIIRS 375-m');
     instance["addItem"]('ABI 1-km');
     instance["addItem"]('AHI 1-km');
@@ -27,7 +35,8 @@ function getProductInstance(instance) {
     instance["selectIndex"](1);
 }
 
-function getRegionInstance(instance) {
+function getViewRegionInstance(instance) {
+    g_viewRegionInstance = instance;
     instance["addItem"]('East Asia');
     instance["addItem"]('Europe');
     instance["addItem"]('North Ammerica');
@@ -46,11 +55,6 @@ function getDownloadWindowInstance(instance) {
     instance["bringToFront"]();
 }
 
-var hour;
-var g_absoluteFromDateTime;
-var g_absoluteToDateTime;
-var g_mapInstance;
-var g_viewFromDateTimeInstance;
 
 function initMap() {
     hour = 0;
