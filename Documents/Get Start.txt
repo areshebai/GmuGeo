@@ -22,6 +22,11 @@ Password:9c3f-6ee2b2a492f3
 
 Website: https://jpssflood.gmu.edu/
 
+
+[ywang95@JPSSFLOOD ~]$ sudo systemctl stop kestrel-gmuffapp.service
+[ywang95@JPSSFLOOD ~]$ sudo systemctl start kestrel-gmuffapp.service
+
+
 Webserver config: /etc/httpd/conf.d/gmuffapp.conf
  Monitor webserver daemon /etc/systemd/system/kestrel-gmuffapp.service
 

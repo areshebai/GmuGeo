@@ -15,63 +15,40 @@ namespace GMUFloodForecastPortal.Controllers
     [Route("api/Kml")]
     public class KmlController : Controller
     {
-        private readonly string kmlFullFilePathFormat = @"http://13.78.237.85/{0}";
-        private readonly string DatabaseConnectionstring = @"server=127.0.0.1;userid=root;password=07Apples;database=gmuff;";
+        private readonly string kmlFullFilePathFormat = @"https://jpssflood.gmu.edu/kmls/{0}.kml";
+        private readonly string DatabaseConnectionstring = @"server=127.0.0.1;userid=root;password=07Apples;database=jpssflood;";
+        private readonly string DatabaseConnectionstringProd = @"server=localhost;userid=root;database=jpssflood;";
 
         // GET: api/Kml
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<string> Get(DateTime from, DateTime to, string step, string region, string product)
         {
             List<string> kmlFiles = new List<string>();
 
-            using (MySqlConnection connection = new MySqlConnection(DatabaseConnectionstring))
+            using (MySqlConnection connection = new MySqlConnection(DatabaseConnectionstringProd))
             {
                 connection.Open();
                 MySqlCommand command = new MySqlCommand();
                 command.Connection = connection;
-                command.CommandText = "SELECT * FROM gmuff.Satellites";
+                command.CommandText = "SELECT * FROM jpssflood.kmlmetadata";
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    int satelliteId = reader.GetInt32(0);
-                    string satelliteName = reader.GetString(1);
-                    kmlFiles.Add(satelliteName);
+                    int kmlId = reader.GetInt32(0);
+                    int productId = reader.GetInt32(1);
+                    int regionId = reader.GetInt32(2);
+                    int districtId = reader.GetInt32(3);
+                    MySql.Data.Types.MySqlDateTime mySqldate = reader.GetMySqlDateTime(4);
+                    string fileName = reader.GetString(5);
+
+                    DateTime date = new DateTime(mySqldate.Year, mySqldate.Month, mySqldate.Day, mySqldate.Hour, 0, 0);
+                    // if (date >= from && date <= to)
+                    {
+                        kmlFiles.Add(string.Format(kmlFullFilePathFormat, fileName));
+                    }
                 }
             }
 
-            /*
-            string serverUrl = FtpUtil.GetFileServerUrl("13.78.149.101", 21, new DateTime(2018, 08, 15));
-            serverUrl += "/uni";
-
-            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create(serverUrl);
-            ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
-            ftpRequest.Credentials = FtpUtil.GetFileServerCredential();
-
-            FtpWebResponse ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
-
-            string[] directoryOrFileNames;
-            using (Stream responseStream = ftpResponse.GetResponseStream())
-            {
-                StreamReader reader = new StreamReader(responseStream);
-                string result = reader.ReadToEnd();
-                directoryOrFileNames = String.IsNullOrEmpty(result) ? null : result.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            }
-
-            List<string> filteredResult = new List<string>();
-            for (int i = 0; i < directoryOrFileNames.Length; i++)
-            {
-                string fileName = directoryOrFileNames[i];
-                if (fileName.EndsWith(".kml"))
-                {
-                    if (fileName.Contains("_1.kml") || fileName.Contains("_9.kml"))
-                        continue;
-                    string serverFilePath = string.Format("{0}/{1}", "kmls/2018/08/15/uni", fileName);
-                    kmlFiles.Add(string.Format(kmlFullFilePathFormat, serverFilePath));
-                }
-            }
-
-            kmlFiles.Sort(compareKmlFilesByDistrictIndex);
-            */
             return kmlFiles;
         }
 

@@ -204,18 +204,14 @@
         g_absoluteToDateTime = instance["getText"]();
     }
 
-    function checked(event) {
-        alert(event);
-
-    }
-
     $('#apply_DateTimePeriod').on('click', function (event) {
-        var r = $('#viewStepHourly');
-        alert(r.attr('aria-checked'));
+        var isHourly = $('#viewStepHourly').attr('aria-checked');
+        var isDaily = $('#viewStepDaily').attr('aria-checked');
+        var is5Day = $('#viewStep5Day').attr('aria-checked');
+
         var selectedRegion = g_viewRegionInstance['getSelectedItem']();
         var selectedProduct = g_viewProductInstance['getSelectedItem']();
 
-        alert(selectedRegion.value + ';' + selectedProduct.value);
 
         var fromDateText = g_viewFromDateTimeInstance['getText']();
         var toDateText = g_viewToDateTimeInstance['getText']()
@@ -223,15 +219,19 @@
         $('#PeriodFrom').html(fromDateText);
         $('#PeriodTo').html(toDateText);
 
-        var fromDateTime = new Date(fromDateText);
-        var toDateTime = new Date(toDateText);
-
-        // hour = fromDateTime.getHours();
-        // $('#PeriodCurrentTime').html(hour);
-
         var map = createMapInstance("googleMap");
-        displayDailyKmls(map);
+        displayKmls(map, fromDateText, toDateText, isHourly, selectedRegion.value, selectedProduct.value);
     });
+
+    function GetViewFromDatetime() {
+        var fromDateText = g_viewFromDateTimeInstance['getText']();
+        return new Date(fromDateText);
+    }
+
+    function GetViewToDatetime() {
+        var toDateText = g_viewToDateTimeInstance['getText']();
+        return new Date(toDateText);
+    }
 
     $('#PreviousStep').on('click', function (event) {
         if (hour === 0 || hour === 1) {

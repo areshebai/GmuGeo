@@ -128,6 +128,26 @@ function displayDailyKmls(map) {
     });
 }
 
+function displayKmls(map, from, to, step, region, product) {
+    $.ajax({
+        type: 'GET',
+        url: "api/Kml",
+        data: {
+            from: from,
+            to: to,
+            step: step,
+            region: region,
+            product: product
+        },
+        cache: false,
+        success: function (data) {
+            $.each(data, function (index, value) {
+                displayKmlLayer(map, value);
+            });
+        }
+    });
+}
+
 function mouseMoveOnMap(event) {
     $("#currentLatitude").html(event.latLng.lat());
     $("#currentLongitude").html(event.latLng.lng());
