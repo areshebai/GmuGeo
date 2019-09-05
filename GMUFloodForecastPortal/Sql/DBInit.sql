@@ -20,8 +20,8 @@ INSERT INTO jpssflood.products (Name) VALUES ('Suomi-NPP');
 INSERT INTO jpssflood.products (Name) VALUES ('NOAA-20');
 INSERT INTO jpssflood.products (Name) VALUES ('GOES-16');
 
-INSERT INTO jpssflood.kmlmetadata (ProductId, RegionId, DistrictId, Date, Time, FileName) 
-	VALUES (1, 1, 42, '20180815', '010000', 'cspp-viirs-flood-globally_20180815_010000_42');
+INSERT INTO jpssflood.kmlmetadata (ProductId, RegionId, DistrictId, Date, FileName) 
+	VALUES (1, 1, 42, '20180815 01:00:00', 'cspp-viirs-flood-globally_20180815_010000_42');
 
 INSERT INTO jpssflood.kmlmetadata (ProductId, RegionId, DistrictId, Date, FileName) 
 	VALUES (1, 1, 53, '2018-08-15 01:00:00', 'cspp-viirs-flood-globally_20180815_010000_53');

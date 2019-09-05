@@ -1,30 +1,8 @@
 ﻿// Write your Javascript code.
-var hour;
 var g_mapInstance;
-var g_viewFromDateTimeInstance;
-var g_viewToDateTimeInstance;
 var g_viewRegionInstance;
 var g_viewProductInstance;
-
-function getDirectionInstance(instance) {
-    instance["addItem"]('Ago');
-    instance["addItem"]('Later');
-    instance["selectIndex"](0);
-}
-
-function getStepInstance(instance) {
-    instance["addItem"]('Days');
-    instance["addItem"]('Hours');
-    instance["addItem"]('Minutes');
-    instance["selectIndex"](1);
-}
-
-function getStepInstance2(instance) {
-    instance["addItem"]('Days');
-    instance["addItem"]('Hours');
-    instance["addItem"]('Minutes');
-    instance["selectIndex"](1);
-}
+var g_downloadWindowInstance;
 
 function getViewProductInstance(instance) {
     g_viewProductInstance = instance;
@@ -37,11 +15,12 @@ function getViewProductInstance(instance) {
 
 function getViewRegionInstance(instance) {
     g_viewRegionInstance = instance;
+    instance["addItem"]('All');
     instance["addItem"]('East Asia');
     instance["addItem"]('Europe');
-    instance["addItem"]('North Ammerica');
-    instance["addItem"]('Source Ammerica');
-    instance["selectIndex"](1);
+    instance["addItem"]('North America');
+    instance["addItem"]('Source America');
+    instance["selectIndex"](0);
 }
 
 function getImageTypeInstance(instance) {
@@ -52,17 +31,109 @@ function getImageTypeInstance(instance) {
 }
 
 function getDownloadWindowInstance(instance) {
-    instance["bringToFront"]();
+    g_downloadWindowInstance = instance;
 }
 
+function getSelectedViewStep() {
+    var isHourly = $('#viewStepHourly').attr('aria-checked');
+    var isDaily = $('#viewStepDaily').attr('aria-checked');
+    var is5Day = $('#viewStep5Day').attr('aria-checked');
+
+    if (isHourly === 'true') {
+        return 1;
+    }
+    else if (isDaily === 'true') {
+        return 2;
+    }
+    else if (is5Day === 'true') {
+        return 3;
+    }
+}
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear(),
+        hour = '' + d.getHours(),
+        minute = '' + d.getMinutes(),
+        second = '' + d.getSeconds();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    if (hour.length < 2) hour = '0' + hour;
+    if (minute.length < 2) minute = '0' + minute;
+    if (second.length < 2) second = '0' + second;
+
+    return [month, day, year].join('/') + ' ' + [hour, minute, second].join(':');
+}
+
+function getViewFromDatetimeText() {
+    var fromText = $('#viewFromDatetime').attr('aria-valuetext');
+    return fromText;
+}
+
+function getViewToDatetimeText() {
+    var toText = $('#viewToDatetime').attr('aria-valuetext');
+    return toText;
+}
+
+function getViewFromDatetime() {
+    var fromDateText = $('#viewFromDatetime').attr('aria-valuetext');
+    return new Date(fromDateText);
+}
+
+function getViewToDatetime() {
+    var toDateText = $('#viewToDatetime').attr('aria-valuetext');
+    return new Date(toDateText);
+}
+
+function getSelectedViewRegion() {
+    var region = $('#viewRegion').children(':input').attr('value');
+    return region;
+}
+
+function getSelectedViewProduct() {
+    var product = $('#viewProduct').children(':input').attr('value');
+    return product;
+}
+
+function getViewTransparency() {
+    var trans = $('#viewTransparency')[0].value;
+    return trans;
+}
 
 function initMap() {
     hour = 0;
-    var map = createMapInstance("googleMap");
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/cspp-viirs-flood-globally_20180815_010000_53.kml');
+    var map = createMapInstance("googleMap", 50);
+
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_2.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_3.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_4.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_5.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_6.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_8.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_7.kml');
+    //displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_230000_9.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_230000_10.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_11.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_12.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_13.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_14.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_15.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_16.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_17.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_18.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_19.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_20.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_21.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_22.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_23.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_24.kml');
+    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_170000_25.kml');
 }
 
-function createMapInstance(mapElement) {
+function createMapInstance(mapElement, transparency) {
     var mapProp = {
         center: new google.maps.LatLng({ lat: 0, lng: 0 }),
         maxZoom: 10,
@@ -71,16 +142,21 @@ function createMapInstance(mapElement) {
         zoomControl: true,
         mapTypeId: 'hybrid',
         streetViewControl: false,
-        mapTypeControl: false,
+        mapTypeControl: true,
         zoomControlOptions: {
             position: google.maps.ControlPosition.RIGHT_BOTTOM
+        },
+        mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+            position: google.maps.ControlPosition.LEFT_TOP
         }
     };
 
     var map = new google.maps.Map(document.getElementById(mapElement), mapProp);
 
     map.addListener('tilesloaded', function () {
-        $("#"+ mapElement).find("img").css("opacity", "0.9");
+        //$("#" + mapElement).find("img").css("opacity", transparency / 100);
+        $("#" + mapElement).find("img[src*='googleusercontent']").css("opacity", transparency / 100);
     })
 
     map.addListener('mousemove', function (e) {
@@ -114,24 +190,10 @@ function AddKmlLayer(curhour, map, suppressInfoWindowsEnabled) {
     });
 }
 
-function displayDailyKmls(map) {
-    $.ajax({
-        type: 'GET',
-        url: "api/Kml",
-        cache: false,
-        success: function (data) {
-            $.each(data, function (index, value) {
-                alert(value);
-                //displayKmlLayer(map, value);
-            });
-        }
-    });
-}
-
 function displayKmls(map, from, to, step, region, product) {
     $.ajax({
         type: 'GET',
-        url: "api/Kml",
+        url: "api/kmls",
         data: {
             from: from,
             to: to,
@@ -141,7 +203,26 @@ function displayKmls(map, from, to, step, region, product) {
         },
         cache: false,
         success: function (data) {
+            alert(data.length);
             $.each(data, function (index, value) {
+                displayKmlLayer(map, value);
+            });
+        }
+    });
+}
+
+function displayKmlById(map) {
+    alert('Not expected to be call!');
+    $.ajax({
+        type: 'GET',
+        url: "api/kmls/kml",
+        data: {
+            id: 5
+        },
+        cache: false,
+        success: function (data) {
+            $.each(data, function (index, value) {
+                alert(value);
                 displayKmlLayer(map, value);
             });
         }

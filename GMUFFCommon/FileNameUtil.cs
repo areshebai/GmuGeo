@@ -26,6 +26,12 @@ namespace GMUFFCommon
                 case DataFileType.GOES16:
                     break;
                 case DataFileType.J01:
+                    if (elements.Length != 12)
+                    {
+                        throw new Exception();
+                    }
+                    index = Convert.ToInt32(elements[11]);
+                    break;
                 case DataFileType.SNNP:
                     if (elements.Length != 5)
                     {

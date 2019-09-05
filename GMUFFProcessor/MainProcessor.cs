@@ -58,11 +58,11 @@ namespace GMUFFProcessor
             // Upload processed file back to ftp server
         }
 
-        public void SaveDailyLatestKmlAndPng(string savedDirectory, string kmlFileName)
+        public void SaveDailyLatestKmlAndPng(string savedDirectory, string kmlFileName, DataFileType type = DataFileType.SNNP)
         {
             long fileLength = new FileInfo(kmlFileName.Replace(".kml", ".png")).Length;
-            int bIndex = FileNameUtil.GetBlockIndexFromFileName(kmlFileName);
-            string[] existedFiles = Directory.GetFiles(savedDirectory, string.Format("*_{0}.kml", bIndex));
+            int bIndex = FileNameUtil.GetBlockIndexFromFileName(kmlFileName, type);
+            string[] existedFiles = Directory.GetFiles(savedDirectory, string.Format("*_{0}.kml", bIndex.ToString("D3")));
 
             if (existedFiles.Length > 1)
             {
@@ -84,6 +84,38 @@ namespace GMUFFProcessor
                     File.Delete(existedFiles[0].Replace(".kml", ".png"));
                     File.Copy(kmlFileName, Path.Combine(savedDirectory, Path.GetFileNameWithoutExtension(kmlFileName) + ".kml"));
                     File.Copy(kmlFileName.Replace(".kml", ".png"), Path.Combine(savedDirectory, Path.GetFileNameWithoutExtension(kmlFileName) + ".png"));
+                }
+            }
+        }
+
+        public void GenerateDailyJ01DisplayFiles(string sourceDirectory, string targetDirectory)
+        {
+            string[] kmlFileNames = Directory.GetFiles(sourceDirectory, "*.kml");
+            foreach (string kmlFileName in kmlFileNames)
+            {
+                SaveDailyLatestKmlAndPng(targetDirectory, kmlFileName, DataFileType.J01);
+            }
+        }
+
+        public void GenerateSqlInsertCommands(string sourceDirectory)
+        {
+            string[] kmlFileNames = Directory.GetFiles(sourceDirectory, "*.kml");
+            char[] SplitCharacters = { '_', '.' };
+            DataFileType type = DataFileType.J01;
+
+            foreach (string kmlFileName in kmlFileNames)
+            {
+                string name = Path.GetFileNameWithoutExtension(kmlFileName);
+                string[] elements = name.Split(SplitCharacters, StringSplitOptions.RemoveEmptyEntries);
+
+                if (elements.Length == 12)
+                {
+                    type = DataFileType.J01;
+                    string dateString = elements[6].Substring(1, 4) + "-" + elements[6].Substring(5, 2) + "-" + elements[6].Substring(7, 2) + " " + elements[8].Substring(0, 2) + ":00:00";
+                    string districtString = elements[11];
+
+                    string sqlCommand = string.Format("INSERT INTO jpssflood.kmlmetadata (ProductId, RegionId, DistrictId, Date, FileName) VALUES(1, 1, {0}, '{1}', '{2}');", districtString, dateString, name);
+                    Console.WriteLine(sqlCommand);
                 }
             }
         }

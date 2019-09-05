@@ -10,7 +10,8 @@ namespace GMUFFProcessor
 
             bool downloadAndSaveFiles = false;
             bool joinImages = false;
-            bool processImages = true;
+            bool generateSqlInsertCommands = true;
+            bool generateJ01Files = true;
 
             if (downloadAndSaveFiles)
             {
@@ -22,9 +23,16 @@ namespace GMUFFProcessor
                 // instance.JoinImages("");
             }
 
-            if (processImages)
+            if (generateSqlInsertCommands)
             {
-                // instance.ProcessImages(@"C:\GmuTemp\2018\08\15\uni", 10);
+                instance.GenerateSqlInsertCommands(@"D:\GMUTrans\Products\J01\2019\06\11\Trans");
+            }
+
+            if (generateJ01Files)
+            {
+                string sourceDir = @"D:\GMUTrans\Products\J01\2019\06\11";
+                string targetDir = @"D:\GMUTrans\Products\J01\2019\06\11\Trans";
+                instance.GenerateDailyJ01DisplayFiles(sourceDir, targetDir);
             }
         }
     }

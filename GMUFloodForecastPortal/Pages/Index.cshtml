@@ -19,6 +19,22 @@
 <script src="~/jqwidgets/jqxradiobutton.js"></script>
 <script src="~/jqwidgets/jqxwindow.js"></script>
 
+<script src="~/jqwidgets/jqxcore.js"></script>
+<script src="~/jqwidgets/jqxdata.js"></script>
+
+<script src="~/jqwidgets/jqxgrid.js"></script>
+<script src="~/jqwidgets/jqxgrid.edit.js"></script>
+<script src="~/jqwidgets/jqxgrid.columnsresize.js"></script>
+<script src="~/jqwidgets/jqxgrid.filter.js"></script>
+<script src="~/jqwidgets/jqxgrid.selection.js"></script>
+<script src="~/jqwidgets/jqxgrid.sort.js"></script>
+<script src="~/jqwidgets/jqxgrid.pager.js"></script>
+<script src="~/jqwidgets/jqxgrid.aggregates.js"></script>
+<script src="~/jqwidgets/jqxgrid.grouping.js"></script>
+<script src="~/jqwidgets/jqxdata.export.js"></script>
+<script src="~/jqwidgets/jqxgrid.export.js"></script>
+<script src="~/jqwidgets/jqxmenu.js"></script>
+
 @using jQWidgets.AspNetCore.Mvc.TagHelpers
 
 @model IndexModel
@@ -30,23 +46,26 @@
         "{size: '270px'}",
     };
 }
+@{ 
+    KmlFileInfo file = Model.KmlFileInfos.FirstOrDefault();
+}
 
 <div class="mainContainer">
     <jqx-splitter resizable="false" height="100%" width="100%" panels="panels" split-bar-size="2">
         <jqx-splitter-panel>
             <!-- Left operation panel-->
-            <jqx-tabs>
+            <jqx-tabs height="100%">
                 <jqx-tab-panel>
                     <!-- View tab-->
-                    <jqx-tab-panel-header>View</jqx-tab-panel-header>
+                    <jqx-tab-panel-header>Display</jqx-tab-panel-header>
                     <jqx-tab-panel-body>
                         <div class="nav-panel">
                             <div style="margin-top: 5px; margin-bottom:5px; margin-left: 10px">
                                 <div style="float:left; margin-top: 2px">
-                                    <jqx-radio-button id="viewStepHourly" checked="true" group-name="ViewStep">Hourly</jqx-radio-button>
+                                    <jqx-radio-button id="viewStepHourly" group-name="ViewStep">Hourly</jqx-radio-button>
                                 </div>
                                 <div style="float:left; margin-top: 2px; margin-left: 8px">
-                                    <jqx-radio-button id="viewStepDaily" group-name="ViewStep">Daily</jqx-radio-button>
+                                    <jqx-radio-button id="viewStepDaily" group-name="ViewStep" checked="true">Daily</jqx-radio-button>
                                 </div>
                                 <div style="float:left; margin-top: 2px; margin-left: 8px">
                                     <jqx-radio-button id="viewStep5Day" group-name="ViewStep">5-Day</jqx-radio-button>
@@ -57,14 +76,14 @@
                                 <label>From</label>
                                 <div>
                                     <div style="float:left; margin-top: 2px">
-                                        <jqx-date-time-input id="viewFromDatetime" animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now" instance="getAbsoluteFromDateTimeInstance()"></jqx-date-time-input>
+                                        <jqx-date-time-input id="viewFromDatetime" animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.UtcNow" ></jqx-date-time-input>
                                     </div>
                                     <div class="clearall"></div>
                                 </div>
                                 <label style="margin-top: 10px">TO</label>
                                 <div>
                                     <div style="float: left; margin-top: 2px">
-                                        <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now.AddMinutes(5)" instance="getAbsoluteToDateTimeInstance()"></jqx-date-time-input>
+                                        <jqx-date-time-input id="viewToDatetime" animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.UtcNow.AddHours(1)"></jqx-date-time-input>
                                     </div>
                                 </div>
                                 <div class="clearall"></div>
@@ -73,7 +92,7 @@
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>Region</label>
                                 <div>
-                                    <jqx-drop-down-list width="200" height="25" instance="getViewRegionInstance()"></jqx-drop-down-list>
+                                    <jqx-drop-down-list id="viewRegion" width="240" height="25" instance="getViewRegionInstance()"></jqx-drop-down-list>
                                 </div>
                                 <div class="clearall"></div>
                             </div>
@@ -81,7 +100,7 @@
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>Products</label>
                                 <div>
-                                    <jqx-drop-down-list width="200" height="25" instance="getViewProductInstance()"></jqx-drop-down-list>
+                                    <jqx-drop-down-list id="viewProduct" width="240" height="25" instance="getViewProductInstance()"></jqx-drop-down-list>
                                 </div>
                                 <div class="clearall"></div>
                             </div>
@@ -89,7 +108,7 @@
                                 <label>Transparency</label>
                                 <div>
                                     <div style="float: left">
-                                        <jqx-input width="50" height="25" value="24"></jqx-input>
+                                        <jqx-input id="viewTransparency" width="50" height="25" value="50"></jqx-input>
                                     </div>
                                     <label style="float: left; margin-left: 5px; margin-top: 5px">%</label>
                                 </div>
@@ -97,7 +116,7 @@
                             </div>
                             <div class="applyselection">
                                 <div style="float: left">
-                                    <jqx-button id="apply_DateTimePeriod">Apply Time</jqx-button>
+                                    <jqx-button id="apply_DateTimePeriod">Apply & Search</jqx-button>
                                 </div>
                                 <div style="float: left; margin-left: 12px">
                                     <jqx-button id="apply_DateTimePeriodPre">Prev</jqx-button>
@@ -110,10 +129,43 @@
                             <hr class="seperator" />
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>Image Format</label>
-                                <div>
-                                    <jqx-drop-down-list width="100" height="25" instance="getImageTypeInstance()"></jqx-drop-down-list>
+                                <div style="float: left; margin-top:2px">
+                                    <jqx-drop-down-list width="160" height="25" instance="getImageTypeInstance()"></jqx-drop-down-list>
+                                </div>
+                                <div style="float: left; margin-left: 10px;">
+                                    <jqx-button id="view_DownloadCurrent">Download</jqx-button>
                                 </div>
                                 <div class="clearall"></div>
+                            </div>
+                            <hr class="seperator" />
+                        </div>
+                        <div class="nav-info-panel">
+                            <div>
+                                <label class="panel-title">Date and Time</label>
+                                <div style="clear:both">
+                                    <span id="PeriodFrom">N/A</span>
+                                </div>
+                                <div style="clear:both; margin-top: 8px">
+                                    <!--
+                                    <label>To:</label>
+                                    <span id="PeriodTo">N/A</span>
+                                        -->
+                                </div>
+                            </div>
+                            <div>
+                                <label class="panel-title">Position</label>
+                                <div style="clear:both">
+                                    <label>Latitude:</label>
+                                    <span id="currentLatitude"></span>
+                                </div>
+                                <div style="clear:both">
+                                    <label>Longitude:</label>
+                                    <span id="currentLongitude"></span>
+                                </div>
+                                <div style="clear:both">
+                                    <label>District:</label>
+                                    <span id="currentDistrict"></span>
+                                </div>
                             </div>
                         </div>
                     </jqx-tab-panel-body>
@@ -123,144 +175,221 @@
                     <jqx-tab-panel-header>Download</jqx-tab-panel-header>
                     <jqx-tab-panel-body>
                         <div class="nav-panel">
-                            <div>
+                            <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>From</label>
                                 <div>
                                     <div style="float:left; margin-top: 2px">
-                                        <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now" on-change="viewFromDatetimeChange()"></jqx-date-time-input>
+                                        <jqx-date-time-input id="downloadFromDatetime" animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.UtcNow"></jqx-date-time-input>
                                     </div>
                                     <div class="clearall"></div>
                                 </div>
                                 <label style="margin-top: 10px">TO</label>
                                 <div>
                                     <div style="float: left; margin-top: 2px">
-                                        <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now.AddMinutes(5)" instance="getAbsoluteToDateTimeInstance()"></jqx-date-time-input>
+                                        <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now.AddMinutes(5)"></jqx-date-time-input>
                                     </div>
                                 </div>
                                 <div class="clearall"></div>
                             </div>
                             <div class="clearall"></div>
-                            <hr class="seperator" />
-                            <div class="applyselection">
-                                <jqx-button id="apply_DateTimePeriod">Apply Date&Time Selection</jqx-button>
+                            <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
+                                <label>Region</label>
+                                <div>
+                                    <jqx-drop-down-list id="downloadRegion" width="240" height="25" instance="getViewRegionInstance()"></jqx-drop-down-list>
+                                </div>
+                                <div class="clearall"></div>
+                            </div>
+                            <div class="clearall"></div>
+                            <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
+                                <label>Products</label>
+                                <div>
+                                    <jqx-drop-down-list id="downloadProduct" width="240" height="25" instance="getViewProductInstance()"></jqx-drop-down-list>
+                                </div>
+                                <div class="clearall"></div>
+                            </div>
+                            <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
+                                <label>Image Format</label>
+                                <div>
+                                    <jqx-drop-down-list width="240" height="25" instance="getImageTypeInstance()"></jqx-drop-down-list>
+                                </div>
+                                <div class="clearall"></div>
+                            </div>
+                            <div style="margin-top: 30px; margin-left: 55px;">
+                                <jqx-button id="download_SearchAndDownload">Search & Download</jqx-button>
                             </div>
                         </div>
                     </jqx-tab-panel-body>
                 </jqx-tab-panel>
             </jqx-tabs>
             <!-- Left bottom informational div-->
-            <div class="nav-info-panel">
-                <div>
-                    <label class="panel-title">Current Time</label>
-                    <div style="clear:both">
-                        <label>From:</label>
-                        <span id="PeriodFrom">N/A</span>
-                    </div>
-                    <div style="clear:both">
-                        <label>To:</label>
-                        <span id="PeriodTo">N/A</span>
-                    </div>
-                </div>
-                <div>
-                    <label class="panel-title">Position</label>
-                    <div style="clear:both">
-                        <label>Latitude:</label>
-                        <span id="currentLatitude"></span>
-                    </div>
-                    <div style="clear:both">
-                        <label>Longitude:</label>
-                        <span id="currentLongitude"></span>
-                    </div>
-                    <div style="clear:both">
-                        <label>District:</label>
-                        <span id="currentDistrict"></span>
-                    </div>
-                </div>
-            </div>
         </jqx-splitter-panel>
         <jqx-splitter-panel>
             <!-- Right map panel-->
             <div id="googleMap" style="width:100%;height:100%"></div>
         </jqx-splitter-panel>
     </jqx-splitter>
-    <jqx-window auto-open="false" instance="getDownloadWindowInstance()">
-        <jqx-window-header>Info</jqx-window-header>
+    <jqx-window auto-open="false" width="auto" resizable="false" instance="getDownloadWindowInstance()">
+        <jqx-window-header>Download</jqx-window-header>
         <jqx-window-body>
-            <label>Open window</label>
+            <jqx-grid id="grid" alt-rows="true" pageable="true" auto-height="true" source-id="ID" sortable="true" width="850">
+                <jqx-grid-columns>
+                    <jqx-grid-column width="150" text="Index" datafield-for="@(file.Index)"></jqx-grid-column>
+                    <jqx-grid-column width="700" text="Address" datafield-for="@(file.FileName)"></jqx-grid-column>
+                </jqx-grid-columns>
+            </jqx-grid>
+
         </jqx-window-body>
     </jqx-window>
 </div>
 
 @section scripts {
-<script type="text/javascript">
+    <script type="text/javascript"> 
 
-    function getAbsoluteFromDateTimeInstance(instance) {
-        g_viewFromDateTimeInstance = instance;
-        g_absoluteFromDateTime = instance["getText"]();
-    }
+        $(document).ready(function () {
+            var fromDateText = getViewFromDatetimeText();
+            $('#PeriodFrom').html(fromDateText);
+            var toDateText = getViewToDatetimeText();
+            $('#PeriodTo').html(toDateText);
+        });
 
-    function getAbsoluteToDateTimeInstance(instance) {
-        g_viewToDateTimeInstance = instance;
-        g_absoluteToDateTime = instance["getText"]();
-    }
+        $('#download_SearchAndDownload').on('click', function (event) {
+            g_downloadWindowInstance['open']();
+        });
 
-    $('#apply_DateTimePeriod').on('click', function (event) {
-        var isHourly = $('#viewStepHourly').attr('aria-checked');
-        var isDaily = $('#viewStepDaily').attr('aria-checked');
-        var is5Day = $('#viewStep5Day').attr('aria-checked');
+        $('#apply_DateTimePeriod').on('click', function (event) {
+            var viewStep = getSelectedViewStep();
 
-        var selectedRegion = g_viewRegionInstance['getSelectedItem']();
-        var selectedProduct = g_viewProductInstance['getSelectedItem']();
+            var selectedRegion = getSelectedViewRegion();
+            var selectedProduct = getSelectedViewProduct();
+            var fromDateText = getViewFromDatetimeText();
+            var toDateText = getViewToDatetimeText();
+            var currentTrans = getViewTransparency();
 
+            $('#PeriodFrom').html(fromDateText);
+            $('#PeriodTo').html(toDateText);
 
-        var fromDateText = g_viewFromDateTimeInstance['getText']();
-        var toDateText = g_viewToDateTimeInstance['getText']()
+            var map = createMapInstance("googleMap", parseInt(currentTrans));
+            displayKmls(map, fromDateText, toDateText, viewStep, selectedRegion, selectedProduct);
+            /*
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_2.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_3.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_4.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_5.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_6.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_8.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_7.kml');
+            //displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_230000_9.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_230000_10.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_11.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_12.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_13.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_14.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_15.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_16.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_17.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_18.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_19.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_20.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_21.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_22.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_23.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_24.kml');
+            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_170000_25.kml');
+            */
+        });
 
-        $('#PeriodFrom').html(fromDateText);
-        $('#PeriodTo').html(toDateText);
+        $('#apply_DateTimePeriodPre').on('click', function (event) {
+            var viewStep = getSelectedViewStep();
 
-        var map = createMapInstance("googleMap");
-        displayKmls(map, fromDateText, toDateText, isHourly, selectedRegion.value, selectedProduct.value);
-    });
+            var viewFromDatetime = getViewFromDatetime();
+            var viewToDatetime = getViewToDatetime();
 
-    function GetViewFromDatetime() {
-        var fromDateText = g_viewFromDateTimeInstance['getText']();
-        return new Date(fromDateText);
-    }
+            var currentFromDateTime = new Date($('#PeriodFrom').html());
+            var currentToDateTime = new Date($('#PeriodTo').html());
 
-    function GetViewToDatetime() {
-        var toDateText = g_viewToDateTimeInstance['getText']();
-        return new Date(toDateText);
-    }
+            var selectedRegion = getSelectedViewRegion();
+            var selectedProduct = getSelectedViewProduct();
 
-    $('#PreviousStep').on('click', function (event) {
-        if (hour === 0 || hour === 1) {
-            hour = 23;
-        }
-        else {
-            hour = hour -1
-        }
+            if (viewStep === 1) {
+                currentFromDateTime.setHours(currentFromDateTime.getHours() - 1);
+                if (currentFromDateTime < viewFromDatetime) {
+                    alert('No previouse data!');
+                    return;
+                }
+                else {
+                    currentToDateTime.setHours(currentToDateTime.getHours() - 1);
+                }
+            }
+            else if (viewStep === 2) {
+                currentFromDateTime.setDate(currentFromDateTime.getDate() - 1);
+                if (currentFromDateTime < viewFromDatetime) {
+                    alert('No previouse data!');
+                    return;
+                }
+                else {
+                    currentToDateTime.setDate(currentToDateTime.getDate() - 1);
+                }
+            }
+            else {
+                currentFromDateTime.setDate(currentFromDateTime.getDate() - 5);
+                if (currentFromDateTime < viewFromDatetime) {
+                    alert('No previouse data!');
+                    return;
+                }
+                else {
+                    currentToDateTime.setDate(currentToDateTime.getDate() - 5);
+                }
+            }
 
-        $('#PeriodCurrentTime').html(hour);
+            $('#PeriodFrom').html(formatDate(currentFromDateTime));
+        });
 
-        var map = createMapInstance("googleMap");
-        AddKmlLayer(hour, map, false);
-    });
+        $('#apply_DateTimePeriodNext').on('click', function (event) {
+            var viewStep = getSelectedViewStep();
 
-    $('#NextStep').on('click', function (event) {
-        if (hour === 0 || hour === 23) {
-            hour = 1;
-        }
-        else {
-            hour = hour + 1
-        }
+            var viewFromDatetime = getViewFromDatetime();
+            var viewToDatetime = getViewToDatetime();
 
-        $('#PeriodCurrentTime').html(hour);
+            var currentFromDateTime = new Date($('#PeriodFrom').html());
+            var currentToDateTime = new Date($('#PeriodTo').html());
 
-        var map = createMapInstance("googleMap");
-        AddKmlLayer(hour, map, false);
-    });
+            var selectedRegion = getSelectedViewRegion();
+            var selectedProduct = getSelectedViewProduct();
 
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa4mPMDM-mSm7kKGOybaZF8OG_LnZ7M-o&callback=initMap"></script>
+            if (viewStep === 1) {
+                currentFromDateTime.setHours(currentFromDateTime.getHours() + 1);
+                if (currentFromDateTime > viewToDatetime) {
+                    alert('No forward data!');
+                    return;
+                }
+                else {
+                    currentToDateTime.setHours(currentToDateTime.getHours() + 1);
+                }
+            }
+            else if (viewStep === 2) {
+                currentFromDateTime.setDate(currentFromDateTime.getDate() + 1);
+                if (currentFromDateTime > viewToDatetime) {
+                    alert('No forward data!');
+                    return;
+                }
+                else {
+                    currentToDateTime.setDate(currentToDateTime.getDate() + 1);
+                }
+            }
+            else {
+                currentFromDateTime.setDate(currentFromDateTime.getDate() + 5);
+                if (currentFromDateTime > viewToDatetime) {
+                    alert('No forward data!');
+                    return;
+                }
+                else {
+                    currentToDateTime.setDate(currentToDateTime.getDate() + 5);
+                }
+            }
+
+            $('#PeriodFrom').html(formatDate(currentFromDateTime));
+        });
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa4mPMDM-mSm7kKGOybaZF8OG_LnZ7M-o&callback=initMap"></script>
 }

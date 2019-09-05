@@ -12,7 +12,7 @@ using MySql.Data.MySqlClient;
 namespace GMUFloodForecastPortal.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Kml")]
+    [Route("api/kmls")]
     public class KmlController : Controller
     {
         private readonly string kmlFullFilePathFormat = @"https://jpssflood.gmu.edu/kmls/{0}.kml";
@@ -21,16 +21,31 @@ namespace GMUFloodForecastPortal.Controllers
 
         // GET: api/Kml
         [HttpGet]
-        public IEnumerable<string> Get(DateTime from, DateTime to, string step, string region, string product)
+        public IEnumerable<string> Get(DateTime from, DateTime to, int step, string region, string product)
         {
             List<string> kmlFiles = new List<string>();
 
-            using (MySqlConnection connection = new MySqlConnection(DatabaseConnectionstringProd))
+            string fromDateFormatString = string.Empty;
+            string toDateFormatString = string.Empty;
+
+            to = from;
+            if (step == 1)
+            {
+                fromDateFormatString = @"yyyy-MM-dd hh:00:00";
+                toDateFormatString = @"yyyy-MM-dd hh:00:00";
+            }
+            else
+            {
+                fromDateFormatString = @"yyyy-MM-dd 00:00:00";
+                toDateFormatString = @"yyyy-MM-dd 23:00:00";
+            }
+
+            using (MySqlConnection connection = new MySqlConnection(DatabaseConnectionstring))
             {
                 connection.Open();
                 MySqlCommand command = new MySqlCommand();
                 command.Connection = connection;
-                command.CommandText = "SELECT * FROM jpssflood.kmlmetadata";
+                command.CommandText = string.Format("SELECT * FROM jpssflood.kmlmetadata WHERE Date >= '{0}' AND Date <= '{1}' AND ProductId = {2} AND RegionId = {3} ", from.ToString(fromDateFormatString), to.AddHours(1).ToString(toDateFormatString), 1, 1);
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -41,11 +56,7 @@ namespace GMUFloodForecastPortal.Controllers
                     MySql.Data.Types.MySqlDateTime mySqldate = reader.GetMySqlDateTime(4);
                     string fileName = reader.GetString(5);
 
-                    DateTime date = new DateTime(mySqldate.Year, mySqldate.Month, mySqldate.Day, mySqldate.Hour, 0, 0);
-                    // if (date >= from && date <= to)
-                    {
-                        kmlFiles.Add(string.Format(kmlFullFilePathFormat, fileName));
-                    }
+                    kmlFiles.Add(string.Format(kmlFullFilePathFormat, fileName));
                 }
             }
 
@@ -60,8 +71,9 @@ namespace GMUFloodForecastPortal.Controllers
             return dIndex1.CompareTo(dIndex2);
         }
 
-        // GET: api/Kml/5
+        // GET: api/kmls/kml/id=5
         [HttpGet("{id}", Name = "Get")]
+        [Route("kml")]
         public IEnumerable<string> Get(int id)
         {
             List<string> kmlFiles = new List<string>();
@@ -122,6 +134,7 @@ namespace GMUFloodForecastPortal.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            throw new UnauthorizedAccessException("Delete is not allowed.");
         }
     }
 }
