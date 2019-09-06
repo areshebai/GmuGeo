@@ -19,9 +19,6 @@
 <script src="~/jqwidgets/jqxradiobutton.js"></script>
 <script src="~/jqwidgets/jqxwindow.js"></script>
 
-<script src="~/jqwidgets/jqxcore.js"></script>
-<script src="~/jqwidgets/jqxdata.js"></script>
-
 <script src="~/jqwidgets/jqxgrid.js"></script>
 <script src="~/jqwidgets/jqxgrid.edit.js"></script>
 <script src="~/jqwidgets/jqxgrid.columnsresize.js"></script>
@@ -35,6 +32,7 @@
 <script src="~/jqwidgets/jqxgrid.export.js"></script>
 <script src="~/jqwidgets/jqxmenu.js"></script>
 
+
 @using jQWidgets.AspNetCore.Mvc.TagHelpers
 
 @model IndexModel
@@ -45,9 +43,6 @@
     {
         "{size: '270px'}",
     };
-}
-@{ 
-    KmlFileInfo file = Model.KmlFileInfos.FirstOrDefault();
 }
 
 <div class="mainContainer">
@@ -76,7 +71,7 @@
                                 <label>From</label>
                                 <div>
                                     <div style="float:left; margin-top: 2px">
-                                        <jqx-date-time-input id="viewFromDatetime" animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.UtcNow" ></jqx-date-time-input>
+                                        <jqx-date-time-input id="viewFromDatetime" animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.UtcNow"></jqx-date-time-input>
                                     </div>
                                     <div class="clearall"></div>
                                 </div>
@@ -108,7 +103,7 @@
                                 <label>Transparency</label>
                                 <div>
                                     <div style="float: left">
-                                        <jqx-input id="viewTransparency" width="50" height="25" value="50"></jqx-input>
+                                        <jqx-input id="viewTransparency" width="50" height="25" value="50" max-length="2"></jqx-input>
                                     </div>
                                     <label style="float: left; margin-left: 5px; margin-top: 5px">%</label>
                                 </div>
@@ -130,7 +125,7 @@
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>Image Format</label>
                                 <div style="float: left; margin-top:2px">
-                                    <jqx-drop-down-list width="160" height="25" instance="getImageTypeInstance()"></jqx-drop-down-list>
+                                    <jqx-drop-down-list id="downloadImageFormat" width="160" height="25" instance="getImageTypeInstance()"></jqx-drop-down-list>
                                 </div>
                                 <div style="float: left; margin-left: 10px;">
                                     <jqx-button id="view_DownloadCurrent">Download</jqx-button>
@@ -229,21 +224,21 @@
         </jqx-splitter-panel>
     </jqx-splitter>
     <jqx-window auto-open="false" width="auto" resizable="false" instance="getDownloadWindowInstance()">
-        <jqx-window-header>Download</jqx-window-header>
+        <jqx-window-header>Image Resource</jqx-window-header>
         <jqx-window-body>
-            <jqx-grid id="grid" alt-rows="true" pageable="true" auto-height="true" source-id="ID" sortable="true" width="850">
+            <jqx-grid id="grid" alt-rows="true" pageable="true" height="240" source-id="Index" sortable="false" width="800" instance="getGridInstance()">
                 <jqx-grid-columns>
-                    <jqx-grid-column width="150" text="Index" datafield-for="@(file.Index)"></jqx-grid-column>
-                    <jqx-grid-column width="700" text="Address" datafield-for="@(file.FileName)"></jqx-grid-column>
+                    <jqx-grid-column width="50" text="Index" datafield="Index"></jqx-grid-column>
+                    <jqx-grid-column width="650" text="Resource Name" datafield="Address"></jqx-grid-column>
+                    <jqx-grid-column width="80" text="Link" datafield="Link"></jqx-grid-column>
                 </jqx-grid-columns>
             </jqx-grid>
-
         </jqx-window-body>
     </jqx-window>
 </div>
 
 @section scripts {
-    <script type="text/javascript"> 
+    <script type="text/javascript">
 
         $(document).ready(function () {
             var fromDateText = getViewFromDatetimeText();
@@ -251,144 +246,159 @@
             var toDateText = getViewToDatetimeText();
             $('#PeriodTo').html(toDateText);
         });
+        
+        function getGridInstance(instance) {
+            g_downloadGridInstance = instance;
+        }
 
-        $('#download_SearchAndDownload').on('click', function (event) {
-            g_downloadWindowInstance['open']();
-        });
+        $('#view_DownloadCurrent').on('click', function (event) {
+            g_downloadGridInstance['clear']();
 
-        $('#apply_DateTimePeriod').on('click', function (event) {
             var viewStep = getSelectedViewStep();
-
             var selectedRegion = getSelectedViewRegion();
             var selectedProduct = getSelectedViewProduct();
             var fromDateText = getViewFromDatetimeText();
             var toDateText = getViewToDatetimeText();
-            var currentTrans = getViewTransparency();
+            var imageFormat = getDownloadImageFormat();
 
-            $('#PeriodFrom').html(fromDateText);
-            $('#PeriodTo').html(toDateText);
+            getKmlFiles(fromDateText, toDateText, viewStep, selectedRegion, selectedProduct, imageFormat, g_downloadGridInstance);
 
-            var map = createMapInstance("googleMap", parseInt(currentTrans));
-            displayKmls(map, fromDateText, toDateText, viewStep, selectedRegion, selectedProduct);
-            /*
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_2.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_3.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_4.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_5.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_6.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_8.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_7.kml');
-            //displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_230000_9.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_230000_10.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_11.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_12.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_13.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_14.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_15.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_16.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_17.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_18.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_19.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_20.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_21.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_22.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_23.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_24.kml');
-            displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_170000_25.kml');
-            */
-        });
+        g_downloadWindowInstance['open']();
+    });
 
-        $('#apply_DateTimePeriodPre').on('click', function (event) {
-            var viewStep = getSelectedViewStep();
+    $('#apply_DateTimePeriod').on('click', function (event) {
+        var viewStep = getSelectedViewStep();
 
-            var viewFromDatetime = getViewFromDatetime();
-            var viewToDatetime = getViewToDatetime();
+        var selectedRegion = getSelectedViewRegion();
+        var selectedProduct = getSelectedViewProduct();
+        var fromDateText = getViewFromDatetimeText();
+        var toDateText = getViewToDatetimeText();
+        var currentTrans = getViewTransparency();
 
-            var currentFromDateTime = new Date($('#PeriodFrom').html());
-            var currentToDateTime = new Date($('#PeriodTo').html());
+        $('#PeriodFrom').html(fromDateText);
+        $('#PeriodTo').html(toDateText);
 
-            var selectedRegion = getSelectedViewRegion();
-            var selectedProduct = getSelectedViewProduct();
+        var map = createMapInstance("googleMap", parseInt(currentTrans));
+        displayKmls(map, fromDateText, toDateText, viewStep, selectedRegion, selectedProduct);
+        /*
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_2.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_3.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_4.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_5.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_6.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_8.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_7.kml');
+        //displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_230000_9.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_230000_10.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_11.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_12.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_13.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_14.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_15.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_16.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_17.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_18.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_19.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_20.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_21.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_22.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_23.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_24.kml');
+        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_170000_25.kml');
+        */
+    });
 
-            if (viewStep === 1) {
-                currentFromDateTime.setHours(currentFromDateTime.getHours() - 1);
-                if (currentFromDateTime < viewFromDatetime) {
-                    alert('No previouse data!');
-                    return;
-                }
-                else {
-                    currentToDateTime.setHours(currentToDateTime.getHours() - 1);
-                }
-            }
-            else if (viewStep === 2) {
-                currentFromDateTime.setDate(currentFromDateTime.getDate() - 1);
-                if (currentFromDateTime < viewFromDatetime) {
-                    alert('No previouse data!');
-                    return;
-                }
-                else {
-                    currentToDateTime.setDate(currentToDateTime.getDate() - 1);
-                }
-            }
-            else {
-                currentFromDateTime.setDate(currentFromDateTime.getDate() - 5);
-                if (currentFromDateTime < viewFromDatetime) {
-                    alert('No previouse data!');
-                    return;
-                }
-                else {
-                    currentToDateTime.setDate(currentToDateTime.getDate() - 5);
-                }
-            }
+    $('#apply_DateTimePeriodPre').on('click', function (event) {
+        var viewStep = getSelectedViewStep();
 
-            $('#PeriodFrom').html(formatDate(currentFromDateTime));
-        });
+        var viewFromDatetime = getViewFromDatetime();
+        var viewToDatetime = getViewToDatetime();
 
-        $('#apply_DateTimePeriodNext').on('click', function (event) {
-            var viewStep = getSelectedViewStep();
+        var currentFromDateTime = new Date($('#PeriodFrom').html());
+        var currentToDateTime = new Date($('#PeriodTo').html());
 
-            var viewFromDatetime = getViewFromDatetime();
-            var viewToDatetime = getViewToDatetime();
+        var selectedRegion = getSelectedViewRegion();
+        var selectedProduct = getSelectedViewProduct();
 
-            var currentFromDateTime = new Date($('#PeriodFrom').html());
-            var currentToDateTime = new Date($('#PeriodTo').html());
-
-            var selectedRegion = getSelectedViewRegion();
-            var selectedProduct = getSelectedViewProduct();
-
-            if (viewStep === 1) {
-                currentFromDateTime.setHours(currentFromDateTime.getHours() + 1);
-                if (currentFromDateTime > viewToDatetime) {
-                    alert('No forward data!');
-                    return;
-                }
-                else {
-                    currentToDateTime.setHours(currentToDateTime.getHours() + 1);
-                }
-            }
-            else if (viewStep === 2) {
-                currentFromDateTime.setDate(currentFromDateTime.getDate() + 1);
-                if (currentFromDateTime > viewToDatetime) {
-                    alert('No forward data!');
-                    return;
-                }
-                else {
-                    currentToDateTime.setDate(currentToDateTime.getDate() + 1);
-                }
+        if (viewStep === 1) {
+            currentFromDateTime.setHours(currentFromDateTime.getHours() - 1);
+            if (currentFromDateTime < viewFromDatetime) {
+                alert('No previouse data!');
+                return;
             }
             else {
-                currentFromDateTime.setDate(currentFromDateTime.getDate() + 5);
-                if (currentFromDateTime > viewToDatetime) {
-                    alert('No forward data!');
-                    return;
-                }
-                else {
-                    currentToDateTime.setDate(currentToDateTime.getDate() + 5);
-                }
+                currentToDateTime.setHours(currentToDateTime.getHours() - 1);
             }
+        }
+        else if (viewStep === 2) {
+            currentFromDateTime.setDate(currentFromDateTime.getDate() - 1);
+            if (currentFromDateTime < viewFromDatetime) {
+                alert('No previouse data!');
+                return;
+            }
+            else {
+                currentToDateTime.setDate(currentToDateTime.getDate() - 1);
+            }
+        }
+        else {
+            currentFromDateTime.setDate(currentFromDateTime.getDate() - 5);
+            if (currentFromDateTime < viewFromDatetime) {
+                alert('No previouse data!');
+                return;
+            }
+            else {
+                currentToDateTime.setDate(currentToDateTime.getDate() - 5);
+            }
+        }
 
-            $('#PeriodFrom').html(formatDate(currentFromDateTime));
-        });
+        $('#PeriodFrom').html(formatDate(currentFromDateTime));
+    });
+
+    $('#apply_DateTimePeriodNext').on('click', function (event) {
+        var viewStep = getSelectedViewStep();
+
+        var viewFromDatetime = getViewFromDatetime();
+        var viewToDatetime = getViewToDatetime();
+
+        var currentFromDateTime = new Date($('#PeriodFrom').html());
+        var currentToDateTime = new Date($('#PeriodTo').html());
+
+        var selectedRegion = getSelectedViewRegion();
+        var selectedProduct = getSelectedViewProduct();
+
+        if (viewStep === 1) {
+            currentFromDateTime.setHours(currentFromDateTime.getHours() + 1);
+            if (currentFromDateTime > viewToDatetime) {
+                alert('No forward data!');
+                return;
+            }
+            else {
+                currentToDateTime.setHours(currentToDateTime.getHours() + 1);
+            }
+        }
+        else if (viewStep === 2) {
+            currentFromDateTime.setDate(currentFromDateTime.getDate() + 1);
+            if (currentFromDateTime > viewToDatetime) {
+                alert('No forward data!');
+                return;
+            }
+            else {
+                currentToDateTime.setDate(currentToDateTime.getDate() + 1);
+            }
+        }
+        else {
+            currentFromDateTime.setDate(currentFromDateTime.getDate() + 5);
+            if (currentFromDateTime > viewToDatetime) {
+                alert('No forward data!');
+                return;
+            }
+            else {
+                currentToDateTime.setDate(currentToDateTime.getDate() + 5);
+            }
+        }
+
+        $('#PeriodFrom').html(formatDate(currentFromDateTime));
+    });
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa4mPMDM-mSm7kKGOybaZF8OG_LnZ7M-o&callback=initMap"></script>

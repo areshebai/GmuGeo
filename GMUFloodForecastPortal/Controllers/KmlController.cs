@@ -11,6 +11,12 @@ using MySql.Data.MySqlClient;
 
 namespace GMUFloodForecastPortal.Controllers
 {
+    public class KmlFileInfo
+    {
+        public string FullName { get; set; }
+        public string ShortName { get; set; }
+    }
+
     [Produces("application/json")]
     [Route("api/kmls")]
     public class KmlController : Controller
@@ -21,9 +27,9 @@ namespace GMUFloodForecastPortal.Controllers
 
         // GET: api/Kml
         [HttpGet]
-        public IEnumerable<string> Get(DateTime from, DateTime to, int step, string region, string product)
+        public JsonResult Get(DateTime from, DateTime to, int step, string region, string product)
         {
-            List<string> kmlFiles = new List<string>();
+            List<KmlFileInfo> kmlFiles = new List<KmlFileInfo>();
 
             string fromDateFormatString = string.Empty;
             string toDateFormatString = string.Empty;
@@ -56,11 +62,11 @@ namespace GMUFloodForecastPortal.Controllers
                     MySql.Data.Types.MySqlDateTime mySqldate = reader.GetMySqlDateTime(4);
                     string fileName = reader.GetString(5);
 
-                    kmlFiles.Add(string.Format(kmlFullFilePathFormat, fileName));
+                    kmlFiles.Add(new KmlFileInfo { FullName = string.Format(kmlFullFilePathFormat, fileName), ShortName = fileName });
                 }
             }
 
-            return kmlFiles;
+            return Json(kmlFiles);
         }
 
         private int compareKmlFilesByDistrictIndex(string fileName1, string fileName2)

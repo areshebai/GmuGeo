@@ -3,6 +3,7 @@ var g_mapInstance;
 var g_viewRegionInstance;
 var g_viewProductInstance;
 var g_downloadWindowInstance;
+var g_downloadGridInstance;
 
 function getViewProductInstance(instance) {
     g_viewProductInstance = instance;
@@ -103,6 +104,11 @@ function getViewTransparency() {
     return trans;
 }
 
+function getDownloadImageFormat() {
+    var format = $('#downloadImageFormat').children(':input').attr('value');
+    return format;
+}
+
 function initMap() {
     hour = 0;
     var map = createMapInstance("googleMap", 50);
@@ -155,7 +161,6 @@ function createMapInstance(mapElement, transparency) {
     var map = new google.maps.Map(document.getElementById(mapElement), mapProp);
 
     map.addListener('tilesloaded', function () {
-        //$("#" + mapElement).find("img").css("opacity", transparency / 100);
         $("#" + mapElement).find("img[src*='googleusercontent']").css("opacity", transparency / 100);
     })
 
@@ -205,7 +210,41 @@ function displayKmls(map, from, to, step, region, product) {
         success: function (data) {
             alert(data.length);
             $.each(data, function (index, value) {
-                displayKmlLayer(map, value);
+                displayKmlLayer(map, value.fullName);
+            });
+        }
+    });
+}
+
+function getKmlFiles(from, to, step, region, product, imageFormat, instance) {
+    $.ajax({
+        type: 'GET',
+        url: "api/kmls",
+        data: {
+            from: from,
+            to: to,
+            step: step,
+            region: region,
+            product: product
+        },
+        cache: false,
+        success: function (data) {
+            $.each(data, function (index, value) {
+                var fileFullName = "";
+                if (imageFormat == 'GeoTiff') {
+                    fileFullName = value.fullName.replace(".kml", ".tif.zip");
+                }
+                else if (imageFormat == 'HDF4') {
+                    fileFullName = value.fullName.replace(".kml", ".hdf.zip");
+                }
+                else if (imageFormat == 'png') {
+                    fileFullName = value.fullName.replace(".kml", "..png");
+                }
+                else {
+                    alert('exception!');
+                }
+                instance['addrow'](null, {
+                    Index: index + 1, Address: value.shortName, Link: '<a href="' + fileFullName + '">Download</a>'});
             });
         }
     });
