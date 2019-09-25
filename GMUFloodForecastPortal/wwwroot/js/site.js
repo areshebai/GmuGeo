@@ -110,6 +110,20 @@ function getDownloadImageFormat() {
 }
 
 function initMap() {
+    var viewStep = getSelectedViewStep();
+    var selectedRegion = getSelectedViewRegion();
+    var selectedProduct = getSelectedViewProduct();
+    var fromDateText = getViewFromDatetimeText();
+    var toDateText = getViewToDatetimeText();
+    var currentTrans = getViewTransparency();
+
+    $('#PeriodFrom').html(fromDateText);
+    $('#PeriodTo').html(toDateText);
+
+    var map = createMapInstance("googleMap", parseInt(currentTrans));
+    displayKmls(map, fromDateText, toDateText, viewStep, selectedRegion, selectedProduct);
+
+    /*
     hour = 0;
     var map = createMapInstance("googleMap", 50);
 
@@ -137,6 +151,7 @@ function initMap() {
     displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_23.kml');
     displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_24.kml');
     displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_170000_25.kml');
+    */
 }
 
 function createMapInstance(mapElement, transparency) {
@@ -208,7 +223,6 @@ function displayKmls(map, from, to, step, region, product) {
         },
         cache: false,
         success: function (data) {
-            alert(data.length);
             $.each(data, function (index, value) {
                 displayKmlLayer(map, value.fullName);
             });
@@ -237,11 +251,11 @@ function getKmlFiles(from, to, step, region, product, imageFormat, instance) {
                 else if (imageFormat == 'HDF4') {
                     fileFullName = value.fullName.replace(".kml", ".hdf.zip");
                 }
-                else if (imageFormat == 'png') {
-                    fileFullName = value.fullName.replace(".kml", "..png");
+                else if (imageFormat == 'PNG') {
+                    fileFullName = value.fullName.replace(".kml", ".png");
                 }
                 else {
-                    alert('exception!');
+                    alert('Download: Unsupported file format.');
                 }
                 instance['addrow'](null, {
                     Index: index + 1, Address: value.shortName, Link: '<a href="' + fileFullName + '">Download</a>'});

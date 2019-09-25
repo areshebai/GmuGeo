@@ -25,6 +25,13 @@ namespace GMUFloodForecastPortal.Controllers
         private readonly string DatabaseConnectionstring = @"server=127.0.0.1;userid=root;password=07Apples;database=jpssflood;";
         private readonly string DatabaseConnectionstringProd = @"server=localhost;userid=root;database=jpssflood;";
 
+        private readonly string ABIFileNameFormat = @"COM_G16_ABI_WATER_20190920_2019263_0950_2220_0349_1620_4800_5000_76_004";
+        private readonly string AHIFileNameFormat = @"COM_H08_AHI_WATER_20190923_2019266_2300_1040_0700_1839_6000_2000_69_001.kml";
+        private readonly string VIIRSABIFileNameFormat = @"Joint_VIIRS_ABI_WATER_Prj_SVI_d20190920_17_4448_4448_015.kml";
+        private readonly string VIIRSAHIFileNameFormat = @"Joint_VIIRS_AHI_WATER_Prj_SVI_d20190924_18_4448_4448_135.kml";
+        private readonly string VIIRS5DaysFileNameFormat = @"WATER_COM_VIIRS_Prj_SVI_d20190916_d20190920_2966_2966_24_005day_133.kml";
+        private readonly string VIIRS1DaysFileNameFormat = @"WATER_COM_VIIRS_Prj_SVI_d20190920_d20190920_4448_4448_6_001day_118.kml";
+
         // GET: api/Kml
         [HttpGet]
         public JsonResult Get(DateTime from, DateTime to, int step, string region, string product)
