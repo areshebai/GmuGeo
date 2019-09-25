@@ -23,10 +23,12 @@ For localhost:5000, it is a web application started by dotnet runtime. Already c
 Google Earth Engine Guide<br/>
 ===================================
 ### Account Information
-yan.wang.gmu@gmail.com
+yan.wang.gmu@gmail.com - expired
+ywang95.gmu.edu@gmail.com
 
 ### API Key
-AIzaSyDhIevfSa6lw6HauJuesotlyxxbOR_kmsA
+AIzaSyDhIevfSa6lw6HauJuesotlyxxbOR_kmsA (expired)
+AIzaSyCXVemTzeOvkKbvJFWi60hkwaIwD37s1LA
 
 ### Website
 https://gmugeo-floodforecast.appspot.com/
