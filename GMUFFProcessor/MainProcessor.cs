@@ -58,7 +58,7 @@ namespace GMUFFProcessor
             // Upload processed file back to ftp server
         }
 
-        public void SaveDailyLatestKmlAndPng(string savedDirectory, string kmlFileName, DataFileType type = DataFileType.SNNP)
+        public void SaveDailyLatestKmlAndPng(string savedDirectory, string kmlFileName, DataFileType type = DataFileType.VIIRS1Day)
         {
             long fileLength = new FileInfo(kmlFileName.Replace(".kml", ".png")).Length;
             int bIndex = FileNameUtil.GetBlockIndexFromFileName(kmlFileName, type);
@@ -93,7 +93,7 @@ namespace GMUFFProcessor
             string[] kmlFileNames = Directory.GetFiles(sourceDirectory, "*.kml");
             foreach (string kmlFileName in kmlFileNames)
             {
-                SaveDailyLatestKmlAndPng(targetDirectory, kmlFileName, DataFileType.J01);
+                SaveDailyLatestKmlAndPng(targetDirectory, kmlFileName, DataFileType.VIIRS1Day);
             }
         }
 
@@ -101,7 +101,7 @@ namespace GMUFFProcessor
         {
             string[] kmlFileNames = Directory.GetFiles(sourceDirectory, "*.kml");
             char[] SplitCharacters = { '_', '.' };
-            DataFileType type = DataFileType.J01;
+            DataFileType type = DataFileType.VIIRS1Day;
 
             foreach (string kmlFileName in kmlFileNames)
             {
@@ -110,7 +110,7 @@ namespace GMUFFProcessor
 
                 if (elements.Length == 12)
                 {
-                    type = DataFileType.J01;
+                    type = DataFileType.VIIRS1Day;
                     string dateString = elements[6].Substring(1, 4) + "-" + elements[6].Substring(5, 2) + "-" + elements[6].Substring(7, 2) + " " + elements[8].Substring(0, 2) + ":00:00";
                     string districtString = elements[11];
 
