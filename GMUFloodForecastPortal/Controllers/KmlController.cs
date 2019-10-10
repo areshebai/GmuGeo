@@ -53,12 +53,14 @@ namespace GMUFloodForecastPortal.Controllers
                 toDateFormatString = @"yyyy-MM-dd 23:00:00";
             }
 
-            using (MySqlConnection connection = new MySqlConnection(DatabaseConnectionstring))
+            int queryProductId = ConvertProductStringToId(product);
+
+            using (MySqlConnection connection = new MySqlConnection(DatabaseConnectionstringProd))
             {
                 connection.Open();
                 MySqlCommand command = new MySqlCommand();
                 command.Connection = connection;
-                command.CommandText = string.Format("SELECT * FROM jpssflood.kmlmetadata WHERE Date >= '{0}' AND Date <= '{1}' AND ProductId = {2} AND RegionId = {3} ", from.ToString(fromDateFormatString), to.AddHours(1).ToString(toDateFormatString), 1, 1);
+                command.CommandText = string.Format("SELECT * FROM jpssflood.kmlmetadata WHERE Date >= '{0}' AND Date <= '{1}' AND ProductId = {2} AND RegionId = {3} AND DistrictId > 1 AND DistrictId < 136", from.ToString(fromDateFormatString), to.AddHours(1).ToString(toDateFormatString), queryProductId, 1);
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -69,11 +71,51 @@ namespace GMUFloodForecastPortal.Controllers
                     MySql.Data.Types.MySqlDateTime mySqldate = reader.GetMySqlDateTime(4);
                     string fileName = reader.GetString(5);
 
+                    if (step != 3 && fileName.Contains("_005day_"))
+                    {
+                        continue;
+                    }
+
+                    if (step == 3 && !fileName.Contains("_005day_"))
+                    {
+                        continue;
+                    }
+
                     kmlFiles.Add(new KmlFileInfo { FullName = string.Format(kmlFullFilePathFormat, fileName), ShortName = fileName });
                 }
             }
 
             return Json(kmlFiles);
+        }
+
+        private int ConvertProductStringToId(string product)
+        {
+            if (product == "VIIRS 375-m")
+            {
+                return 1;
+            }
+
+            if (product == "ABI 1-km")
+            {
+                return 2;
+            }
+
+            if (product == "AHI 1-km")
+            {
+                return 3;
+            }
+
+            if (product == "Joint VIIRS/ABI")
+            {
+                return 4;
+            }
+
+            if (product == "Joint VIIRS/AHI")
+            {
+                return 5;
+            }
+
+            return 0;
         }
 
         private int compareKmlFilesByDistrictIndex(string fileName1, string fileName2)

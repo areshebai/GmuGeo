@@ -10,8 +10,9 @@ function getViewProductInstance(instance) {
     instance["addItem"]('VIIRS 375-m');
     instance["addItem"]('ABI 1-km');
     instance["addItem"]('AHI 1-km');
-    instance["addItem"]('Joint VIIRS/ABI/AHI');
-    instance["selectIndex"](1);
+    instance["addItem"]('Joint VIIRS/ABI');
+    instance["addItem"]('Joint VIIRS/AHI');
+    instance["selectIndex"](0);
 }
 
 function getViewRegionInstance(instance) {
@@ -245,13 +246,13 @@ function getKmlFiles(from, to, step, region, product, imageFormat, instance) {
         success: function (data) {
             $.each(data, function (index, value) {
                 var fileFullName = "";
-                if (imageFormat == 'GeoTiff') {
-                    fileFullName = value.fullName.replace(".kml", ".tif.zip");
+                if (imageFormat === 'GeoTiff') {
+                    fileFullName = value.fullName.replace(".kml", ".tif");
                 }
-                else if (imageFormat == 'HDF4') {
-                    fileFullName = value.fullName.replace(".kml", ".hdf.zip");
+                else if (imageFormat === 'HDF4') {
+                    fileFullName = value.fullName.replace(".kml", ".hdf");
                 }
-                else if (imageFormat == 'PNG') {
+                else if (imageFormat === 'PNG') {
                     fileFullName = value.fullName.replace(".kml", ".png");
                 }
                 else {

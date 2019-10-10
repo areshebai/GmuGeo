@@ -92,4 +92,14 @@ sudo apt-get install aspnetcore-runtime-2.1
 sudo apt-get install dotnet-sdk-2.1
 
 
+$now = [System.DateTime]::get_UtcNow();
+$folderName = $now.ToString("yyyyMMdd");
+$folder = Get-ChildItem -Directory | Where-Object {$_.Name -eq $folderName};
+if(-not(Test-Path $folderName))
+{
+	mkdir $folderName
+}
+
+Get-Item -Path .\*$folderName*.* | Move-Item -Destination .\$folderName
+20190928
 
