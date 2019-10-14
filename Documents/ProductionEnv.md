@@ -91,15 +91,6 @@ sudo apt-get update
 sudo apt-get install aspnetcore-runtime-2.1
 sudo apt-get install dotnet-sdk-2.1
 
+ New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileOrganizer.ps1; $now | Out-File /home/raw-geo-data/job/move.log -Append; MoveFtpFile $now'} -Minute '*/30' | Out-Host
 
-$now = [System.DateTime]::get_UtcNow();
-$folderName = $now.ToString("yyyyMMdd");
-$folder = Get-ChildItem -Directory | Where-Object {$_.Name -eq $folderName};
-if(-not(Test-Path $folderName))
-{
-	mkdir $folderName
-}
-
-Get-Item -Path .\*$folderName*.* | Move-Item -Destination .\$folderName
-20190928
-
+ sudo -s //login as root user

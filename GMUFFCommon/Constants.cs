@@ -10,4 +10,15 @@ namespace GMUFFCommon
         public const string Satellite_NOAA20_Name = "NOAA-20";
         public const string Satellite_GOES16_Name = "GOES-16";
     }
+
+    public enum Region
+    {
+        All = 0,
+        NorthAmerica = 1,
+        SouthAmerica = 2,
+        Europe = 3,
+        Asia = 4,
+        Africa = 5,
+        Australia = 6
+    }
 }

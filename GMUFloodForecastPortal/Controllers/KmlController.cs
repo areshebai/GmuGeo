@@ -60,7 +60,7 @@ namespace GMUFloodForecastPortal.Controllers
                 connection.Open();
                 MySqlCommand command = new MySqlCommand();
                 command.Connection = connection;
-                command.CommandText = string.Format("SELECT * FROM jpssflood.kmlmetadata WHERE Date >= '{0}' AND Date <= '{1}' AND ProductId = {2} AND RegionId = {3} AND DistrictId > 1 AND DistrictId < 136", from.ToString(fromDateFormatString), to.AddHours(1).ToString(toDateFormatString), queryProductId, 1);
+                command.CommandText = string.Format("SELECT * FROM jpssflood.kmlmetadata WHERE Date >= '{0}' AND Date <= '{1}' AND ProductId = {2} AND RegionId = {3} AND DistrictId > 1 AND DistrictId < 136 ORDER BY DistrictID DESC", from.ToString(fromDateFormatString), to.AddHours(1).ToString(toDateFormatString), queryProductId, 1);
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -70,6 +70,15 @@ namespace GMUFloodForecastPortal.Controllers
                     int districtId = reader.GetInt32(3);
                     MySql.Data.Types.MySqlDateTime mySqldate = reader.GetMySqlDateTime(4);
                     string fileName = reader.GetString(5);
+
+                    Region regionFromDistrict = RegionUtil.GetRegion(districtId);
+                    if (Region.All != RegionUtil.GetRegionFromDisplayName(region) && queryProductId == 1)
+                    {
+                        if (regionFromDistrict != RegionUtil.GetRegionFromDisplayName(region))
+                        {
+                            continue;
+                        }
+                    }
 
                     if (step != 3 && fileName.Contains("_005day_"))
                     {
@@ -123,7 +132,15 @@ namespace GMUFloodForecastPortal.Controllers
             int dIndex1 = FileNameUtil.GetBlockIndexFromFileName(fileName1);
             int dIndex2 = FileNameUtil.GetBlockIndexFromFileName(fileName2);
 
-            return dIndex1.CompareTo(dIndex2);
+            return dIndex2.CompareTo(dIndex1);
+        }
+
+        private int compareKmlByDistrictIndex(KmlFileInfo file1, KmlFileInfo file2)
+        {
+            int dIndex1 = FileNameUtil.GetBlockIndexFromFileName(file1.ShortName);
+            int dIndex2 = FileNameUtil.GetBlockIndexFromFileName(file2.ShortName);
+
+            return dIndex2.CompareTo(dIndex1);
         }
 
         // GET: api/kmls/kml/id=5

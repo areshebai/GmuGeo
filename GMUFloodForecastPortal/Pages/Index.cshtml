@@ -56,7 +56,7 @@
                     <jqx-tab-panel-body>
                         <div class="nav-panel">
                             <div style="margin-top: 5px; margin-bottom:5px; margin-left: 10px">
-                                <div style="float:left; margin-top: 2px">
+                                <div style="float:left; margin-top: 2px; display:none">
                                     <jqx-radio-button id="viewStepHourly" group-name="ViewStep">Hourly</jqx-radio-button>
                                 </div>
                                 <div style="float:left; margin-top: 2px; margin-left: 8px">
@@ -158,8 +158,8 @@
                                     <span id="currentLongitude"></span>
                                 </div>
                                 <div style="clear:both">
-                                    <label>District:</label>
-                                    <span id="currentDistrict"></span>
+                                    <label>Region:</label>
+                                    <span id="currentRegion"></span>
                                 </div>
                             </div>
                         </div>
@@ -277,6 +277,7 @@
 
         $('#PeriodFrom').html(fromDateText);
         $('#PeriodTo').html(toDateText);
+        $("#currentRegion").html(selectedRegion);
 
         var map = createMapInstance("googleMap", parseInt(currentTrans));
         displayKmls(map, fromDateText, toDateText, viewStep, selectedRegion, selectedProduct);

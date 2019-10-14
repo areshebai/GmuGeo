@@ -18,17 +18,20 @@ function getViewProductInstance(instance) {
 function getViewRegionInstance(instance) {
     g_viewRegionInstance = instance;
     instance["addItem"]('All');
-    instance["addItem"]('East Asia');
-    instance["addItem"]('Europe');
     instance["addItem"]('North America');
-    instance["addItem"]('Source America');
-    instance["selectIndex"](0);
+    instance["addItem"]('South America');    
+    instance["addItem"]('Europe');
+    instance["addItem"]('Asia');
+    instance["addItem"]('Africa');
+    instance["addItem"]('Australia');
+    instance["selectIndex"](1);
 }
 
 function getImageTypeInstance(instance) {
     instance["addItem"]('GeoTiff');
     instance["addItem"]('HDF4');
     instance["addItem"]('PNG');
+    instance["addItem"]('ShapeFile');
     instance["selectIndex"](1);
 }
 
@@ -157,10 +160,10 @@ function initMap() {
 
 function createMapInstance(mapElement, transparency) {
     var mapProp = {
-        center: new google.maps.LatLng({ lat: 0, lng: 0 }),
+        center: new google.maps.LatLng({ lat: 40, lng: 180 }),
         maxZoom: 10,
         minZoom: 2,
-        zoom: 5,
+        zoom: 3,
         zoomControl: true,
         mapTypeId: 'hybrid',
         streetViewControl: false,
@@ -190,7 +193,8 @@ function createMapInstance(mapElement, transparency) {
 function displayKmlLayer(map, url) {
     var ctaLayer = new google.maps.KmlLayer({
         preserveViewport: false,
-        suppressInfoWindows: false
+        suppressInfoWindows: false,
+        clickable: false
     });
 
     ctaLayer.setUrl(url);
@@ -286,5 +290,4 @@ function displayKmlById(map) {
 function mouseMoveOnMap(event) {
     $("#currentLatitude").html(event.latLng.lat());
     $("#currentLongitude").html(event.latLng.lng());
-    $("#currentDistrict").html('48');
 }
