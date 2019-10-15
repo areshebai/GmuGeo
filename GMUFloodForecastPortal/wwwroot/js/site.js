@@ -125,37 +125,12 @@ function initMap() {
     $('#PeriodTo').html(toDateText);
 
     var map = createMapInstance("googleMap", parseInt(currentTrans));
-    displayKmls(map, fromDateText, toDateText, viewStep, selectedRegion, selectedProduct);
 
-    /*
-    hour = 0;
-    var map = createMapInstance("googleMap", 50);
+    var ctaLayer = new google.maps.KmlLayer("https://jpssflood.gmu.edu/kmls/yukon_5_6_15.kmz");
+    ctaLayer.setMap(map);
 
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_2.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_3.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_4.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_5.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_6.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_8.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_7.kml');
-    //displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_230000_9.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_230000_10.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_11.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_12.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_13.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_14.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_15.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_16.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_17.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_18.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_19.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_20.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_21.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_22.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_23.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_24.kml');
-    displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_170000_25.kml');
-    */
+    // displayKmls(map, fromDateText, toDateText, viewStep, selectedRegion, selectedProduct);
+
 }
 
 function createMapInstance(mapElement, transparency) {
@@ -181,13 +156,42 @@ function createMapInstance(mapElement, transparency) {
 
     map.addListener('tilesloaded', function () {
         $("#" + mapElement).find("img[src*='googleusercontent']").css("opacity", transparency / 100);
-    })
+    });
 
     map.addListener('mousemove', function (e) {
-        mouseMoveOnMap(e)
+        mouseMoveOnMap(e);
+    });
+
+    google.maps.event.addListener(map, 'dragend', function () {
+        dragOnMap();
+    });
+
+    google.maps.event.addListener(map, 'zoom_changed', function () {
+        zoomLevel = map.getZoom();
+        alert(zoomLevel);
     });
 
     return map;
+}
+
+function mouseMoveOnMap(event) {
+    $("#currentLatitude").html(event.latLng.lat());
+    $("#currentLongitude").html(event.latLng.lng());
+}
+
+function dragOnMap() {
+    var bounds = map.getBounds();
+    var southWest = bounds.getSouthWest();
+    var northEast = bounds.getNorthEast();
+
+    alert(southWest.lat());
+    alert(northEast);
+}
+
+function zoomChangedOnMap(event) {
+    var currentZoom = map.getZoom();
+    alert('zoom_changed');
+    alert(currentZoom);
 }
 
 function displayKmlLayer(map, url) {
@@ -285,9 +289,4 @@ function displayKmlById(map) {
             });
         }
     });
-}
-
-function mouseMoveOnMap(event) {
-    $("#currentLatitude").html(event.latLng.lat());
-    $("#currentLongitude").html(event.latLng.lng());
 }
