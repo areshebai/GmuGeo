@@ -10,6 +10,13 @@ $now = $now.AddDays(-1);
 function MoveFtpFile ([DateTime]$inputDate)
 {
     pushd "/home/raw-geo-data/"
+
+    ############################################################
+    #
+    # Definitions
+    #
+    ############################################################
+
     $folderName = $inputDate.ToString("yyyyMMdd");
     $compressDestination = "/home/www-html/kmls/";
 
@@ -19,6 +26,16 @@ function MoveFtpFile ([DateTime]$inputDate)
     $abiFileNameFormat = 'COM_*_ABI_WATER_*_*_*_*_*_*_*_*_*_{0}';
     $viirsAhiFileNameFormat = 'Joint_VIIRS_AHI_WATER_Prj_SVI_*_*_*_*_{0}';
     $viirsAbiFileNameFormat = 'Joint_VIIRS_ABI_WATER_Prj_SVI_*_*_*_*_{0}';
+
+    $archiveFoldername = "archive";
+
+    $tifFileTypeName = "tif";
+    $hdfFileTypeName = "hdf";
+    $kmlFileTypeName = "kml";
+    $pngFileTypeName = "png";
+    $shapeFileTypeName = "shapefile";
+
+    $fileTypes = @($tifFileTypeName, $hdfFileTypeName, $shapeFileTypeName, $pngFileTypeName, $kmlFileTypeName);
 
     ############################################################
     #
@@ -30,86 +47,67 @@ function MoveFtpFile ([DateTime]$inputDate)
     {
 		# Create folder /home/raw-geo-data/{date}
 		mkdir $folderName
+        Log-Message "Directory is created. $folderName"
     }
 
-    if(-not(Test-Path $folderName/tif))
+    if(-not(Test-Path $folderName/$tifFileTypeName))
     {
         # Create folder /home/raw-geo-data/{date}/tif
-        mkdir $folderName/tif
+        mkdir $folderName/$tifFileTypeName
+        Log-Message "Directory is created. $folderName/$tifFileTypeNamef"
     }
 
-    if(-not(Test-Path $folderName/hdf))
+    if(-not(Test-Path $folderName/$hdfFileTypeName))
     {
         # Create folder /home/raw-geo-data/{date}/hdf
-		mkdir $folderName/hdf
+		mkdir $folderName/$hdfFileTypeName
+        Log-Message "Directory is created. $folderName/$hdfFileTypeName"
     }
 
-    if(-not(Test-Path $folderName/shapefile))
+    if(-not(Test-Path $folderName/$shapeFileTypeName))
     {
         # Create folder /home/raw-geo-data/{date}/shapefile
-		mkdir $folderName/shapefile
+		mkdir $folderName/$shapeFileTypeName
+        Log-Message "Directory is created. $folderName/$shapeFileTypeName"
     }
 
-    if(-not(Test-Path $folderName/archive))
+    if(-not(Test-Path $folderName/$archiveFoldername))
     {
-        # Create folder /home/raw-geo-data/{date}/shapefile
-		mkdir $folderName/archive
+        # Create folder /home/raw-geo-data/{date}/archive
+		mkdir $folderName/$archiveFoldername
+        Log-Message "Directory is created. $folderName/$archiveFoldername"
     }
 
     # /home/raw-geo-data/20191004
     $currentWorkingFolder = (Resolve-Path ./$folderName).Path;
+
     # /home/raw-geo-data/20191004/tif
-    $tifFolder = (Resolve-Path ./$folderName/tif).Path;
+    $tifFolder = (Resolve-Path ./$folderName/$tifFileTypeName).Path;
 
     # /home/raw-geo-data/20191004/hdf
-    $hdfFolder = (Resolve-Path ./$folderName/hdf).Path;
+    $hdfFolder = (Resolve-Path ./$folderName/$hdfFileTypeName).Path;
 
     # /home/raw-geo-data/20191004/archive
-    $archiveFolder = (Resolve-Path ./$folderName/archive).Path;
+    $archiveFolder = (Resolve-Path ./$folderName/$archiveFoldername).Path;
 
     ############################################################
     #
     # 2. Move files by type
     #
     ############################################################
-    $fileTypes = @("tif", "hdf", "shapefile", "png", "kml");
-    for($i = 0; $i -lt $fileTypes.Count; $i++)
-    {
-		$fileType = $fileTypes[$i];
-		$fileExtension = $fileType;
-		if ($fileType -eq "shapefile")
-		{
-			$fileExtension = "zip";
-		}
-
-        $logTime = [System.DateTime]::get_UtcNow();
-		Log-Message "Move $fileType files to $folderName start.";
-
-		if(($fileType -eq "png") -or ($fileType -eq "mkl"))
-		{
-			# Can not handle files mixed more than 5 days
-            Get-Item -Path ./*$folderName*.$fileExtension | Move-Item -Destination ./$folderName
-		}
-		else
-		{
-			# Can not handle files mixed more than 5 days
-			Get-Item -Path ./*$folderName*.$fileExtension | Move-Item -Destination ./$folderName/$fileType
-		}
-
-        Log-Message "Move $fileType files to $folderName finish.";
-    }
+    $fileTypes | ForEach-Object { Move-FilesByType $folderName $_;};
 
     ############################################################
     #
     # 3. Compress and move files to https folder
     #
     ############################################################
-    MoveAndCompressSourceFiles $tifFolder $viirs1DayFileNameFormat 136 $archiveFolder $compressDestination;
-    MoveAndCompressSourceFiles $tifFolder $viirs5DayFileNameFormat 136 $archiveFolder $compressDestination;
-    MoveAndCompressSourceFiles $tifFolder $ahiFileNameFormat 8 $archiveFolder $compressDestination;
-    MoveAndCompressSourceFiles $tifFolder $abiFileNameFormat 8 $archiveFolder $compressDestination;
-    MoveAndCompressSourceFiles $tifFolder $viirsAhiFileNameFormat 136 $archiveFolder $compressDestination;
-    MoveAndCompressSourceFiles $tifFolder $viirsAbiFileNameFormat 136 $archiveFolder $compressDestination;
+    MoveAndCompressSourceFiles $fileTypes $currentWorkingFolder $viirs1DayFileNameFormat 136 $archiveFolder $compressDestination;
+    MoveAndCompressSourceFiles $fileTypes $currentWorkingFolder $viirs5DayFileNameFormat 136 $archiveFolder $compressDestination;
+    MoveAndCompressSourceFiles $fileTypes $currentWorkingFolder $ahiFileNameFormat 8 $archiveFolder $compressDestination;
+    MoveAndCompressSourceFiles $fileTypes $currentWorkingFolder $abiFileNameFormat 8 $archiveFolder $compressDestination;
+    MoveAndCompressSourceFiles $fileTypes $currentWorkingFolder $viirsAhiFileNameFormat 136 $archiveFolder $compressDestination;
+    MoveAndCompressSourceFiles $fileTypes $currentWorkingFolder $viirsAbiFileNameFormat 136 $archiveFolder $compressDestination;
 
     ############################################################
     #
@@ -118,6 +116,10 @@ function MoveFtpFile ([DateTime]$inputDate)
     ############################################################
     GenerateViirsDisplayImages $viirs1DayFileNameFormat $currentWorkingFolder $compressDestination;
     GenerateViirsDisplayImages $viirs5DayFileNameFormat $currentWorkingFolder $compressDestination;
+    CopyDisplayImages $ahiFileNameFormat $currentWorkingFolder $compressDestination 8;
+    CopyDisplayImages $abiFileNameFormat $currentWorkingFolder $compressDestination 8;
+    CopyDisplayImages $viirsAhiFileNameFormat $currentWorkingFolder $compressDestination 136;
+    CopyDisplayImages $viirsAbiFileNameFormat $currentWorkingFolder $compressDestination 136;
 
     ############################################################
     #
@@ -144,6 +146,101 @@ function MoveFtpFile ([DateTime]$inputDate)
 	popd
 }
 
+function Move-FilesByType([string]$folderName, [string]$fileType)
+{
+	$fileExtension = $fileType;
+	if ($fileType -eq "shapefile")
+	{
+		$fileExtension = "zip";
+	}
+
+    $moveDestination = Join-Path ./$folderName $fileType;
+	if(($fileType -eq "png") -or ($fileType -eq "kml"))
+	{
+        $moveDestination = "./$folderName";
+    }
+
+	Log-Message "Move $fileType files to $moveDestination start.";
+
+	# Can not handle files mixed more than 5 days
+    Get-Item -Path ./*$folderName*.$fileExtension | Move-Item -Destination $moveDestination
+
+    Log-Message "Move $fileType files to $moveDestination finish.";
+}
+
+function MoveAndCompressSourceFiles([string[]]$fileTypes, [string]$directory, [string]$searchFormat, [Int32]$maxIndex, [string]$archiveFolder, [string]$compressDestination)
+{
+    for($n = 0; $n -lt $fileTypes.Count; $n++)
+    {
+        $fileType = $fileTypes[$n];
+        $fileExtension = GetFileExtentionByType $fileType;
+
+        $searchDirectory = Join-Path $directory $fileType
+        if($fileType -eq "kml")
+        {
+            $searchDirectory = $directory;
+        }
+
+        if($fileType -eq "png")
+        {
+            # Already handled by kml file
+            continue;
+        }
+
+        $searchFormatWithFileExtension = $searchFormat + $fileExtension;
+
+        for($i = 1; $i -le $maxIndex; $i++)
+        {
+		    $pathPattern = $searchFormatWithFileExtension -f $i.ToString("d3");
+		    $dataFiles = Get-Item -Path (Join-Path $searchDirectory $pathPattern);
+
+		    if ($dataFiles.Count -gt 0)
+		    {
+			    # No dup for re-entry
+			    MoveDupFilesToArchive $dataFiles $archiveFolder;
+			
+			    $dataFile = $dataFiles[$dataFiles.Count-1];
+			    $compressedFile = Join-Path $compressDestination $dataFile.Name;
+
+                if ($fileType -ne "shapefile")
+                {
+			        $compressedFile = $compressedFile + ".zip";
+                }
+
+			    if(Test-Path $compressedFile)
+			    {
+				    continue;
+			    }
+
+	            Log-Message "Compress file to $compressedFile";
+                
+                if($fileType -eq "kml")
+                {
+                    $pngFileFullName = $dataFile.FullName.Replace(".kml", ".png");
+                    if(Test-Path $pngFileFullName)
+                    {
+                        Compress-Archive -Path ($dataFile.FullName, $pngFileFullName) -DestinationPath $compressedFile -Force;
+                    }
+                }
+                else
+                {
+                    Compress-Archive -Path $dataFile.FullName -DestinationPath $compressedFile -Force;
+                }
+		    }
+        }
+    }
+}
+
+function GetFileExtentionByType([string]$fileType)
+{
+    if ($fileType -eq "tif") {return ".tif";}
+    if ($fileType -eq "hdf") {return ".hdf";}
+    if ($fileType -eq "kml") {return ".kml";}
+    if ($fileType -eq "png") {return ".png";}
+    if ($fileType -eq "shapefile") {return ".zip";}
+        
+}
+
 function InsertRecordToDatabaseForImages([Mysql.Data.MySqlClient.MySqlCommand]$mySqlCommond, [string]$searchFormat, [int]$productId, [int]$maxIndex, [string]$date, [string]$currentWorkingFolder)
 {
     $searchFormat = $searchFormat + ".kml";
@@ -152,6 +249,7 @@ function InsertRecordToDatabaseForImages([Mysql.Data.MySqlClient.MySqlCommand]$m
     {
 		$pathPattern = $searchFormat -f $i.ToString("d3");
 
+        # $currentWorkingFolder is /home/raw-data-geo/20191004
         # Must return only 1 file after dedup, possible be 0 if not exists
         $kmlFile = Get-Item -Path (Join-Path $currentWorkingFolder $pathPattern);
 
@@ -165,6 +263,40 @@ function InsertRecordToDatabaseForImages([Mysql.Data.MySqlClient.MySqlCommand]$m
             $mySqlCommond.CommandText = "INSERT INTO jpssflood.kmlmetadata (ProductId, RegionId, DistrictId, Date, FileName, Version) SELECT $productId, 1, $i, '$fileDate', '$fileBaseName', 3 FROM jpssflood.kmlmetadata WHERE NOT EXISTS (SELECT 1 FROM jpssflood.kmlmetadata WHERE FileName = '$fileBaseName') LIMIT 1";
             $mySqlCommond.Prepare();
             $mySqlCommond.ExecuteNonQuery();
+        }
+    }
+}
+
+function CopyDisplayImages([string]$fileBaseNameFormat, [string]$currentWorkingFolder, [string]$compressDestination, [int]$maxIndex)
+{
+    $fileBaseNameFormat = $fileBaseNameFormat + ".kml";
+        
+    for($i = 1; $i -le $maxIndex; $i++)
+	{
+		$pathPattern = $fileBaseNameFormat -f $i.ToString("d3");
+
+        # Must return only 1 file after dedup
+        $kmlFile = Get-Item -Path (Join-Path $currentWorkingFolder $pathPattern);
+		if($kmlFile -ne $null)
+		{
+			$srcKmlFilePath = $kmlFile.FullName;
+            $fileBaseName = $kmlFile.BaseName;
+
+            $destinationFilePath = Join-Path $compressDestination ($fileBaseName + ".kml");
+            Log-Message "Copy $srcKmlFilePath to $destinationFilePath"
+			Copy-Item -Path $srcKmlFilePath -Destination $destinationFilePath -Force
+
+			$srcPngFilePath = $kmlFile.FullName.Replace(".kml", ".png");
+            if(Test-Path $srcPngFilePath)
+            {
+                $destinationFilePath = Join-Path $compressDestination ($fileBaseName + ".png");
+                Log-Message "Copy $srcPngFilePath to $destinationFilePath"
+			    Copy-Item -Path $srcPngFilePath -Destination $destinationFilePath -Force;
+            }
+		}
+        else
+        {
+            Log-Message "No file found when search $pathPattern. Skip copy.";
         }
     }
 }
@@ -221,53 +353,6 @@ function GenerateViirsDisplayImages([string]$fileBaseNameFormat, [string]$curren
     }
 }
 
-function MoveAndCompressSourceFiles([string]$directory, [string]$searchFormat, [Int32]$maxIndex, [string]$archiveFolder, [string]$compressDestination)
-{
-    $searchFormat = $searchFormat + ".tif";
-
-    for($i = 1; $i -le $maxIndex; $i++)
-    {
-		$pathPattern = $searchFormat -f $i.ToString("d3");
-		$tifFiles = Get-Item -Path (Join-Path $directory $pathPattern);
-
-		if ($tifFiles.Count -gt 0)
-		{
-			# tif, hdf, kml, png and shapefile handled together in the function
-			# No dup for re-entry
-			MoveDupFilesToArchive $tifFiles $archiveFolder;
-			
-			# tif, hdf, kml, png and shapefile handled together in the function
-			$tifFile = $tifFiles[$tifFiles.Count-1];
-			$compressedFile = Join-Path $compressDestination $tifFile.Name;
-			$compressedFile = $compressedFile + ".zip";
-			if(Test-Path $compressedFile)
-			{
-				continue;
-			}
-			CompressFileToHttpFolder $tifFile $compressDestination
-		}
-    }
-}
-
-function CompressFileToHttpFolder([System.IO.FileInfo]$file, [string]$compressDestination)
-{
-	$compressedFileName = (Join-Path $compressDestination $file.Name) + ".zip";
-	Log-Message "Compress file: $compressedFileName";
-    Compress-Archive -Path $file.FullName -DestinationPath $compressedFileName -Force;
-
-    $compressedFileName = (Join-Path $compressDestination $file.Name.Replace(".tif", ".hdf")) + ".zip";
-	Log-Message "Compress file: $compressedFileName";
-    Compress-Archive -Path $file.FullName.Replace("/tif", "/hdf").Replace(".tif", ".hdf") -DestinationPath $compressedFileName -Force;
-
-    $compressedFileName = (Join-Path $compressDestination $file.Name.Replace(".tif", ".kml")) + ".zip";
-	Log-Message "Compress file: $compressedFileName";
-    Compress-Archive -Path ($file.FullName.Replace("/tif", "").Replace(".tif", ".kml"), $file.FullName.Replace("/tif", "").Replace(".tif", ".png")) -DestinationPath $compressedFileName -Force;
-
-    $compressedFileName = (Join-Path $compressDestination $file.Name.Replace(".tif", ".zip"));
-	Log-Message "Copy file: $compressedFileName";
-    Copy-Item -Path $file.FullName.Replace("/tif", "/shapefile").Replace(".tif", ".zip") -Destination $compressedFileName -ErrorAction SilentlyContinue;
-}
-
 function MoveDupFilesToArchive([System.IO.FileInfo[]]$files, [String]$archiveFolder)
 {
 	if($files.Count -gt 1)
@@ -275,11 +360,8 @@ function MoveDupFilesToArchive([System.IO.FileInfo[]]$files, [String]$archiveFol
         for ($i = 0; $i -lt $files.Count - 1; $i++)
         {
 			$fileFullName = $files[$i].FullName;
+            Log-Message "Move $fileFullName archive folder $archiveFolder";
 			Move-Item -Path $fileFullName -Destination $archiveFolder -Force;
-			Move-Item -Path $fileFullName.Replace("/tif", "/hdf").Replace(".tif", ".hdf") -Destination $archiveFolder -Force;
-			Move-Item -Path $fileFullName.Replace("/tif", "").Replace(".tif", ".kml") -Destination $archiveFolder -Force;
-	        Move-Item -Path $fileFullName.Replace("/tif", "").Replace(".tif", ".png") -Destination $archiveFolder -Force;
-            Move-Item -Path $fileFullName.Replace("/tif", "/shapefile").Replace(".tif", ".zip") -Destination $archiveFolder -Force -ErrorAction Continue;
         }
     }
 }
@@ -304,6 +386,7 @@ function ReduceImageQuality([String]$pngFile, [string]$destinationFile, [Int32]$
     $newRectangle = New-Object -TypeName System.Drawing.Rectangle -ArgumentList 0, 0, $width, $height;
     $newGraphic.DrawImage($rawImage, $newRectangle);
     $newBitmap.Save($destinationFile);
+
 	$newGraphic.Dispose();
 	$newBitmap.Dispose();
 	$rawImage.Dispose();

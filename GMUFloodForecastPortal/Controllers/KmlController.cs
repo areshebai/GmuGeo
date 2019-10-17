@@ -15,6 +15,7 @@ namespace GMUFloodForecastPortal.Controllers
     {
         public string FullName { get; set; }
         public string ShortName { get; set; }
+        public int DistrictId { get; set; }
     }
 
     [Produces("application/json")]
@@ -90,7 +91,7 @@ namespace GMUFloodForecastPortal.Controllers
                         continue;
                     }
 
-                    kmlFiles.Add(new KmlFileInfo { FullName = string.Format(kmlFullFilePathFormat, fileName), ShortName = fileName });
+                    kmlFiles.Add(new KmlFileInfo { FullName = string.Format(kmlFullFilePathFormat, fileName), ShortName = fileName, DistrictId = districtId });
                 }
             }
 

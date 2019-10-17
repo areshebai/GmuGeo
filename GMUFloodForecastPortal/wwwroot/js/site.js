@@ -163,12 +163,9 @@ function createMapInstance(mapElement, transparency) {
     });
 
     google.maps.event.addListener(map, 'dragend', function () {
-        dragOnMap();
     });
 
     google.maps.event.addListener(map, 'zoom_changed', function () {
-        zoomLevel = map.getZoom();
-        alert(zoomLevel);
     });
 
     return map;
@@ -233,7 +230,9 @@ function displayKmls(map, from, to, step, region, product) {
         cache: false,
         success: function (data) {
             $.each(data, function (index, value) {
-                displayKmlLayer(map, value.fullName);
+                if (value.DistrictId !== 9) {
+                    displayKmlLayer(map, value.fullName);
+                }
             });
         }
     });
@@ -255,13 +254,16 @@ function getKmlFiles(from, to, step, region, product, imageFormat, instance) {
             $.each(data, function (index, value) {
                 var fileFullName = "";
                 if (imageFormat === 'GeoTiff') {
-                    fileFullName = value.fullName.replace(".kml", ".tif");
+                    fileFullName = value.fullName.replace(".kml", ".tif.zip");
                 }
                 else if (imageFormat === 'HDF4') {
-                    fileFullName = value.fullName.replace(".kml", ".hdf");
+                    fileFullName = value.fullName.replace(".kml", ".hdf.zip");
                 }
                 else if (imageFormat === 'PNG') {
-                    fileFullName = value.fullName.replace(".kml", ".png");
+                    fileFullName = value.fullName.replace(".kml", ".kml.zip");
+                }
+                else if (imageFormat === 'ShapeFile') {
+                    fileFullName = value.fullName.replace(".kml", ".zip");
                 }
                 else {
                     alert('Download: Unsupported file format.');
