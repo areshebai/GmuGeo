@@ -68,15 +68,22 @@
                             </div>
                             <div class="clearall"></div>
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
-                                <label>From</label>
+                                <label>Date</label>
                                 <div>
                                     <div style="float:left; margin-top: 2px">
-                                        <jqx-date-time-input id="viewFromDatetime" animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.UtcNow"></jqx-date-time-input>
+                                        <jqx-date-time-input id="viewFromDatetime" animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.UtcNow.AddDays(-1)" instance="getViewFromDateInstance()"></jqx-date-time-input>
+                                    </div>
+                                    <div class="clearall"></div>
+                                    <div style="float: left; margin-top: 5px">
+                                        <jqx-button id="apply_DateTimePeriodPre">&lt;&lt; Last </jqx-button>
+                                    </div>
+                                    <div style="float: left; margin-left: 12px; margin-top: 5px">
+                                        <jqx-button id="apply_DateTimePeriodNext"> Next &gt;&gt;</jqx-button>
                                     </div>
                                     <div class="clearall"></div>
                                 </div>
-                                <label style="margin-top: 10px">TO</label>
-                                <div>
+                                <label style="margin-top: 10px; display: none">TO</label>
+                                <div style="display: none">
                                     <div style="float: left; margin-top: 2px">
                                         <jqx-date-time-input id="viewToDatetime" animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.UtcNow.AddHours(1)"></jqx-date-time-input>
                                     </div>
@@ -113,12 +120,6 @@
                                 <div style="float: left">
                                     <jqx-button id="apply_DateTimePeriod">Apply & Search</jqx-button>
                                 </div>
-                                <div style="float: left; margin-left: 12px">
-                                    <jqx-button id="apply_DateTimePeriodPre">Prev</jqx-button>
-                                </div>
-                                <div style="float: left; margin-left: 12px">
-                                    <jqx-button id="apply_DateTimePeriodNext">Next</jqx-button>
-                                </div>
                                 <div class="clearall"></div>
                             </div>
                             <hr class="seperator" />
@@ -136,15 +137,9 @@
                         </div>
                         <div class="nav-info-panel">
                             <div>
-                                <label class="panel-title">Date and Time</label>
-                                <div style="clear:both">
+                                <label class="panel-title">Latest data on</label>
+                                <div style="clear:both; margin-bottom: 8px">
                                     <span id="PeriodFrom">N/A</span>
-                                </div>
-                                <div style="clear:both; margin-top: 8px">
-                                    <!--
-                                    <label>To:</label>
-                                    <span id="PeriodTo">N/A</span>
-                                        -->
                                 </div>
                             </div>
                             <div>
@@ -156,10 +151,6 @@
                                 <div style="clear:both">
                                     <label>Longitude:</label>
                                     <span id="currentLongitude"></span>
-                                </div>
-                                <div style="clear:both">
-                                    <label>Region:</label>
-                                    <span id="currentRegion"></span>
                                 </div>
                             </div>
                         </div>
@@ -243,12 +234,14 @@
         $(document).ready(function () {
             var fromDateText = getViewFromDatetimeText();
             $('#PeriodFrom').html(fromDateText);
-            var toDateText = getViewToDatetimeText();
-            $('#PeriodTo').html(toDateText);
         });
         
         function getGridInstance(instance) {
             g_downloadGridInstance = instance;
+        }
+
+        function getViewFromDateInstance(instance) {
+            g_ViewFromDateInstance = instance;
         }
 
         $('#view_DownloadCurrent').on('click', function (event) {
@@ -276,129 +269,21 @@
         var currentTrans = getViewTransparency();
 
         $('#PeriodFrom').html(fromDateText);
-        $('#PeriodTo').html(toDateText);
-        $("#currentRegion").html(selectedRegion);
 
         var map = createMapInstance("googleMap", parseInt(currentTrans));
         displayKmls(map, fromDateText, toDateText, viewStep, selectedRegion, selectedProduct);
-        /*
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_2.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_3.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_4.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_5.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_6.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_8.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_7.kml');
-        //displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_230000_9.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_230000_10.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_11.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_12.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_13.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_14.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_15.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_16.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_17.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_18.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_19.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_180000_20.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_160000_21.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_210000_22.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_23.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_190000_24.kml');
-        displayKmlLayer(map, 'https://jpssflood.gmu.edu/kmls/VIIRS/cspp-viirs-flood-globally_20180815_170000_25.kml');
-        */
     });
 
     $('#apply_DateTimePeriodPre').on('click', function (event) {
-        var viewStep = getSelectedViewStep();
-
         var viewFromDatetime = getViewFromDatetime();
-        var viewToDatetime = getViewToDatetime();
-
-        var currentFromDateTime = new Date($('#PeriodFrom').html());
-        var currentToDateTime = new Date($('#PeriodTo').html());
-
-        var selectedRegion = getSelectedViewRegion();
-        var selectedProduct = getSelectedViewProduct();
-
-        if (viewStep === 1) {
-            currentFromDateTime.setHours(currentFromDateTime.getHours() - 1);
-            if (currentFromDateTime < viewFromDatetime) {
-                alert('No previouse data!');
-                return;
-            }
-            else {
-                currentToDateTime.setHours(currentToDateTime.getHours() - 1);
-            }
-        }
-        else if (viewStep === 2) {
-            currentFromDateTime.setDate(currentFromDateTime.getDate() - 1);
-            if (currentFromDateTime < viewFromDatetime) {
-                alert('No previouse data!');
-                return;
-            }
-            else {
-                currentToDateTime.setDate(currentToDateTime.getDate() - 1);
-            }
-        }
-        else {
-            currentFromDateTime.setDate(currentFromDateTime.getDate() - 5);
-            if (currentFromDateTime < viewFromDatetime) {
-                alert('No previouse data!');
-                return;
-            }
-            else {
-                currentToDateTime.setDate(currentToDateTime.getDate() - 5);
-            }
-        }
-
-        $('#PeriodFrom').html(formatDate(currentFromDateTime));
+        viewFromDatetime.setDate(viewFromDatetime.getDate() - 1);
+        g_ViewFromDateInstance["setDate"](viewFromDatetime);
     });
 
     $('#apply_DateTimePeriodNext').on('click', function (event) {
-        var viewStep = getSelectedViewStep();
-
         var viewFromDatetime = getViewFromDatetime();
-        var viewToDatetime = getViewToDatetime();
-
-        var currentFromDateTime = new Date($('#PeriodFrom').html());
-        var currentToDateTime = new Date($('#PeriodTo').html());
-
-        var selectedRegion = getSelectedViewRegion();
-        var selectedProduct = getSelectedViewProduct();
-
-        if (viewStep === 1) {
-            currentFromDateTime.setHours(currentFromDateTime.getHours() + 1);
-            if (currentFromDateTime > viewToDatetime) {
-                alert('No forward data!');
-                return;
-            }
-            else {
-                currentToDateTime.setHours(currentToDateTime.getHours() + 1);
-            }
-        }
-        else if (viewStep === 2) {
-            currentFromDateTime.setDate(currentFromDateTime.getDate() + 1);
-            if (currentFromDateTime > viewToDatetime) {
-                alert('No forward data!');
-                return;
-            }
-            else {
-                currentToDateTime.setDate(currentToDateTime.getDate() + 1);
-            }
-        }
-        else {
-            currentFromDateTime.setDate(currentFromDateTime.getDate() + 5);
-            if (currentFromDateTime > viewToDatetime) {
-                alert('No forward data!');
-                return;
-            }
-            else {
-                currentToDateTime.setDate(currentToDateTime.getDate() + 5);
-            }
-        }
-
-        $('#PeriodFrom').html(formatDate(currentFromDateTime));
+        viewFromDatetime.setDate(viewFromDatetime.getDate() + 1);
+        g_ViewFromDateInstance["setDate"](viewFromDatetime);
     });
 
     </script>

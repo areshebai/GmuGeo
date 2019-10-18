@@ -25,6 +25,7 @@ Website: https://jpssflood.gmu.edu/
 
 [ywang95@JPSSFLOOD ~]$ sudo systemctl stop kestrel-gmuffapp.service
 [ywang95@JPSSFLOOD ~]$ sudo systemctl start kestrel-gmuffapp.service
+sudo systemctl status kestrel-gmuffapp.service
 
 
 Webserver config: /etc/httpd/conf.d/gmuffapp.conf

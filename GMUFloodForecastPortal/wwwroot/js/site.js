@@ -4,6 +4,7 @@ var g_viewRegionInstance;
 var g_viewProductInstance;
 var g_downloadWindowInstance;
 var g_downloadGridInstance;
+var g_ViewFromDateInstance;
 
 function getViewProductInstance(instance) {
     g_viewProductInstance = instance;
@@ -230,7 +231,7 @@ function displayKmls(map, from, to, step, region, product) {
         cache: false,
         success: function (data) {
             $.each(data, function (index, value) {
-                if (value.DistrictId !== 9) {
+                if (value.districtId !== 9) {
                     displayKmlLayer(map, value.fullName);
                 }
             });
