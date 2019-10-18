@@ -71,14 +71,13 @@
                                 <label>Date</label>
                                 <div>
                                     <div style="float:left; margin-top: 2px">
-                                        <jqx-date-time-input id="viewFromDatetime" animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.UtcNow.AddDays(-1)" instance="getViewFromDateInstance()"></jqx-date-time-input>
+                                        <jqx-date-time-input id="viewFromDatetime" animation-type="fade" width="120" height="30" show-calendar-button="true" show-time-button="false" format-string="MM/dd/yyyy" value="DateTime.UtcNow.AddDays(-1)" instance="getViewFromDateInstance()"></jqx-date-time-input>
                                     </div>
-                                    <div class="clearall"></div>
-                                    <div style="float: left; margin-top: 5px">
-                                        <jqx-button id="apply_DateTimePeriodPre">&lt;&lt; Last </jqx-button>
+                                    <div style="float: left; margin-left: 8px; margin-top: 3px">
+                                        <jqx-button id="apply_DateTimePeriodPre">&lt; Last </jqx-button>
                                     </div>
-                                    <div style="float: left; margin-left: 12px; margin-top: 5px">
-                                        <jqx-button id="apply_DateTimePeriodNext"> Next &gt;&gt;</jqx-button>
+                                    <div style="float: left; margin-left: 6px; margin-top: 3px">
+                                        <jqx-button id="apply_DateTimePeriodNext"> Next &gt;</jqx-button>
                                     </div>
                                     <div class="clearall"></div>
                                 </div>
@@ -277,13 +276,17 @@
     $('#apply_DateTimePeriodPre').on('click', function (event) {
         var viewFromDatetime = getViewFromDatetime();
         viewFromDatetime.setDate(viewFromDatetime.getDate() - 1);
-        g_ViewFromDateInstance["setDate"](viewFromDatetime);
+
+        $('#viewFromDatetime').attr('aria-valuetext', viewFromDatetime.toDateString());
+        g_ViewFromDateInstance['val'](viewFromDatetime);
     });
 
     $('#apply_DateTimePeriodNext').on('click', function (event) {
         var viewFromDatetime = getViewFromDatetime();
         viewFromDatetime.setDate(viewFromDatetime.getDate() + 1);
-        g_ViewFromDateInstance["setDate"](viewFromDatetime);
+
+        $('#viewFromDatetime').attr('aria-valuetext', viewFromDatetime.toDateString());
+        g_ViewFromDateInstance["val"](viewFromDatetime);
     });
 
     </script>
