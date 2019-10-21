@@ -6,8 +6,21 @@ var g_downloadWindowInstance;
 var g_downloadGridInstance;
 var g_ViewFromDateInstance;
 
+var g_downloadRegionInstance;
+var g_downloadProductInstance;
+
 function getViewProductInstance(instance) {
     g_viewProductInstance = instance;
+    instance["addItem"]('VIIRS 375-m');
+    instance["addItem"]('ABI 1-km');
+    instance["addItem"]('AHI 1-km');
+    instance["addItem"]('Joint VIIRS/ABI');
+    instance["addItem"]('Joint VIIRS/AHI');
+    instance["selectIndex"](0);
+}
+
+function getDownloadProductInstance(instance) {
+    g_downloadProductInstance = instance;
     instance["addItem"]('VIIRS 375-m');
     instance["addItem"]('ABI 1-km');
     instance["addItem"]('AHI 1-km');
@@ -28,7 +41,27 @@ function getViewRegionInstance(instance) {
     instance["selectIndex"](1);
 }
 
+function getDownloadRegionInstance(instance) {
+    g_downloadRegionInstance = instance;
+    instance["addItem"]('All');
+    instance["addItem"]('North America');
+    instance["addItem"]('South America');
+    instance["addItem"]('Europe');
+    instance["addItem"]('Asia');
+    instance["addItem"]('Africa');
+    instance["addItem"]('Australia');
+    instance["selectIndex"](1);
+}
+
 function getImageTypeInstance(instance) {
+    instance["addItem"]('GeoTiff');
+    instance["addItem"]('HDF4');
+    instance["addItem"]('PNG');
+    instance["addItem"]('ShapeFile');
+    instance["selectIndex"](1);
+}
+
+function getDownloadImageTypeInstance(instance) {
     instance["addItem"]('GeoTiff');
     instance["addItem"]('HDF4');
     instance["addItem"]('PNG');

@@ -70,11 +70,11 @@
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>Date</label>
                                 <div>
+                                    <div style="float: left; margin-right: 6px; margin-top: 3px">
+                                        <jqx-button id="apply_DateTimePeriodPre">&lt; Last </jqx-button>
+                                    </div>
                                     <div style="float:left; margin-top: 2px">
                                         <jqx-date-time-input id="viewFromDatetime" animation-type="fade" width="120" height="30" show-calendar-button="true" show-time-button="false" format-string="MM/dd/yyyy" value="DateTime.UtcNow.AddDays(-1)" instance="getViewFromDateInstance()"></jqx-date-time-input>
-                                    </div>
-                                    <div style="float: left; margin-left: 8px; margin-top: 3px">
-                                        <jqx-button id="apply_DateTimePeriodPre">&lt; Last </jqx-button>
                                     </div>
                                     <div style="float: left; margin-left: 6px; margin-top: 3px">
                                         <jqx-button id="apply_DateTimePeriodNext"> Next &gt;</jqx-button>
@@ -117,7 +117,7 @@
                             </div>
                             <div class="applyselection">
                                 <div style="float: left">
-                                    <jqx-button id="apply_DateTimePeriod">Apply & Search</jqx-button>
+                                    <jqx-button width="240" id="apply_DateTimePeriod">Apply & Search</jqx-button>
                                 </div>
                                 <div class="clearall"></div>
                             </div>
@@ -164,45 +164,82 @@
                                 <label>From</label>
                                 <div>
                                     <div style="float:left; margin-top: 2px">
-                                        <jqx-date-time-input id="downloadFromDatetime" animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.UtcNow"></jqx-date-time-input>
+                                        <jqx-date-time-input id="downloadFromDatetime" animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="false" format-string="MM/dd/yyyy" value="DateTime.UtcNow.AddDays(-1)" instance="getDownloadFromDateInstance()"></jqx-date-time-input>
                                     </div>
                                     <div class="clearall"></div>
                                 </div>
                                 <label style="margin-top: 10px">TO</label>
                                 <div>
                                     <div style="float: left; margin-top: 2px">
-                                        <jqx-date-time-input animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="true" format-string="MM/dd/yyyy HH:mm:ss" value="DateTime.Now.AddMinutes(5)"></jqx-date-time-input>
+                                        <jqx-date-time-input id="downloadToDatetime" animation-type="fade" width="240" height="30" show-calendar-button="true" show-time-button="false" format-string="MM/dd/yyyy" value="DateTime.Now" instance="getDownloadToDateInstance()"></jqx-date-time-input>
                                     </div>
                                 </div>
                                 <div class="clearall"></div>
                             </div>
                             <div class="clearall"></div>
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
-                                <label>Region</label>
+                                <label>Block</label>
                                 <div>
-                                    <jqx-drop-down-list id="downloadRegion" width="240" height="25" instance="getViewRegionInstance()"></jqx-drop-down-list>
+                                    <div style="float: left; margin-top: 2px">
+                                        <jqx-radio-button id="downloadByRegion" group-name="DownloadOption">Region</jqx-radio-button>
+                                    </div>
+                                    <div style="float: left; margin-top: 2px; margin-left:6px">
+                                        <jqx-radio-button id="downloadByCoordinate" group-name="DownloadOption" checked="true">Coordinate</jqx-radio-button>
+                                    </div>
+                                    <div class="clearall"></div>
+                                    <div id="downloadRegionPanel" style="margin-top: 10px">
+                                        <jqx-drop-down-list id="downloadRegion" width="240" height="25" instance="getDownloadRegionInstance()"></jqx-drop-down-list>
+                                    </div>
+                                    <div id="downloadCoordinatePanel" style="margin-top: 10px">
+                                        <div>
+                                            <span style="float: left; margin-top: 4px; margin-left:63px">North</span>
+                                            <div style="float: left; margin-left: 3px">
+                                                <jqx-input id="downloadCoordinateNorth" width="50" height="25" value="90" min-length="1" max-length="2"></jqx-input>
+                                            </div>
+                                            <div class="clearall"></div>
+                                        </div>
+                                        <div style="margin-top: 3px">
+                                            <span style="float: left; margin-top: 6px">West</span>
+                                            <div style="float: left; margin-top: 2px; margin-left: 3px">
+                                                <jqx-input id="downloadCoordinateWest" width="50" height="25" value="180" min-length="1" max-length="3"></jqx-input>
+                                            </div>
+
+                                            <div style="float: left;margin-top: 2px; margin-left: 68px">
+                                                <jqx-input id="downloadCoordinateEast" width="50" height="25" value="180" min-length="1" max-length="3"></jqx-input>
+                                            </div>
+                                            <span style="float: left; margin-top: 6px; margin-left: 3px">East</span>
+                                            <div class="clearall"></div>
+                                        </div>
+                                        <div style="margin-top: 3px">
+                                            <span style="float: left; margin-top: 6px; margin-left:55px">Source</span>
+                                            <div style="float: left; margin-top: 2px;margin-left: 3px">
+                                                <jqx-input id="downloadCoordinateSource" width="50" height="25" value="90" min-length="1" max-length="2"></jqx-input>
+                                            </div>
+                                            <div class="clearall"></div>
+                                        </div>
+                                    </div>
+                                    <div class="clearall"></div>
                                 </div>
-                                <div class="clearall"></div>
                             </div>
-                            <div class="clearall"></div>
-                            <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
-                                <label>Products</label>
-                                <div>
-                                    <jqx-drop-down-list id="downloadProduct" width="240" height="25" instance="getViewProductInstance()"></jqx-drop-down-list>
+                                <div class="clearall"></div>
+                                <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
+                                    <label>Products</label>
+                                    <div>
+                                        <jqx-drop-down-list id="downloadProduct" width="240" height="25" instance="getDownloadProductInstance()"></jqx-drop-down-list>
+                                    </div>
+                                    <div class="clearall"></div>
                                 </div>
-                                <div class="clearall"></div>
-                            </div>
-                            <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
-                                <label>Image Format</label>
-                                <div>
-                                    <jqx-drop-down-list width="240" height="25" instance="getImageTypeInstance()"></jqx-drop-down-list>
+                                <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
+                                    <label>Image Format</label>
+                                    <div>
+                                        <jqx-drop-down-list width="240" height="25" instance="getDownloadImageTypeInstance()"></jqx-drop-down-list>
+                                    </div>
+                                    <div class="clearall"></div>
                                 </div>
-                                <div class="clearall"></div>
+                                <div style="margin-top: 30px; margin-left: 10px">
+                                    <jqx-button id="download_SearchAndDownload" width="240">Search & Download</jqx-button>
+                                </div>
                             </div>
-                            <div style="margin-top: 30px; margin-left: 55px;">
-                                <jqx-button id="download_SearchAndDownload">Search & Download</jqx-button>
-                            </div>
-                        </div>
                     </jqx-tab-panel-body>
                 </jqx-tab-panel>
             </jqx-tabs>
@@ -233,6 +270,8 @@
         $(document).ready(function () {
             var fromDateText = getViewFromDatetimeText();
             $('#PeriodFrom').html(fromDateText);
+            $("#downloadRegionPanel").hide();
+            $("#downloadCoordinatePanel").show();
         });
         
         function getGridInstance(instance) {
@@ -288,6 +327,16 @@
         $('#viewFromDatetime').attr('aria-valuetext', viewFromDatetime.toDateString());
         g_ViewFromDateInstance["val"](viewFromDatetime);
     });
+
+        $('#downloadByRegion').on('click', function (event) {
+            $("#downloadRegionPanel").show();
+            $("#downloadCoordinatePanel").hide();
+        }); 
+
+        $('#downloadByCoordinate').on('click', function (event) {
+            $("#downloadRegionPanel").hide();
+            $("#downloadCoordinatePanel").show();
+        });
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXVemTzeOvkKbvJFWi60hkwaIwD37s1LA&callback=initMap"></script>
