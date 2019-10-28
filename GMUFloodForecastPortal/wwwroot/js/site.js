@@ -117,6 +117,16 @@ function getViewToDatetimeText() {
     return toText;
 }
 
+function getdownloadFromDatetimeText() {
+    var fromText = $('#downloadFromDatetime').attr('aria-valuetext');
+    return fromText;
+}
+
+function getdownloadToDatetimeText() {
+    var toText = $('#downloadToDatetime').attr('aria-valuetext');
+    return toText;
+}
+
 function getViewFromDatetime() {
     var fromDateText = $('#viewFromDatetime').attr('aria-valuetext');
     return new Date(fromDateText);
@@ -132,9 +142,9 @@ function getSelectedViewRegion() {
     return region;
 }
 
-function getSelectedViewProduct() {
-    var product = $('#viewProduct').children(':input').attr('value');
-    return product;
+function getSelectedDownloadRegion() {
+    var region = $('#downloadRegion').children(':input').attr('value');
+    return region;
 }
 
 function getViewTransparency() {
@@ -142,8 +152,43 @@ function getViewTransparency() {
     return trans;
 }
 
+function getSelectedViewProduct() {
+    var product = $('#viewProduct').children(':input').attr('value');
+    return product;
+}
+
+function getSelectedDownloadProduct() {
+    var product = $('#downloadProduct').children(':input').attr('value');
+    return product;
+}
+
+function getDownloadCoordinateNorth() {
+    var trans = $('#downloadCoordinateNorth')[0].value;
+    return trans;
+}
+
+function getDownloadCoordinateSouth() {
+    var trans = $('#downloadCoordinateSouth')[0].value;
+    return trans;
+}
+
+function getDownloadCoordinateWest() {
+    var trans = $('#downloadCoordinateWest')[0].value;
+    return trans;
+}
+
+function getDownloadCoordinateEast() {
+    var trans = $('#downloadCoordinateEast')[0].value;
+    return trans;
+}
+
 function getDownloadImageFormat() {
     var format = $('#downloadImageFormat').children(':input').attr('value');
+    return format;
+}
+
+function getDownloadImageFormat2() {
+    var format = $('#downloadImageFormat2').children(':input').attr('value');
     return format;
 }
 
@@ -271,6 +316,44 @@ function displayKmls(map, from, to, step, region, product) {
         }
     });
 }
+
+function getLatestDataDate() {
+    $.ajax({
+        type: 'GET',
+        url: "api/kmls/LatestDataDate",
+        cache: false,
+        success: function (data) {
+            $('#PeriodFrom').html(data);
+        }
+    });
+}
+
+function GenerateDownloadTask(from, to, step, region, product, imageFormat, north, south, west, east) {
+    $.ajax({
+        type: 'GET',
+        url: "api/kmls/download",
+        data: {
+            from: from,
+            to: to,
+            step: step,
+            region: region,
+            north: north,
+            south: south,
+            west: west,
+            east: east,
+            product: product,
+            format: imageFormat
+        },
+        cache: false,
+        success: function (data) {
+            $('#downloadTaskName').html(data);
+            $('#downloadTaskStatus').html("Scheduled");
+            $('#downloadTaskPath').html("ftps://jpssflood.gmu.edu/Download/"+data+"/");
+            
+        }
+    });
+}
+
 
 function getKmlFiles(from, to, step, region, product, imageFormat, instance) {
     $.ajax({

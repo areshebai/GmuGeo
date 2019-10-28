@@ -192,7 +192,7 @@
                                     </div>
                                     <div id="downloadCoordinatePanel" style="margin-top: 10px">
                                         <div>
-                                            <span style="float: left; margin-top: 4px; margin-left:63px">North</span>
+                                            <span style="float: left; margin-top: 4px; margin-left:56px">North</span>
                                             <div style="float: left; margin-left: 3px">
                                                 <jqx-input id="downloadCoordinateNorth" width="50" height="25" value="90" min-length="1" max-length="2"></jqx-input>
                                             </div>
@@ -211,9 +211,9 @@
                                             <div class="clearall"></div>
                                         </div>
                                         <div style="margin-top: 3px">
-                                            <span style="float: left; margin-top: 6px; margin-left:55px">Source</span>
+                                            <span style="float: left; margin-top: 6px; margin-left:53px">South</span>
                                             <div style="float: left; margin-top: 2px;margin-left: 3px">
-                                                <jqx-input id="downloadCoordinateSource" width="50" height="25" value="90" min-length="1" max-length="2"></jqx-input>
+                                                <jqx-input id="downloadCoordinateSouth" width="50" height="25" value="90" min-length="1" max-length="2"></jqx-input>
                                             </div>
                                             <div class="clearall"></div>
                                         </div>
@@ -221,25 +221,45 @@
                                     <div class="clearall"></div>
                                 </div>
                             </div>
+                            <div class="clearall"></div>
+                            <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
+                                <label>Products</label>
+                                <div>
+                                    <jqx-drop-down-list id="downloadProduct" width="240" height="25" instance="getDownloadProductInstance()"></jqx-drop-down-list>
+                                </div>
                                 <div class="clearall"></div>
-                                <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
-                                    <label>Products</label>
-                                    <div>
-                                        <jqx-drop-down-list id="downloadProduct" width="240" height="25" instance="getDownloadProductInstance()"></jqx-drop-down-list>
-                                    </div>
-                                    <div class="clearall"></div>
-                                </div>
-                                <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
-                                    <label>Image Format</label>
-                                    <div>
-                                        <jqx-drop-down-list width="240" height="25" instance="getDownloadImageTypeInstance()"></jqx-drop-down-list>
-                                    </div>
-                                    <div class="clearall"></div>
-                                </div>
-                                <div style="margin-top: 30px; margin-left: 10px">
-                                    <jqx-button id="download_SearchAndDownload" width="240">Search & Download</jqx-button>
-                                </div>
                             </div>
+                            <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
+                                <label>Image Format</label>
+                                <div>
+                                    <jqx-drop-down-list id="downloadImageFormat2" width="240" height="25" instance="getDownloadImageTypeInstance()"></jqx-drop-down-list>
+                                </div>
+                                <div class="clearall"></div>
+                            </div>
+                            <div style="margin-top: 30px; margin-left: 10px">
+                                <jqx-button id="download_SearchAndDownload" width="240">Schedule Download Task</jqx-button>
+                            </div>
+                            <div class="clearall"></div>
+                            <div style="margin-top: 10px; margin-bottom:10px; margin-left: 10px">
+                                <label class="panel-title">Download Status</label>
+                                <div style="clear:both; margin-bottom: 8px">
+                                    <span>Only one download task allowed while processing.</span>
+                                </div>
+                                <div style="clear:both; margin-bottom: 8px">
+                                    <label>Name: </label>
+                                    <span id="downloadTaskName">None</span>
+                                </div>
+                                <div style="clear:both; margin-bottom: 8px">
+                                    <label>Status: </label>
+                                    <span id="downloadTaskStatus">None</span>
+                                </div>
+                                <div style="clear:both; margin-bottom: 8px">
+                                    <label>Path: </label>
+                                    <span id="downloadTaskPath">None</span>
+                                </div>
+                                <div class="clearall"></div>
+                            </div>
+                        </div>
                     </jqx-tab-panel-body>
                 </jqx-tab-panel>
             </jqx-tabs>
@@ -253,7 +273,7 @@
     <jqx-window auto-open="false" width="auto" resizable="false" instance="getDownloadWindowInstance()">
         <jqx-window-header>Image Resource</jqx-window-header>
         <jqx-window-body>
-            <jqx-grid id="grid" alt-rows="true" pageable="true" height="240" source-id="Index" sortable="false" width="800" instance="getGridInstance()">
+            <jqx-grid id="grid" alt-rows="true" pageable="true" height="360" source-id="Index" sortable="false" width="800" instance="getGridInstance()">
                 <jqx-grid-columns>
                     <jqx-grid-column width="50" text="Index" datafield="Index"></jqx-grid-column>
                     <jqx-grid-column width="650" text="Resource Name" datafield="Address"></jqx-grid-column>
@@ -269,7 +289,8 @@
 
         $(document).ready(function () {
             var fromDateText = getViewFromDatetimeText();
-            $('#PeriodFrom').html(fromDateText);
+            getLatestDataDate();
+
             $("#downloadRegionPanel").hide();
             $("#downloadCoordinatePanel").show();
         });
@@ -305,9 +326,7 @@
         var fromDateText = getViewFromDatetimeText();
         var toDateText = getViewToDatetimeText();
         var currentTrans = getViewTransparency();
-
-        $('#PeriodFrom').html(fromDateText);
-
+        
         var map = createMapInstance("googleMap", parseInt(currentTrans));
         displayKmls(map, fromDateText, toDateText, viewStep, selectedRegion, selectedProduct);
     });
@@ -337,6 +356,23 @@
             $("#downloadRegionPanel").hide();
             $("#downloadCoordinatePanel").show();
         });
+
+        $('#download_SearchAndDownload').on('click', function (event) {
+            var viewStep = getSelectedViewStep();
+            var selectedRegion = getSelectedDownloadRegion();
+            var selectedProduct = getSelectedDownloadProduct();
+            var fromDateText = getdownloadFromDatetimeText();
+            var toDateText = getdownloadToDatetimeText();
+            var imageFormat = getDownloadImageFormat2();
+            var north = getDownloadCoordinateNorth();
+            var south = getDownloadCoordinateSouth();
+            var west = getDownloadCoordinateWest();
+            var east = getDownloadCoordinateEast();
+
+            GenerateDownloadTask(fromDateText, toDateText, viewStep, selectedRegion, selectedProduct, imageFormat, north, south, west, east);
+        });
+
+        
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXVemTzeOvkKbvJFWi60hkwaIwD37s1LA&callback=initMap"></script>
