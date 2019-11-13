@@ -12,6 +12,7 @@ var g_downloadProductInstance;
 function getViewProductInstance(instance) {
     g_viewProductInstance = instance;
     instance["addItem"]('VIIRS 375-m');
+    instance["addItem"]('VIIRS 375-m 5-Day');
     instance["addItem"]('ABI 1-km');
     instance["addItem"]('AHI 1-km');
     instance["addItem"]('Joint VIIRS/ABI');
@@ -22,6 +23,7 @@ function getViewProductInstance(instance) {
 function getDownloadProductInstance(instance) {
     g_downloadProductInstance = instance;
     instance["addItem"]('VIIRS 375-m');
+    instance["addItem"]('VIIRS 375-m 5-Day');
     instance["addItem"]('ABI 1-km');
     instance["addItem"]('AHI 1-km');
     instance["addItem"]('Joint VIIRS/ABI');
@@ -71,22 +73,6 @@ function getDownloadImageTypeInstance(instance) {
 
 function getDownloadWindowInstance(instance) {
     g_downloadWindowInstance = instance;
-}
-
-function getSelectedViewStep() {
-    var isHourly = $('#viewStepHourly').attr('aria-checked');
-    var isDaily = $('#viewStepDaily').attr('aria-checked');
-    var is5Day = $('#viewStep5Day').attr('aria-checked');
-
-    if (isHourly === 'true') {
-        return 1;
-    }
-    else if (isDaily === 'true') {
-        return 2;
-    }
-    else if (is5Day === 'true') {
-        return 3;
-    }
 }
 
 function formatDate(date) {
@@ -193,9 +179,6 @@ function getDownloadImageFormat2() {
 }
 
 function initMap() {
-    var viewStep = getSelectedViewStep();
-    var selectedRegion = getSelectedViewRegion();
-    var selectedProduct = getSelectedViewProduct();
     var fromDateText = getViewFromDatetimeText();
     var toDateText = getViewToDatetimeText();
     var currentTrans = getViewTransparency();
@@ -207,34 +190,32 @@ function initMap() {
 
     var ctaLayer = new google.maps.KmlLayer("https://jpssflood.gmu.edu/kmls/yukon_5_6_15.kmz");
     ctaLayer.setMap(map);
-
-    // displayKmls(map, fromDateText, toDateText, viewStep, selectedRegion, selectedProduct);
-
 }
 
 function createMapInstance(mapElement, transparency) {
     var mapProp = {
         center: new google.maps.LatLng({ lat: 40, lng: 180 }),
-        maxZoom: 10,
+        // maxZoom: 10,
         minZoom: 2,
         zoom: 3,
         zoomControl: true,
         mapTypeId: 'hybrid',
         streetViewControl: false,
         mapTypeControl: true,
+        fullscreenControl: false,
         zoomControlOptions: {
-            position: google.maps.ControlPosition.RIGHT_BOTTOM
+            position: google.maps.ControlPosition.RIGHT_BOTOM
         },
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-            position: google.maps.ControlPosition.LEFT_TOP
+            position: google.maps.ControlPosition.RIGHT_TOP
         }
     };
 
     var map = new google.maps.Map(document.getElementById(mapElement), mapProp);
 
     map.addListener('tilesloaded', function () {
-        $("#" + mapElement).find("img[src*='googleusercontent']").css("opacity", transparency / 100);
+        $("#" + mapElement).find("img[src*='googleusercontent']").css("opacity", (100 - transparency) / 100);
     });
 
     map.addListener('mousemove', function (e) {
@@ -295,14 +276,13 @@ function AddKmlLayer(curhour, map, suppressInfoWindowsEnabled) {
     });
 }
 
-function displayKmls(map, from, to, step, region, product) {
+function displayKmls(map, from, to, region, product) {
     $.ajax({
         type: 'GET',
         url: "api/kmls",
         data: {
             from: from,
             to: to,
-            step: step,
             region: region,
             product: product
         },
@@ -328,14 +308,13 @@ function getLatestDataDate() {
     });
 }
 
-function GenerateDownloadTask(from, to, step, region, product, imageFormat, north, south, west, east) {
+function GenerateDownloadTask(from, to, region, product, imageFormat, north, south, west, east) {
     $.ajax({
         type: 'GET',
         url: "api/kmls/download",
         data: {
             from: from,
             to: to,
-            step: step,
             region: region,
             north: north,
             south: south,
@@ -354,15 +333,13 @@ function GenerateDownloadTask(from, to, step, region, product, imageFormat, nort
     });
 }
 
-
-function getKmlFiles(from, to, step, region, product, imageFormat, instance) {
+function getKmlFiles(from, to, region, product, imageFormat, instance) {
     $.ajax({
         type: 'GET',
         url: "api/kmls",
         data: {
             from: from,
             to: to,
-            step: step,
             region: region,
             product: product
         },

@@ -56,27 +56,15 @@
                     <jqx-tab-panel-body>
                         <div class="nav-panel">
                             <div style="margin-top: 5px; margin-bottom:5px; margin-left: 10px">
-                                <div style="float:left; margin-top: 2px; display:none">
-                                    <jqx-radio-button id="viewStepHourly" group-name="ViewStep">Hourly</jqx-radio-button>
-                                </div>
-                                <div style="float:left; margin-top: 2px; margin-left: 8px">
-                                    <jqx-radio-button id="viewStepDaily" group-name="ViewStep" checked="true">Daily</jqx-radio-button>
-                                </div>
-                                <div style="float:left; margin-top: 2px; margin-left: 8px">
-                                    <jqx-radio-button id="viewStep5Day" group-name="ViewStep">5-Day</jqx-radio-button>
-                                </div>
-                            </div>
-                            <div class="clearall"></div>
-                            <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>Date</label>
                                 <div>
-                                    <div style="float: left; margin-right: 6px; margin-top: 3px">
+                                    <div style="float: left; margin-right: 5px; margin-top: 3px">
                                         <jqx-button id="apply_DateTimePeriodPre">&lt; Last </jqx-button>
                                     </div>
                                     <div style="float:left; margin-top: 2px">
-                                        <jqx-date-time-input id="viewFromDatetime" animation-type="fade" width="120" height="30" show-calendar-button="true" show-time-button="false" format-string="MM/dd/yyyy" value="DateTime.UtcNow.AddDays(-1)" instance="getViewFromDateInstance()"></jqx-date-time-input>
+                                        <jqx-date-time-input id="viewFromDatetime" animation-type="fade" width="118" height="30" show-calendar-button="true" show-time-button="false" format-string="MM/dd/yyyy" value="DateTime.UtcNow.AddDays(-1)" instance="getViewFromDateInstance()"></jqx-date-time-input>
                                     </div>
-                                    <div style="float: left; margin-left: 6px; margin-top: 3px">
+                                    <div style="float: left; margin-left: 5px; margin-top: 3px">
                                         <jqx-button id="apply_DateTimePeriodNext"> Next &gt;</jqx-button>
                                     </div>
                                     <div class="clearall"></div>
@@ -124,8 +112,9 @@
                             <hr class="seperator" />
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>Image Format</label>
+                                <div class="clearall"></div>
                                 <div style="float: left; margin-top:2px">
-                                    <jqx-drop-down-list id="downloadImageFormat" width="160" height="25" instance="getImageTypeInstance()"></jqx-drop-down-list>
+                                    <jqx-drop-down-list id="downloadImageFormat" width="150" height="25" instance="getImageTypeInstance()"></jqx-drop-down-list>
                                 </div>
                                 <div style="float: left; margin-left: 10px;">
                                     <jqx-button id="view_DownloadCurrent">Download</jqx-button>
@@ -194,18 +183,18 @@
                                         <div>
                                             <span style="float: left; margin-top: 4px; margin-left:56px">North</span>
                                             <div style="float: left; margin-left: 3px">
-                                                <jqx-input id="downloadCoordinateNorth" width="50" height="25" value="90" min-length="1" max-length="2"></jqx-input>
+                                                <jqx-input id="downloadCoordinateNorth" width="50" height="25" value="90" min-length="2" max-length="8"></jqx-input>
                                             </div>
                                             <div class="clearall"></div>
                                         </div>
                                         <div style="margin-top: 3px">
                                             <span style="float: left; margin-top: 6px">West</span>
                                             <div style="float: left; margin-top: 2px; margin-left: 3px">
-                                                <jqx-input id="downloadCoordinateWest" width="50" height="25" value="180" min-length="1" max-length="3"></jqx-input>
+                                                <jqx-input id="downloadCoordinateWest" width="50" height="25" value="-180" min-length="2" max-length="8"></jqx-input>
                                             </div>
 
                                             <div style="float: left;margin-top: 2px; margin-left: 68px">
-                                                <jqx-input id="downloadCoordinateEast" width="50" height="25" value="180" min-length="1" max-length="3"></jqx-input>
+                                                <jqx-input id="downloadCoordinateEast" width="50" height="25" value="180" min-length="2" max-length="8"></jqx-input>
                                             </div>
                                             <span style="float: left; margin-top: 6px; margin-left: 3px">East</span>
                                             <div class="clearall"></div>
@@ -213,7 +202,7 @@
                                         <div style="margin-top: 3px">
                                             <span style="float: left; margin-top: 6px; margin-left:53px">South</span>
                                             <div style="float: left; margin-top: 2px;margin-left: 3px">
-                                                <jqx-input id="downloadCoordinateSouth" width="50" height="25" value="90" min-length="1" max-length="2"></jqx-input>
+                                                <jqx-input id="downloadCoordinateSouth" width="50" height="25" value="-90" min-length="2" max-length="8"></jqx-input>
                                             </div>
                                             <div class="clearall"></div>
                                         </div>
@@ -268,6 +257,12 @@
         <jqx-splitter-panel>
             <!-- Right map panel-->
             <div id="googleMap" style="width:100%;height:100%"></div>
+            <div id="prodIcon" style="position:absolute;left:2px;top:2px;z-index:80;">
+                <img style="width:15%;height:15%" src="~/images/NOAA_logo.png" />
+            </div>
+            <div id="mapLegend" style="position:absolute;left:2px;bottom:3px;z-index:100;">
+                <img style="width:38%;height:38%" src="~/images/Waterfractionlegend_all_Nodata_sentencecase_large.bmp" />
+            </div>
         </jqx-splitter-panel>
     </jqx-splitter>
     <jqx-window auto-open="false" width="auto" resizable="false" instance="getDownloadWindowInstance()">
@@ -306,21 +301,18 @@
         $('#view_DownloadCurrent').on('click', function (event) {
             g_downloadGridInstance['clear']();
 
-            var viewStep = getSelectedViewStep();
             var selectedRegion = getSelectedViewRegion();
             var selectedProduct = getSelectedViewProduct();
             var fromDateText = getViewFromDatetimeText();
             var toDateText = getViewToDatetimeText();
             var imageFormat = getDownloadImageFormat();
 
-            getKmlFiles(fromDateText, toDateText, viewStep, selectedRegion, selectedProduct, imageFormat, g_downloadGridInstance);
+            getKmlFiles(fromDateText, toDateText, selectedRegion, selectedProduct, imageFormat, g_downloadGridInstance);
 
         g_downloadWindowInstance['open']();
     });
 
     $('#apply_DateTimePeriod').on('click', function (event) {
-        var viewStep = getSelectedViewStep();
-
         var selectedRegion = getSelectedViewRegion();
         var selectedProduct = getSelectedViewProduct();
         var fromDateText = getViewFromDatetimeText();
@@ -328,7 +320,7 @@
         var currentTrans = getViewTransparency();
         
         var map = createMapInstance("googleMap", parseInt(currentTrans));
-        displayKmls(map, fromDateText, toDateText, viewStep, selectedRegion, selectedProduct);
+        displayKmls(map, fromDateText, toDateText, selectedRegion, selectedProduct);
     });
 
     $('#apply_DateTimePeriodPre').on('click', function (event) {
@@ -358,7 +350,6 @@
         });
 
         $('#download_SearchAndDownload').on('click', function (event) {
-            var viewStep = getSelectedViewStep();
             var selectedRegion = getSelectedDownloadRegion();
             var selectedProduct = getSelectedDownloadProduct();
             var fromDateText = getdownloadFromDatetimeText();
@@ -369,11 +360,8 @@
             var west = getDownloadCoordinateWest();
             var east = getDownloadCoordinateEast();
 
-            GenerateDownloadTask(fromDateText, toDateText, viewStep, selectedRegion, selectedProduct, imageFormat, north, south, west, east);
+            GenerateDownloadTask(fromDateText, toDateText, selectedRegion, selectedProduct, imageFormat, north, south, west, east);
         });
-
-        
-
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXVemTzeOvkKbvJFWi60hkwaIwD37s1LA&callback=initMap"></script>
 }

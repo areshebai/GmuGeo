@@ -39,7 +39,7 @@ namespace GMUFloodForecastPortal.Controllers
 
         // GET: api/Kml
         [HttpGet]
-        public JsonResult Get(DateTime from, DateTime to, int step, string region, string product)
+        public JsonResult Get(DateTime from, DateTime to, string region, string product)
         {
             List<KmlFileInfo> kmlFiles = new List<KmlFileInfo>();
 
@@ -47,17 +47,10 @@ namespace GMUFloodForecastPortal.Controllers
             string toDateFormatString = string.Empty;
 
             to = from;
-            if (step == 1)
-            {
-                fromDateFormatString = @"yyyy-MM-dd hh:00:00";
-                toDateFormatString = @"yyyy-MM-dd hh:00:00";
-            }
-            else
-            {
-                fromDateFormatString = @"yyyy-MM-dd 00:00:00";
-                toDateFormatString = @"yyyy-MM-dd 23:00:00";
-            }
-
+            
+            fromDateFormatString = @"yyyy-MM-dd 00:00:00";
+            toDateFormatString = @"yyyy-MM-dd 23:00:00";
+            
             int queryProductId = ConvertProductStringToId(product);
 
             using (MySqlConnection connection = new MySqlConnection(DatabaseConnectionstring))
@@ -83,16 +76,6 @@ namespace GMUFloodForecastPortal.Controllers
                         {
                             continue;
                         }
-                    }
-
-                    if (step != 3 && fileName.Contains("_005day_"))
-                    {
-                        continue;
-                    }
-
-                    if (step == 3 && !fileName.Contains("_005day_"))
-                    {
-                        continue;
                     }
 
                     kmlFiles.Add(new KmlFileInfo { FullName = string.Format(kmlFullFilePathFormat, fileName), ShortName = fileName, DistrictId = districtId });
@@ -127,6 +110,11 @@ namespace GMUFloodForecastPortal.Controllers
             if (product == "Joint VIIRS/AHI")
             {
                 return 5;
+            }
+
+            if (product == "VIIRS 375-m 5-Day")
+            {
+                return 6;
             }
 
             return 0;
@@ -168,7 +156,7 @@ namespace GMUFloodForecastPortal.Controllers
 
         [HttpGet]
         [Route("download")]
-        public string GenerateDownloadPackage(DateTime from, DateTime to, int step, string region, int north, int south, int west, int east, string product, string format)
+        public string GenerateDownloadPackage(DateTime from, DateTime to, string region, int north, int south, int west, int east, string product, string format)
         {
             int result = 0;
             string dateFormatString = @"yyyy-MM-dd";
