@@ -257,11 +257,8 @@
         <jqx-splitter-panel>
             <!-- Right map panel-->
             <div id="googleMap" style="width:100%;height:100%"></div>
-            <div id="prodIcon" style="position:absolute;left:2px;top:2px;z-index:80;">
-                <img style="width:15%;height:15%" src="~/images/NOAA_logo.png" />
-            </div>
             <div id="mapLegend" style="position:absolute;left:2px;bottom:3px;z-index:100;">
-                <img style="width:38%;height:38%" src="~/images/Waterfractionlegend_all_Nodata_sentencecase_large.bmp" />
+                <img style="width:50%;height:50%" src="~/images/Waterfractionlegend_all_Nodata_sentencecase_small.png" />
             </div>
         </jqx-splitter-panel>
     </jqx-splitter>
@@ -281,15 +278,16 @@
 
 @section scripts {
     <script type="text/javascript">
-
         $(document).ready(function () {
             var fromDateText = getViewFromDatetimeText();
             getLatestDataDate();
 
             $("#downloadRegionPanel").hide();
             $("#downloadCoordinatePanel").show();
+
+            sessionStorage.setItem("navigation_kmlloaded", 0);
         });
-        
+    
         function getGridInstance(instance) {
             g_downloadGridInstance = instance;
         }
@@ -309,35 +307,40 @@
 
             getKmlFiles(fromDateText, toDateText, selectedRegion, selectedProduct, imageFormat, g_downloadGridInstance);
 
-        g_downloadWindowInstance['open']();
-    });
+            g_downloadWindowInstance['open']();
+        });
 
-    $('#apply_DateTimePeriod').on('click', function (event) {
-        var selectedRegion = getSelectedViewRegion();
-        var selectedProduct = getSelectedViewProduct();
-        var fromDateText = getViewFromDatetimeText();
-        var toDateText = getViewToDatetimeText();
-        var currentTrans = getViewTransparency();
-        
-        var map = createMapInstance("googleMap", parseInt(currentTrans));
-        displayKmls(map, fromDateText, toDateText, selectedRegion, selectedProduct);
-    });
+        $('#apply_DateTimePeriod').on('click', function (event) {
+            var selectedRegion = getSelectedViewRegion();
+            var selectedProduct = getSelectedViewProduct();
+            var fromDateText = getViewFromDatetimeText();
+            var toDateText = getViewToDatetimeText();
+            var currentTrans = getViewTransparency();
 
-    $('#apply_DateTimePeriodPre').on('click', function (event) {
-        var viewFromDatetime = getViewFromDatetime();
-        viewFromDatetime.setDate(viewFromDatetime.getDate() - 1);
+            var lat = sessionStorage.getItem("navigation_center_lat");
+            var lng = sessionStorage.getItem("navigation_center_lng");
+            var zoom = sessionStorage.getItem("navigation_zoom");
+                
+            var map = createMapInstance("googleMap", parseInt(currentTrans), lat, lng, zoom);
 
-        $('#viewFromDatetime').attr('aria-valuetext', viewFromDatetime.toDateString());
-        g_ViewFromDateInstance['val'](viewFromDatetime);
-    });
+            displayKmls(map, fromDateText, toDateText, selectedRegion, selectedProduct);
+        });
 
-    $('#apply_DateTimePeriodNext').on('click', function (event) {
-        var viewFromDatetime = getViewFromDatetime();
-        viewFromDatetime.setDate(viewFromDatetime.getDate() + 1);
+        $('#apply_DateTimePeriodPre').on('click', function (event) {
+            var viewFromDatetime = getViewFromDatetime();
+            viewFromDatetime.setDate(viewFromDatetime.getDate() - 1);
 
-        $('#viewFromDatetime').attr('aria-valuetext', viewFromDatetime.toDateString());
-        g_ViewFromDateInstance["val"](viewFromDatetime);
-    });
+            $('#viewFromDatetime').attr('aria-valuetext', viewFromDatetime.toDateString());
+            g_ViewFromDateInstance['val'](viewFromDatetime);
+        });
+
+        $('#apply_DateTimePeriodNext').on('click', function (event) {
+            var viewFromDatetime = getViewFromDatetime();
+            viewFromDatetime.setDate(viewFromDatetime.getDate() + 1);
+
+            $('#viewFromDatetime').attr('aria-valuetext', viewFromDatetime.toDateString());
+            g_ViewFromDateInstance["val"](viewFromDatetime);
+        });
 
         $('#downloadByRegion').on('click', function (event) {
             $("#downloadRegionPanel").show();

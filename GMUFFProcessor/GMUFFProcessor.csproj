@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="WinSCP" Version="5.15.4" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\GMUFFCommon\GMUFFCommon.csproj" />
   </ItemGroup>
 

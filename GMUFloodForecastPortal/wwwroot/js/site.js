@@ -186,18 +186,24 @@ function initMap() {
     $('#PeriodFrom').html(fromDateText);
     $('#PeriodTo').html(toDateText);
 
-    var map = createMapInstance("googleMap", parseInt(currentTrans));
-
-    var ctaLayer = new google.maps.KmlLayer("https://jpssflood.gmu.edu/kmls/yukon_5_6_15.kmz");
-    ctaLayer.setMap(map);
+    g_mapInstance = createMapInstance("googleMap", parseInt(currentTrans), null, null, null);
 }
 
-function createMapInstance(mapElement, transparency) {
+function createMapInstance(mapElement, transparency, lat, lng, zoom) {
+    if (lat === null || lng === null) {
+        lat = 0;
+        lng = 0;
+    }
+
+    if (zoom === null) {
+        zoom = 3;
+    }
+
     var mapProp = {
-        center: new google.maps.LatLng({ lat: 40, lng: 180 }),
+        center: new google.maps.LatLng({ lat: parseFloat(lat), lng: parseFloat(lng) }),
         // maxZoom: 10,
         minZoom: 2,
-        zoom: 3,
+        zoom: parseInt(zoom),
         zoomControl: true,
         mapTypeId: 'hybrid',
         streetViewControl: false,
@@ -215,6 +221,7 @@ function createMapInstance(mapElement, transparency) {
     var map = new google.maps.Map(document.getElementById(mapElement), mapProp);
 
     map.addListener('tilesloaded', function () {
+        var transparency = getViewTransparency();
         $("#" + mapElement).find("img[src*='googleusercontent']").css("opacity", (100 - transparency) / 100);
     });
 
@@ -223,9 +230,17 @@ function createMapInstance(mapElement, transparency) {
     });
 
     google.maps.event.addListener(map, 'dragend', function () {
+        var latlng = map.getCenter();
+        sessionStorage.setItem("navigation_center_lat", latlng.lat());
+        sessionStorage.setItem("navigation_center_lng", latlng.lng());
+        sessionStorage.setItem("navigation_zoom", map.getZoom());
     });
 
     google.maps.event.addListener(map, 'zoom_changed', function () {
+        var latlng = map.getCenter();
+        sessionStorage.setItem("navigation_center_lat", latlng.lat());
+        sessionStorage.setItem("navigation_center_lng", latlng.lng());
+        sessionStorage.setItem("navigation_zoom", map.getZoom());
     });
 
     return map;
@@ -253,27 +268,13 @@ function zoomChangedOnMap(event) {
 
 function displayKmlLayer(map, url) {
     var ctaLayer = new google.maps.KmlLayer({
-        preserveViewport: false,
+        preserveViewport: true,
         suppressInfoWindows: false,
         clickable: false
     });
 
     ctaLayer.setUrl(url);
     ctaLayer.setMap(map);
-}
-
-function AddKmlLayer(curhour, map, suppressInfoWindowsEnabled) {
-    var apiUrl = "api/Kml/" + curhour.toString();
-    $.ajax({
-        type: 'GET',
-        url: apiUrl,
-        cache: false,
-        success: function (data) {
-            $.each(data, function (index, value) {
-                displayKmlLayer(map, value);
-            });
-        }
-    });
 }
 
 function displayKmls(map, from, to, region, product) {
@@ -293,6 +294,9 @@ function displayKmls(map, from, to, region, product) {
                     displayKmlLayer(map, value.fullName);
                 }
             });
+        },
+        complete: function () {
+            sessionStorage.setItem("navigation_kmlloaded", 1);
         }
     });
 }
@@ -364,24 +368,6 @@ function getKmlFiles(from, to, region, product, imageFormat, instance) {
                 }
                 instance['addrow'](null, {
                     Index: index + 1, Address: value.shortName, Link: '<a href="' + fileFullName + '">Download</a>'});
-            });
-        }
-    });
-}
-
-function displayKmlById(map) {
-    alert('Not expected to be call!');
-    $.ajax({
-        type: 'GET',
-        url: "api/kmls/kml",
-        data: {
-            id: 5
-        },
-        cache: false,
-        success: function (data) {
-            $.each(data, function (index, value) {
-                alert(value);
-                displayKmlLayer(map, value);
             });
         }
     });
