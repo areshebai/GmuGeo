@@ -247,8 +247,8 @@ function createMapInstance(mapElement, transparency, lat, lng, zoom) {
 }
 
 function mouseMoveOnMap(event) {
-    $("#currentLatitude").html(event.latLng.lat());
-    $("#currentLongitude").html(event.latLng.lng());
+    $("#currentLatitude").html(event.latLng.lat().toFixed(3));
+    $("#currentLongitude").html(event.latLng.lng().toFixed(3));
 }
 
 function dragOnMap() {
@@ -329,9 +329,11 @@ function GenerateDownloadTask(from, to, region, product, imageFormat, north, sou
         },
         cache: false,
         success: function (data) {
+            sessionStorage.setItem("download_taskname", data);
             $('#downloadTaskName').html(data);
+            sessionStorage.setItem("download_taskstatus", "Scheduled");
             $('#downloadTaskStatus').html("Scheduled");
-            $('#downloadTaskPath').html("ftps://jpssflood.gmu.edu/Download/"+data+"/");
+            // $('#downloadTaskPath').html("ftp://jpssflood.gmu.edu/"+data+"/");
             
         }
     });

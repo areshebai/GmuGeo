@@ -136,7 +136,7 @@ function MoveFtpFile ([DateTime]$inputDate)
 	
 	$fileDate = $inputDate.ToString("yyyy-MM-dd");
     InsertRecordToDatabaseForImages $cmd $viirs1DayFileNameFormat 1 136 $fileDate $currentWorkingFolder;
-    InsertRecordToDatabaseForImages $cmd $viirs5DayFileNameFormat 1 136 $fileDate $currentWorkingFolder;
+    InsertRecordToDatabaseForImages $cmd $viirs5DayFileNameFormat 6 136 $fileDate $currentWorkingFolder;
     InsertRecordToDatabaseForImages $cmd $ahiFileNameFormat 3 8 $fileDate $currentWorkingFolder;
     InsertRecordToDatabaseForImages $cmd $abiFileNameFormat 2 8 $fileDate $currentWorkingFolder;
     InsertRecordToDatabaseForImages $cmd $viirsAhiFileNameFormat 5 136 $fileDate $currentWorkingFolder;

@@ -244,7 +244,7 @@
                                 </div>
                                 <div style="clear:both; margin-bottom: 8px">
                                     <label>Path: </label>
-                                    <span id="downloadTaskPath">None</span>
+                                    <span id="downloadTaskPath"><a href="ftp://jpssflood.gmu.edu/" target="_blank">ftp://jpssflood.gmu.edu/</a></span>
                                 </div>
                                 <div class="clearall"></div>
                             </div>
@@ -286,6 +286,15 @@
             $("#downloadCoordinatePanel").show();
 
             sessionStorage.setItem("navigation_kmlloaded", 0);
+
+            var taskName = sessionStorage.getItem("download_taskname");
+            if (taskName !== null) {
+                $('#downloadTaskName').html(taskName);
+            }
+            var taskStatus = sessionStorage.getItem("download_taskstatus");
+            if (taskStatus !== null) {
+                $('#downloadTaskStatus').html(taskStatus);
+            }
         });
     
         function getGridInstance(instance) {
