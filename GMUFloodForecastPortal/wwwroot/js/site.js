@@ -48,7 +48,7 @@ function getViewRegionInstance(instance) {
     instance["addItem"]('NWS West Gulf');
     instance["addItem"]('NWS North West');
     instance["addItem"]('NWS South West');
-    instance["selectIndex"](1);
+    instance["selectIndex"](0);
 }
 
 function getDownloadRegionInstance(instance) {

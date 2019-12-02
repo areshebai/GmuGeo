@@ -160,8 +160,8 @@ namespace GMUFFCommon
                         isInRegion = true;
                     break;
                 case Region.USAlaska:
-                    if ((districtIndex >= 1 && districtIndex <= 2) ||
-                        (districtIndex >= 9 && districtIndex <= 10))
+                    if ((districtIndex >= 1 && districtIndex <= 4) ||
+                        (districtIndex >= 9 && districtIndex <= 11))
                         isInRegion = true;
                     break;
                 case Region.USNorthEast:
@@ -170,8 +170,8 @@ namespace GMUFFCommon
                         isInRegion = true;
                     break;
                 case Region.USNorthCentral:
-                    if ((districtIndex >= 12 && districtIndex <= 15) ||
-                        (districtIndex >= 18 && districtIndex <= 21))
+                    if ((districtIndex >= 12 && districtIndex <= 14) ||
+                        (districtIndex >= 18 && districtIndex <= 20))
                         isInRegion = true;
                     break;
                 case Region.USSouthEast:
@@ -180,23 +180,23 @@ namespace GMUFFCommon
                         isInRegion = true;
                     break;
                 case Region.USMissouriBasin:
-                    if ((districtIndex >= 13 && districtIndex <= 14) ||
-                        (districtIndex >= 19 && districtIndex <= 20))
+                    if ((districtIndex >= 13 && districtIndex <= 13) ||
+                        (districtIndex >= 19 && districtIndex <= 19))
                         isInRegion = true;
                     break;
                 case Region.USWestGulf:
-                    if ((districtIndex >= 19 && districtIndex <= 20) ||
-                        (districtIndex >= 23 && districtIndex <= 24))
+                    if ((districtIndex >= 18 && districtIndex <= 19) ||
+                        (districtIndex >= 22 && districtIndex <= 23))
                         isInRegion = true;
                     break;
                 case Region.USNorthWest:
-                    if ((districtIndex >= 12 && districtIndex <= 13) ||
-                        (districtIndex >= 18 && districtIndex <= 19))
+                    if ((districtIndex >= 11 && districtIndex <= 12) ||
+                        (districtIndex >= 17 && districtIndex <= 18))
                         isInRegion = true;
                     break;
                 case Region.USSouthWest:
-                    if ((districtIndex >= 18 && districtIndex <= 19) ||
-                        (districtIndex >= 22 && districtIndex <= 23))
+                    if ((districtIndex >= 17 && districtIndex <= 18) ||
+                        (districtIndex >= 22 && districtIndex <= 22))
                         isInRegion = true;
                     break;
                 default:

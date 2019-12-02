@@ -261,15 +261,24 @@ namespace GMUFloodForecastPortal.Controllers
             string dateTimeFormatString = @"yyyy-MM-dd hh:mm:ss";
 
             int queryProductId = ConvertProductStringToId(product);
-
-            Region regionValue = RegionUtil.GetRegionFromDisplayName(region);
-            if (north == -1000 || south == -1000 || west == -1000 || east == -1000)
+            if (queryProductId == 1 || queryProductId == 6) // For viirs
             {
-                RegionBoundary boundary = GetRegionBoundary(regionValue);
-                north = boundary.North;
-                south = boundary.South;
-                west = boundary.West;
-                east = boundary.East;
+                Region regionValue = RegionUtil.GetRegionFromDisplayName(region);
+                if (north == -1000 || south == -1000 || west == -1000 || east == -1000)
+                {
+                    RegionBoundary boundary = GetRegionBoundary(regionValue);
+                    north = boundary.North;
+                    south = boundary.South;
+                    west = boundary.West;
+                    east = boundary.East;
+                }
+            }
+            else
+            {
+                north = 90;
+                south = -90;
+                west = -180;
+                east = 180;
             }
 
             string downloadTaskName = DateTime.UtcNow.ToString("yyyy_MM_dd") + "_" + DateTime.UtcNow.Ticks.ToString();
