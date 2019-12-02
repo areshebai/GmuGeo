@@ -306,9 +306,12 @@ function displayKmls(map, from, to, region, product) {
         cache: false,
         success: function (data) {
             $.each(data, function (index, value) {
-                if (value.districtId !== 9) {
-                    displayKmlLayer(map, value.fullName);
+                if ((value.districtId === 1 || value.districtId === 9 || value.districtId === 136) &&
+                    (product === 'VIIRS 375-m' || product === 'VIIRS 375-m 5-Day')) {
+                    return true;
                 }
+
+                displayKmlLayer(map, value.fullName);
             });
         },
         complete: function () {

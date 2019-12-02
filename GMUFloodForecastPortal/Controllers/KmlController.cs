@@ -58,7 +58,7 @@ namespace GMUFloodForecastPortal.Controllers
                 connection.Open();
                 MySqlCommand command = new MySqlCommand();
                 command.Connection = connection;
-                command.CommandText = string.Format("SELECT * FROM jpssflood.kmlmetadata WHERE Date >= '{0}' AND Date <= '{1}' AND ProductId = {2} AND RegionId = {3} AND DistrictId > 1 AND DistrictId < 136 ORDER BY DistrictID DESC", from.ToString(fromDateFormatString), to.AddHours(1).ToString(toDateFormatString), queryProductId, 1);
+                command.CommandText = string.Format("SELECT * FROM jpssflood.kmlmetadata WHERE Date >= '{0}' AND Date <= '{1}' AND ProductId = {2} AND RegionId = {3} AND DistrictId >= 1 AND DistrictId <= 136 ORDER BY DistrictID DESC", from.ToString(fromDateFormatString), to.AddHours(1).ToString(toDateFormatString), queryProductId, 1);
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
