@@ -19,6 +19,14 @@ namespace GMUFFCommon
         Europe = 3,
         Asia = 4,
         Africa = 5,
-        Australia = 6
+        Australia = 6,
+        USAlaska = 7,
+        USNorthEast = 8,
+        USNorthCentral = 9,
+        USSouthEast = 10,
+        USMissouriBasin = 11,
+        USWestGulf = 12,
+        USNorthWest = 13,
+        USSouthWest= 14
     }
 }

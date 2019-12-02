@@ -40,6 +40,14 @@ function getViewRegionInstance(instance) {
     instance["addItem"]('Asia');
     instance["addItem"]('Africa');
     instance["addItem"]('Australia');
+    instance["addItem"]('NWS Alaska');
+    instance["addItem"]('NWS North East');
+    instance["addItem"]('NWS North Central');
+    instance["addItem"]('NWS South East');
+    instance["addItem"]('NWS Missouri Basin');
+    instance["addItem"]('NWS West Gulf');
+    instance["addItem"]('NWS North West');
+    instance["addItem"]('NWS South West');
     instance["selectIndex"](1);
 }
 
@@ -52,6 +60,14 @@ function getDownloadRegionInstance(instance) {
     instance["addItem"]('Asia');
     instance["addItem"]('Africa');
     instance["addItem"]('Australia');
+    instance["addItem"]('NWS Alaska');
+    instance["addItem"]('NWS North East');
+    instance["addItem"]('NWS North Central');
+    instance["addItem"]('NWS South East');
+    instance["addItem"]('NWS Missouri Basin');
+    instance["addItem"]('NWS West Gulf');
+    instance["addItem"]('NWS North West');
+    instance["addItem"]('NWS South West');
     instance["selectIndex"](1);
 }
 
@@ -334,7 +350,6 @@ function GenerateDownloadTask(from, to, region, product, imageFormat, north, sou
             sessionStorage.setItem("download_taskstatus", "Scheduled");
             $('#downloadTaskStatus').html("Scheduled");
             // $('#downloadTaskPath').html("ftp://jpssflood.gmu.edu/"+data+"/");
-            
         }
     });
 }

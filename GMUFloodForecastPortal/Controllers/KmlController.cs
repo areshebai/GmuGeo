@@ -69,10 +69,11 @@ namespace GMUFloodForecastPortal.Controllers
                     MySql.Data.Types.MySqlDateTime mySqldate = reader.GetMySqlDateTime(4);
                     string fileName = reader.GetString(5);
 
-                    Region regionFromDistrict = RegionUtil.GetRegion(districtId);
+                    // Region regionFromDistrict = RegionUtil.GetRegion(districtId);
                     if (Region.All != RegionUtil.GetRegionFromDisplayName(region) && queryProductId == 1)
                     {
-                        if (regionFromDistrict != RegionUtil.GetRegionFromDisplayName(region))
+                        //if (regionFromDistrict != RegionUtil.GetRegionFromDisplayName(region))
+                        if(!RegionUtil.IsDistrictInRegion(districtId, region))
                         {
                             continue;
                         }
@@ -135,6 +136,103 @@ namespace GMUFloodForecastPortal.Controllers
 
             return dIndex2.CompareTo(dIndex1);
         }
+        private RegionBoundary GetRegionBoundary(Region region)
+        {
+            RegionBoundary boundary = new RegionBoundary { North = 90, South = -90, West = -180, East = 180 };
+            switch (region)
+            {
+                case Region.All:
+                    break;
+                case Region.NorthAmerica:
+                    boundary.North = 72;
+                    boundary.South = 14;
+                    boundary.West = -168;
+                    boundary.East = -48;
+                    break;
+                case Region.SouthAmerica:
+                    boundary.North = 14;
+                    boundary.South = -58;
+                    boundary.West = -84;
+                    boundary.East = -33;
+                    break;
+                case Region.Europe:
+                    boundary.North = 72;
+                    boundary.South = 34;
+                    boundary.West = -25;
+                    boundary.East = 41;
+                    break;
+                case Region.Africa:
+                    boundary.North = 34;
+                    boundary.South = -35;
+                    boundary.West = -17;
+                    boundary.East = 52;
+                    break;
+                case Region.Asia:
+                    boundary.North = 54;
+                    boundary.South = -12;
+                    boundary.West = 32;
+                    boundary.East = 142;
+                    break;
+                case Region.Australia:
+                    boundary.North = -3;
+                    boundary.South = -48;
+                    boundary.West = 112;
+                    boundary.East = 180;
+                    break;
+                case Region.USAlaska:
+                    boundary.North = 72;
+                    boundary.South = 54;
+                    boundary.West = -169;
+                    boundary.East = -129;
+                    break;
+                case Region.USNorthEast:
+                    boundary.North = 52;
+                    boundary.South = 35;
+                    boundary.West = -91;
+                    boundary.East = -66;
+                    break;
+                case Region.USNorthCentral:
+                    boundary.North = 54;
+                    boundary.South = 35;
+                    boundary.West = -106;
+                    boundary.East = -81;
+                    break;
+                case Region.USSouthEast:
+                    boundary.North = 36;
+                    boundary.South = 24;
+                    boundary.West = -91;
+                    boundary.East = -75;
+                    break;
+                case Region.USMissouriBasin:
+                    boundary.North = 53;
+                    boundary.South = 36;
+                    boundary.West = -115;
+                    boundary.East = -90;
+                    break;
+                case Region.USWestGulf:
+                    boundary.North = 40;
+                    boundary.South = 23;
+                    boundary.West = -115;
+                    boundary.East = -90;
+                    break;
+                case Region.USNorthWest:
+                    boundary.North = 52;
+                    boundary.South = 35;
+                    boundary.West = -125;
+                    boundary.East = -113;
+                    break;
+                case Region.USSouthWest:
+                    boundary.North = 45;
+                    boundary.South = 28;
+                    boundary.West = -125;
+                    boundary.East = -113;
+                    break;
+                default:
+                    break;
+            }
+
+            return boundary;
+        }
 
         [HttpGet]
         [Route("LatestDataDate")]
@@ -163,6 +261,16 @@ namespace GMUFloodForecastPortal.Controllers
             string dateTimeFormatString = @"yyyy-MM-dd hh:mm:ss";
 
             int queryProductId = ConvertProductStringToId(product);
+
+            Region regionValue = RegionUtil.GetRegionFromDisplayName(region);
+            if (north == -1000 || south == -1000 || west == -1000 || east == -1000)
+            {
+                RegionBoundary boundary = GetRegionBoundary(regionValue);
+                north = boundary.North;
+                south = boundary.South;
+                west = boundary.West;
+                east = boundary.East;
+            }
 
             string downloadTaskName = DateTime.UtcNow.ToString("yyyy_MM_dd") + "_" + DateTime.UtcNow.Ticks.ToString();
 

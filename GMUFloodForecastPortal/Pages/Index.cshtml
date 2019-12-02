@@ -77,19 +77,17 @@
                                 </div>
                                 <div class="clearall"></div>
                             </div>
-                            <div class="clearall"></div>
+                            <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
+                                <label>Products</label>
+                                <div>
+                                    <jqx-drop-down-list id="viewProduct" on-change="viewProductValueChange()" width="240" height="25" instance="getViewProductInstance()"></jqx-drop-down-list>
+                                </div>
+                                <div class="clearall"></div>
+                            </div>
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>Region</label>
                                 <div>
                                     <jqx-drop-down-list id="viewRegion" width="240" height="25" instance="getViewRegionInstance()"></jqx-drop-down-list>
-                                </div>
-                                <div class="clearall"></div>
-                            </div>
-                            <div class="clearall"></div>
-                            <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
-                                <label>Products</label>
-                                <div>
-                                    <jqx-drop-down-list id="viewProduct" width="240" height="25" instance="getViewProductInstance()"></jqx-drop-down-list>
                                 </div>
                                 <div class="clearall"></div>
                             </div>
@@ -133,7 +131,7 @@
                             <div>
                                 <label class="panel-title">Position</label>
                                 <div style="clear:both">
-                                    <label>Latitude:</label>
+                                    <label>Latitude:  </label>
                                     <span id="currentLatitude"></span>
                                 </div>
                                 <div style="clear:both">
@@ -165,7 +163,13 @@
                                 </div>
                                 <div class="clearall"></div>
                             </div>
-                            <div class="clearall"></div>
+                            <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
+                                <label>Products</label>
+                                <div>
+                                    <jqx-drop-down-list id="downloadProduct" width="240" height="25" instance="getDownloadProductInstance()"></jqx-drop-down-list>
+                                </div>
+                                <div class="clearall"></div>
+                            </div>
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>Block</label>
                                 <div>
@@ -209,14 +213,6 @@
                                     </div>
                                     <div class="clearall"></div>
                                 </div>
-                            </div>
-                            <div class="clearall"></div>
-                            <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
-                                <label>Products</label>
-                                <div>
-                                    <jqx-drop-down-list id="downloadProduct" width="240" height="25" instance="getDownloadProductInstance()"></jqx-drop-down-list>
-                                </div>
-                                <div class="clearall"></div>
                             </div>
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>Image Format</label>
@@ -263,8 +259,11 @@
         </jqx-splitter-panel>
     </jqx-splitter>
     <jqx-window auto-open="false" width="auto" resizable="false" instance="getDownloadWindowInstance()">
-        <jqx-window-header>Image Resource</jqx-window-header>
+        <jqx-window-header>Download Images</jqx-window-header>
         <jqx-window-body>
+            <div style="margin-bottom: 6px">
+                <span>Download GEO image by click the links in the table or schedule a download task to download all of them in a package.</span>
+            </div>
             <jqx-grid id="grid" alt-rows="true" pageable="true" height="360" source-id="Index" sortable="false" width="800" instance="getGridInstance()">
                 <jqx-grid-columns>
                     <jqx-grid-column width="50" text="Index" datafield="Index"></jqx-grid-column>
@@ -272,6 +271,10 @@
                     <jqx-grid-column width="80" text="Link" datafield="Link"></jqx-grid-column>
                 </jqx-grid-columns>
             </jqx-grid>
+            <div style="margin-top: 6px;">
+                <jqx-button id="download_AllViewImages" width="190">Schedule to download all</jqx-button>
+                <span>Files could be ready to download in about 10 - 15 minutes at <a href="ftp://jpssflood.gmu.edu/" target="_blank">ftp://jpssflood.gmu.edu/</a></span>
+            </div>
         </jqx-window-body>
     </jqx-window>
 </div>
@@ -284,6 +287,7 @@
 
             $("#downloadRegionPanel").hide();
             $("#downloadCoordinatePanel").show();
+            sessionStorage.setItem("download_ByRegion", 0);
 
             sessionStorage.setItem("navigation_kmlloaded", 0);
 
@@ -305,6 +309,15 @@
             g_ViewFromDateInstance = instance;
         }
 
+        /*
+        document.getElementById('viewProduct').onchange = undefined;
+        $('#viewProduct').removeAttr('onchange').change(function() {
+            alert("My new submit function justexecuted!");
+        });
+        */
+        function viewProductValueChange(event) {
+        }
+
         $('#view_DownloadCurrent').on('click', function (event) {
             g_downloadGridInstance['clear']();
 
@@ -317,6 +330,16 @@
             getKmlFiles(fromDateText, toDateText, selectedRegion, selectedProduct, imageFormat, g_downloadGridInstance);
 
             g_downloadWindowInstance['open']();
+        });
+
+        $('#download_AllViewImages').on('click', function (event) {
+            var selectedRegion = getSelectedViewRegion();
+            var selectedProduct = getSelectedViewProduct();
+            var fromDateText = getViewFromDatetimeText();
+            var toDateText = getViewToDatetimeText();
+            var imageFormat = getDownloadImageFormat();
+
+            GenerateDownloadTask(fromDateText, toDateText, selectedRegion, selectedProduct, imageFormat, -1000, -1000, -1000, -1000);
         });
 
         $('#apply_DateTimePeriod').on('click', function (event) {
@@ -354,11 +377,14 @@
         $('#downloadByRegion').on('click', function (event) {
             $("#downloadRegionPanel").show();
             $("#downloadCoordinatePanel").hide();
+
+            sessionStorage.setItem("download_ByRegion", 1);
         }); 
 
         $('#downloadByCoordinate').on('click', function (event) {
             $("#downloadRegionPanel").hide();
             $("#downloadCoordinatePanel").show();
+            sessionStorage.setItem("download_ByRegion", 0);
         });
 
         $('#download_SearchAndDownload').on('click', function (event) {
@@ -371,6 +397,14 @@
             var south = getDownloadCoordinateSouth();
             var west = getDownloadCoordinateWest();
             var east = getDownloadCoordinateEast();
+
+            var downloadByRegion = sessionStorage.getItem("download_ByRegion");
+            if (downloadByRegion == 1) {
+                north = -1000;
+                south = -1000;
+                west = -1000;
+                east = -1000;
+            }
 
             GenerateDownloadTask(fromDateText, toDateText, selectedRegion, selectedProduct, imageFormat, north, south, west, east);
         });
