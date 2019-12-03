@@ -3,6 +3,7 @@ var g_mapInstance;
 var g_viewRegionInstance;
 var g_viewProductInstance;
 var g_downloadWindowInstance;
+var g_downloadConfirmationWindowInstance;
 var g_downloadGridInstance;
 var g_ViewFromDateInstance;
 
@@ -89,6 +90,10 @@ function getDownloadImageTypeInstance(instance) {
 
 function getDownloadWindowInstance(instance) {
     g_downloadWindowInstance = instance;
+}
+
+function getDownloadConfirmationWindowInstance(instance) {
+    g_downloadConfirmationWindowInstance = instance;
 }
 
 function formatDate(date) {

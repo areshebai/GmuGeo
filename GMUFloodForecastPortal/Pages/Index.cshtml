@@ -226,11 +226,7 @@
                             </div>
                             <div class="clearall"></div>
                             <div style="margin-top: 10px; margin-bottom:10px; margin-left: 10px">
-                                <label class="panel-title">Download Status</label>
-                                <div style="clear:both; margin-bottom: 8px">
-                                    <span>Only one download task allowed while processing.</span>
-                                </div>
-                                <div style="clear:both; margin-bottom: 8px">
+                                   <div style="clear:both; margin-bottom: 8px">
                                     <label>Name: </label>
                                     <span id="downloadTaskName">None</span>
                                 </div>
@@ -274,6 +270,42 @@
             <div style="margin-top: 6px;">
                 <jqx-button id="download_AllViewImages" width="190">Schedule to download all</jqx-button>
                 <span>Files could be ready to download in about 10 - 15 minutes at <a href="ftp://jpssflood.gmu.edu/" target="_blank">ftp://jpssflood.gmu.edu/</a></span>
+            </div>
+        </jqx-window-body>
+    </jqx-window>
+    <jqx-window auto-open="false" width="480" height="220" resizable="false" instance="getDownloadConfirmationWindowInstance()">
+        <jqx-window-header>Download</jqx-window-header>
+        <jqx-window-body>
+            <div style="margin-bottom: 10px">
+                <span>Confirm to download with the settings or cancel to reconfigure.</span>
+            </div>
+            <div style="clear:both">
+                <label>From:  </label>
+                <span id="downloadConfirmationFrom"></span>
+            </div>
+            <div style="clear:both">
+                <label>To:</label>
+                <span id="downloadConfirmationTo"></span>
+            </div>
+            <div style="clear:both">
+                <label>Product:</label>
+                <span id="downloadConfirmationProduct"></span>
+            </div>
+            <div id="downloadConfirmationRegionContainer" style="clear:both">
+                <label>Region:</label>
+                <span id="downloadConfirmationRegion"></span>
+            </div>
+            <div id="downloadConfirmationCoordinateContainer" style="clear:both">
+                <label>Coordinate:</label>
+                <span id="downloadConfirmationCoordinate"></span>
+            </div>
+            <div style="clear:both">
+                <label>Format:</label>
+                <span id="downloadConfirmationFormat"></span>
+            </div>
+            <div style="margin-left: 300px; margin-top: 12px">
+                <jqx-button id="download_ConfirmToSchedule" width="80">Confirm</jqx-button>
+                <jqx-button id="download_CancelSchedule" width="80">Cancel</jqx-button>
             </div>
         </jqx-window-body>
     </jqx-window>
@@ -398,6 +430,38 @@
             var west = getDownloadCoordinateWest();
             var east = getDownloadCoordinateEast();
 
+            $('#downloadConfirmationFrom').html(fromDateText);
+            $('#downloadConfirmationTo').html(toDateText);
+            $('#downloadConfirmationProduct').html(selectedProduct);
+
+            var downloadByRegion = sessionStorage.getItem("download_ByRegion");
+            if (downloadByRegion == 1) {
+                $('#downloadConfirmationRegionContainer').show();
+                $('#downloadConfirmationCoordinateContainer').hide();
+                $('#downloadConfirmationRegion').html(selectedRegion);
+            }
+            else {
+                var coordinateString = "north(" + north + "), " + "south(" + south + "), " + "west(" + west + "), " + "east(" + east + ")"; 
+                $('#downloadConfirmationRegionContainer').hide();
+                $('#downloadConfirmationCoordinateContainer').show();
+                $('#downloadConfirmationCoordinate').html(coordinateString);
+            }
+            $('#downloadConfirmationFormat').html(imageFormat);
+
+            g_downloadConfirmationWindowInstance['open']();
+        });
+
+        $('#download_ConfirmToSchedule').on('click', function (event) {
+            var selectedRegion = getSelectedDownloadRegion();
+            var selectedProduct = getSelectedDownloadProduct();
+            var fromDateText = getdownloadFromDatetimeText();
+            var toDateText = getdownloadToDatetimeText();
+            var imageFormat = getDownloadImageFormat2();
+            var north = getDownloadCoordinateNorth();
+            var south = getDownloadCoordinateSouth();
+            var west = getDownloadCoordinateWest();
+            var east = getDownloadCoordinateEast();
+
             var downloadByRegion = sessionStorage.getItem("download_ByRegion");
             if (downloadByRegion == 1) {
                 north = -1000;
@@ -407,6 +471,12 @@
             }
 
             GenerateDownloadTask(fromDateText, toDateText, selectedRegion, selectedProduct, imageFormat, north, south, west, east);
+
+            g_downloadConfirmationWindowInstance['close']();
+        });
+
+        $('#download_CancelSchedule').on('click', function (event) {
+            g_downloadConfirmationWindowInstance['close']();
         });
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXVemTzeOvkKbvJFWi60hkwaIwD37s1LA&callback=initMap"></script>
