@@ -255,6 +255,14 @@ function createMapInstance(mapElement, transparency, lat, lng, zoom) {
         sessionStorage.setItem("navigation_center_lat", latlng.lat());
         sessionStorage.setItem("navigation_center_lng", latlng.lng());
         sessionStorage.setItem("navigation_zoom", map.getZoom());
+
+        var latLngBounds = map.getBounds();
+        var northEast = latLngBounds.getNorthEast();
+        var southWest = latLngBounds.getSouthWest();
+        sessionStorage.setItem("bounds_north", northEast.lat().toFixed());
+        sessionStorage.setItem("bounds_east", northEast.lng().toFixed());
+        sessionStorage.setItem("bounds_south", southWest.lat().toFixed());
+        sessionStorage.setItem("bounds_west", southWest.lng().toFixed());
     });
 
     google.maps.event.addListener(map, 'zoom_changed', function () {
@@ -362,15 +370,20 @@ function GenerateDownloadTask(from, to, region, product, imageFormat, north, sou
     });
 }
 
-function getKmlFiles(from, to, region, product, imageFormat, instance) {
+function getKmlFiles(from, to, region, product, imageFormat, instance, north, south, west, east, zoom) {
     $.ajax({
         type: 'GET',
-        url: "api/kmls",
+        url: "api/kmls/block",
         data: {
             from: from,
             to: to,
             region: region,
-            product: product
+            product: product,
+            north: north,
+            south: south,
+            west: west,
+            east: east,
+            zoom: zoom
         },
         cache: false,
         success: function (data) {

@@ -359,7 +359,13 @@
             var toDateText = getViewToDatetimeText();
             var imageFormat = getDownloadImageFormat();
 
-            getKmlFiles(fromDateText, toDateText, selectedRegion, selectedProduct, imageFormat, g_downloadGridInstance);
+            var north = sessionStorage.getItem("bounds_north");
+            var east = sessionStorage.getItem("bounds_east");
+            var south = sessionStorage.getItem("bounds_south");
+            var west = sessionStorage.getItem("bounds_west");
+            var zoom = sessionStorage.getItem("navigation_zoom");
+
+            getKmlFiles(fromDateText, toDateText, selectedRegion, selectedProduct, imageFormat, g_downloadGridInstance, north, south, west, east, zoom);
 
             g_downloadWindowInstance['open']();
         });
@@ -371,7 +377,12 @@
             var toDateText = getViewToDatetimeText();
             var imageFormat = getDownloadImageFormat();
 
-            GenerateDownloadTask(fromDateText, toDateText, selectedRegion, selectedProduct, imageFormat, -1000, -1000, -1000, -1000);
+            var north = sessionStorage.getItem("bounds_north");
+            var east = sessionStorage.getItem("bounds_east");
+            var south = sessionStorage.getItem("bounds_south");
+            var west = sessionStorage.getItem("bounds_west");
+
+            GenerateDownloadTask(fromDateText, toDateText, selectedRegion, selectedProduct, imageFormat, north, south, west, east);
         });
 
         $('#apply_DateTimePeriod').on('click', function (event) {

@@ -86,6 +86,64 @@ namespace GMUFloodForecastPortal.Controllers
             return Json(kmlFiles);
         }
 
+        [HttpGet]
+        [Route("Block")]
+        public JsonResult GetFileByBlock(DateTime from, DateTime to, string region, string product, int north, int south, int west, int east, int zoom)
+        {
+            List<KmlFileInfo> kmlFiles = new List<KmlFileInfo>();
+
+            string fromDateFormatString = string.Empty;
+            string toDateFormatString = string.Empty;
+
+            to = from;
+
+            fromDateFormatString = @"yyyy-MM-dd 00:00:00";
+            toDateFormatString = @"yyyy-MM-dd 23:00:00";
+
+            int queryProductId = ConvertProductStringToId(product);
+
+            using (MySqlConnection connection = new MySqlConnection(DatabaseConnectionstring))
+            {
+                connection.Open();
+                MySqlCommand command = new MySqlCommand();
+                command.Connection = connection;
+                command.CommandText = string.Format("SELECT * FROM jpssflood.kmlmetadata WHERE Date >= '{0}' AND Date <= '{1}' AND ProductId = {2} AND RegionId = {3} AND DistrictId >= 1 AND DistrictId <= 136 ORDER BY DistrictID DESC", from.ToString(fromDateFormatString), to.AddHours(1).ToString(toDateFormatString), queryProductId, 1);
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    int kmlId = reader.GetInt32(0);
+                    int productId = reader.GetInt32(1);
+                    int regionId = reader.GetInt32(2);
+                    int districtId = reader.GetInt32(3);
+                    MySql.Data.Types.MySqlDateTime mySqldate = reader.GetMySqlDateTime(4);
+                    string fileName = reader.GetString(5);
+
+                    int bounds_north = RegionUtil.DistrictBounds[districtId, 3];
+                    int bounds_south = RegionUtil.DistrictBounds[districtId, 2];
+                    int bounds_east = RegionUtil.DistrictBounds[districtId, 1];
+                    int bounds_west = RegionUtil.DistrictBounds[districtId, 0];
+
+                    if (zoom <= 3 || IsInBoundary(west, east, south, north, bounds_west, bounds_east, bounds_south, bounds_north))
+                    {
+                        kmlFiles.Add(new KmlFileInfo { FullName = string.Format(kmlFullFilePathFormat, fileName), ShortName = fileName, DistrictId = districtId });
+                    }
+                }
+            }
+
+            return Json(kmlFiles);
+        }
+
+        private bool IsInBoundary(int stdWest, int stdEast, int stdSouth, int stdNorth, int varWest, int varEast, int varSouth, int varNorth)
+        {
+            bool isInBoundary = true;
+            if (varWest > stdEast || varEast < stdWest || varSouth > stdNorth || varNorth < stdSouth)
+	        {
+		        isInBoundary = false;
+            }
+
+            return isInBoundary;
+        }
+
         private int ConvertProductStringToId(string product)
         {
             if (product == "VIIRS 375-m")
