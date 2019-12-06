@@ -123,7 +123,7 @@ namespace GMUFloodForecastPortal.Controllers
                     int bounds_east = RegionUtil.DistrictBounds[districtId, 1];
                     int bounds_west = RegionUtil.DistrictBounds[districtId, 0];
 
-                    if (zoom <= 3 || IsInBoundary(west, east, south, north, bounds_west, bounds_east, bounds_south, bounds_north))
+                    if (zoom <= 3 || (queryProductId != 1 && queryProductId != 6) || IsInBoundary(west, east, south, north, bounds_west, bounds_east, bounds_south, bounds_north))
                     {
                         kmlFiles.Add(new KmlFileInfo { FullName = string.Format(kmlFullFilePathFormat, fileName), ShortName = fileName, DistrictId = districtId });
                     }
@@ -307,6 +307,27 @@ namespace GMUFloodForecastPortal.Controllers
                 reader.Read();
                 MySql.Data.Types.MySqlDateTime mySqldate = reader.GetMySqlDateTime(4);
                 return mySqldate.Value.ToString("MM/dd/yyyy");
+            }
+        }
+
+        [HttpGet]
+        [Route("downloadstatus")]
+        public int GetDownloadTaskStatus(string taskName)
+        {
+            using (MySqlConnection connection = new MySqlConnection(DatabaseConnectionstring))
+            {
+                connection.Open();
+                MySqlCommand command = new MySqlCommand();
+                command.Connection = connection;
+                command.CommandText = string.Format("SELECT * FROM jpssflood.downloadtasks_v2 WHERE Name = '{0}' LIMIT 1;", taskName);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                int taskStatus = -1;
+                if (reader.Read())
+                {
+                    taskStatus = reader.GetInt32(15);
+                }
+                return taskStatus;
             }
         }
 

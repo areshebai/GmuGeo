@@ -370,6 +370,32 @@ function GenerateDownloadTask(from, to, region, product, imageFormat, north, sou
     });
 }
 
+function GetDownloadTaskStatus(taskName) {
+    $.ajax({
+        type: 'GET',
+        url: "api/kmls/downloadstatus",
+        data: {
+            taskName: taskName
+        },
+        cache: false,
+        success: function (data) {
+            if (data === 1) {
+                $('#downloadTaskStatus').html("Scheduled");
+                sessionStorage.setItem("download_taskstatus", "Scheduled");
+            } else if (data === 2) {
+                $('#downloadTaskStatus').html("Processing");
+                sessionStorage.setItem("download_taskstatus", "Processing");
+            } else if (data === 3) {
+                $('#downloadTaskStatus').html("Completed");
+                sessionStorage.setItem("download_taskstatus", "Completed");
+            } else {
+                $('#downloadTaskStatus').html("Deleted");
+                sessionStorage.setItem("download_taskstatus", "Deleted");
+            }
+        }
+    });
+}
+
 function getKmlFiles(from, to, region, product, imageFormat, instance, north, south, west, east, zoom) {
     $.ajax({
         type: 'GET',

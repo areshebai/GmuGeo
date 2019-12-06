@@ -230,10 +230,11 @@
                                     <label>Name: </label>
                                     <span id="downloadTaskName">None</span>
                                 </div>
-                                <div style="clear:both; margin-bottom: 8px">
-                                    <label>Status: </label>
-                                    <span id="downloadTaskStatus">None</span>
-                                </div>
+                                   <div style="clear:both; margin-bottom: 8px">
+                                       <label>Status: </label>
+                                       <span style="margin-right: 10px" id="downloadTaskStatus">None</span>
+                                       <jqx-button id="download_RefreshStatus" width="60">Refresh</jqx-button>
+                                   </div>
                                 <div style="clear:both; margin-bottom: 8px">
                                     <label>Path: </label>
                                     <span id="downloadTaskPath"><a href="ftp://jpssflood.gmu.edu/" target="_blank">ftp://jpssflood.gmu.edu/</a></span>
@@ -460,6 +461,13 @@
             $('#downloadConfirmationFormat').html(imageFormat);
 
             g_downloadConfirmationWindowInstance['open']();
+        });
+
+        $('#download_RefreshStatus').on('click', function (event) {
+            var taskName = $('#downloadTaskName').html();
+            if (taskName !== 'None') {
+                GetDownloadTaskStatus(taskName);
+            }
         });
 
         $('#download_ConfirmToSchedule').on('click', function (event) {
