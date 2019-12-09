@@ -365,13 +365,12 @@ namespace GMUFFCommon
                         isInRegion = true;
                     break;
                 case Region.USACONUS:
-                    if ((districtIndex >= 111 && districtIndex <= 25) ||
-                        (districtIndex >= 129 && districtIndex <= 132))
+                    if ((districtIndex >= 11 && districtIndex <= 25))
                         isInRegion = true;
                     break;
                 case Region.USAAlaska:
-                    if ((districtIndex >= 1 && districtIndex <= 4) ||
-                        (districtIndex >= 9 && districtIndex <= 11))
+                    if ((districtIndex >= 1 && districtIndex <= 3) ||
+                        (districtIndex >= 10 && districtIndex <= 10))
                         isInRegion = true;
                     break;
                 case Region.USAHawaii:

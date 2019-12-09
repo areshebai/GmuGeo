@@ -50,6 +50,8 @@ function getViewNWSDomainInstance(instance) {
 function getViewCountryInstance(instance) {
     g_viewCountryInstance = instance;
     instance["addItem"]('USA-CONUS');
+    instance["addItem"]('USA-Alaska');
+    instance["addItem"]('USA-Hawaii');
     instance["addItem"]('Afghanistan');
     instance["addItem"]('Albania');
     instance["addItem"]('American Samoa');
@@ -342,7 +344,7 @@ function displayKmlLayer(map, url) {
     var ctaLayer = new google.maps.KmlLayer({
         preserveViewport: true,
         suppressInfoWindows: false,
-        clickable: false
+        clickable: true
     });
 
     ctaLayer.setUrl(url);
