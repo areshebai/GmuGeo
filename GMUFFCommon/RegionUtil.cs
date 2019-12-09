@@ -253,6 +253,30 @@ namespace GMUFFCommon
             if (Name.ToLower() == "nws south west")
                 return Region.USSouthWest;
 
+            if (Name.ToLower() == "usa-conus")
+                return Region.USACONUS;
+
+            if (Name.ToLower() == "usa-alaska")
+                return Region.USAAlaska;
+
+            if (Name.ToLower() == "usa-hawaii")
+                return Region.USAHawaii;
+
+            if (Name.ToLower() == "afghanistan")
+                return Region.Afghanistan;
+
+            if (Name.ToLower() == "albania")
+                return Region.Albania;
+
+            if (Name.ToLower() == "algeria")
+                return Region.Algeria;
+
+            if (Name.ToLower() == "american samoa")
+                return Region.AmericanSamoa;
+
+            if (Name.ToLower() == "andorra")
+                return Region.Andorra;
+
             return Region.All;
         }
 
@@ -338,6 +362,20 @@ namespace GMUFFCommon
                 case Region.USSouthWest:
                     if ((districtIndex >= 17 && districtIndex <= 18) ||
                         (districtIndex >= 22 && districtIndex <= 22))
+                        isInRegion = true;
+                    break;
+                case Region.USACONUS:
+                    if ((districtIndex >= 111 && districtIndex <= 25) ||
+                        (districtIndex >= 129 && districtIndex <= 132))
+                        isInRegion = true;
+                    break;
+                case Region.USAAlaska:
+                    if ((districtIndex >= 1 && districtIndex <= 4) ||
+                        (districtIndex >= 9 && districtIndex <= 11))
+                        isInRegion = true;
+                    break;
+                case Region.USAHawaii:
+                    if ((districtIndex >= 133 && districtIndex <= 133))
                         isInRegion = true;
                     break;
                 default:

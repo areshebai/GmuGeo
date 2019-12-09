@@ -27,6 +27,15 @@ namespace GMUFFCommon
         USMissouriBasin = 11,
         USWestGulf = 12,
         USNorthWest = 13,
-        USSouthWest= 14
+        USSouthWest= 14,
+
+        USACONUS = 15,
+        USAAlaska = 16,
+        USAHawaii = 17,
+        Afghanistan = 18,
+        Albania = 19,
+        Algeria = 20,
+        AmericanSamoa = 21,
+        Andorra = 22
     }
 }

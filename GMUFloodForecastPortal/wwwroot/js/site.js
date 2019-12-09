@@ -1,6 +1,8 @@
 ﻿// Write your Javascript code.
 var g_mapInstance;
 var g_viewRegionInstance;
+var g_viewNWSDomainInstance;
+var g_viewCountryInstance;
 var g_viewProductInstance;
 var g_downloadWindowInstance;
 var g_downloadConfirmationWindowInstance;
@@ -29,6 +31,37 @@ function getDownloadProductInstance(instance) {
     instance["addItem"]('AHI 1-km');
     instance["addItem"]('Joint VIIRS/ABI');
     instance["addItem"]('Joint VIIRS/AHI');
+    instance["selectIndex"](0);
+}
+
+function getViewNWSDomainInstance(instance) {
+    g_viewNWSDomainInstance = instance;
+    instance["addItem"]('NWS Alaska');
+    instance["addItem"]('NWS North East');
+    instance["addItem"]('NWS North Central');
+    instance["addItem"]('NWS South East');
+    instance["addItem"]('NWS Missouri Basin');
+    instance["addItem"]('NWS West Gulf');
+    instance["addItem"]('NWS North West');
+    instance["addItem"]('NWS South West');
+    instance["selectIndex"](0);
+}
+
+function getViewCountryInstance(instance) {
+    g_viewCountryInstance = instance;
+    instance["addItem"]('USA-CONUS');
+    instance["addItem"]('Afghanistan');
+    instance["addItem"]('Albania');
+    instance["addItem"]('American Samoa');
+    instance["addItem"]('Andorra');
+    instance["addItem"]('Angola');
+    instance["addItem"]('Anguilla');
+    instance["addItem"]('Antarctica');
+    instance["addItem"]('Antigua and Barbuda');
+    instance["addItem"]('Argentina');
+    instance["addItem"]('Armenia');
+    instance["addItem"]('Aruba');
+    instance["addItem"]('Australia');
     instance["selectIndex"](0);
 }
 
@@ -144,8 +177,18 @@ function getViewToDatetime() {
     return new Date(toDateText);
 }
 
+function getSelectedViewNWSDomain() {
+    var region = $('#viewNWSDomain').children(':input').attr('value');
+    return region;
+}
+
 function getSelectedViewRegion() {
     var region = $('#viewRegion').children(':input').attr('value');
+    return region;
+}
+
+function getSelectedViewCountry() {
+    var region = $('#viewCountry').children(':input').attr('value');
     return region;
 }
 

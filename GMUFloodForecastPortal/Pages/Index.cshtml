@@ -80,14 +80,32 @@
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>Products</label>
                                 <div>
-                                    <jqx-drop-down-list id="viewProduct" on-change="viewProductValueChange()" width="240" height="25" instance="getViewProductInstance()"></jqx-drop-down-list>
+                                    <jqx-drop-down-list id="viewProduct" width="240" height="25" instance="getViewProductInstance()"></jqx-drop-down-list>
                                 </div>
                                 <div class="clearall"></div>
                             </div>
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
-                                <label>Region</label>
+                                <label>Block</label>
                                 <div>
+                                    <div style="float: left; margin-top: 2px; margin-right: 5px">
+                                        <jqx-radio-button id="viewNWSDomainRadio" checked="true" group-name="ViewBlockOption">NWS</jqx-radio-button>
+                                    </div>
+                                    <div style="float: left; margin-top: 2px; margin-right: 5px">
+                                        <jqx-radio-button id="viewRegionRadio" group-name="ViewBlockOption">Region</jqx-radio-button>
+                                    </div>
+                                    <div style="float: left; margin-top: 2px; margin-right: 5px">
+                                        <jqx-radio-button id="viewCountryRadio" group-name="ViewBlockOption">Country</jqx-radio-button>
+                                    </div>
+                                    <div class="clearall"></div>
+                                </div>
+                                <div id="viewNWSDomainPanel" style="margin-top: 10px; margin-bottom:5px;">
+                                    <jqx-drop-down-list id="viewNWSDomain" width="240" height="25" instance="getViewNWSDomainInstance()"></jqx-drop-down-list>
+                                </div>
+                                <div id="viewRegionPanel" style="margin-top: 10px; margin-bottom:5px;">
                                     <jqx-drop-down-list id="viewRegion" width="240" height="25" instance="getViewRegionInstance()"></jqx-drop-down-list>
+                                </div>
+                                <div id="viewCountryPanel" style="margin-top: 10px; margin-bottom:5px;">
+                                    <jqx-drop-down-list id="viewCountry" width="240" height="25" instance="getViewCountryInstance()"></jqx-drop-down-list>
                                 </div>
                                 <div class="clearall"></div>
                             </div>
@@ -322,6 +340,11 @@
             $("#downloadCoordinatePanel").show();
             sessionStorage.setItem("download_ByRegion", 0);
 
+            $("#viewNWSDomainPanel").show();
+            $("#viewRegionPanel").hide();
+            $("#viewCountryPanel").hide();
+            sessionStorage.setItem("view_ByRegion", 1);
+
             sessionStorage.setItem("navigation_kmlloaded", 0);
 
             var taskName = sessionStorage.getItem("download_taskname");
@@ -340,15 +363,6 @@
 
         function getViewFromDateInstance(instance) {
             g_ViewFromDateInstance = instance;
-        }
-
-        /*
-        document.getElementById('viewProduct').onchange = undefined;
-        $('#viewProduct').removeAttr('onchange').change(function() {
-            alert("My new submit function justexecuted!");
-        });
-        */
-        function viewProductValueChange(event) {
         }
 
         $('#view_DownloadCurrent').on('click', function (event) {
@@ -399,6 +413,17 @@
                 
             var map = createMapInstance("googleMap", parseInt(currentTrans), lat, lng, zoom);
 
+            var viewByRegion = sessionStorage.getItem("view_ByRegion");
+            if(viewByRegion == 1) {
+                selectedRegion = getSelectedViewNWSDomain();
+            }
+            if (viewByRegion == 2) {
+                selectedRegion = getSelectedViewRegion();
+            }
+            if (viewByRegion == 3) {
+                selectedRegion = getSelectedViewCountry();
+            }
+
             displayKmls(map, fromDateText, toDateText, selectedRegion, selectedProduct);
         });
 
@@ -428,7 +453,41 @@
         $('#downloadByCoordinate').on('click', function (event) {
             $("#downloadRegionPanel").hide();
             $("#downloadCoordinatePanel").show();
+            g_downloadRegionInstance['close']();
             sessionStorage.setItem("download_ByRegion", 0);
+        });
+
+        $('#viewNWSDomainRadio').on('click', function (event) {
+            $("#viewNWSDomainPanel").show();
+            $("#viewRegionPanel").hide();
+            $("#viewCountryPanel").hide();
+
+            g_viewRegionInstance['close']();
+            g_viewCountryInstance['close']();
+
+            sessionStorage.setItem("viewByRegion", 1);
+        });
+
+        $('#viewRegionRadio').on('click', function (event) {
+            $("#viewNWSDomainPanel").hide();
+            $("#viewRegionPanel").show();
+            $("#viewCountryPanel").hide();
+
+            g_viewNWSDomainInstance['close']();
+            g_viewCountryInstance['close']();
+
+            sessionStorage.setItem("view_ByRegion", 2);
+        });
+
+        $('#viewCountryRadio').on('click', function (event) {
+            $("#viewNWSDomainPanel").hide();
+            $("#viewRegionPanel").hide();
+            $("#viewCountryPanel").show();
+
+            g_viewNWSDomainInstance['close']();
+            g_viewRegionInstance['close']();
+
+            sessionStorage.setItem("viewByRegion", 3);
         });
 
         $('#download_SearchAndDownload').on('click', function (event) {
