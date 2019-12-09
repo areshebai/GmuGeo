@@ -344,7 +344,7 @@ function displayKmlLayer(map, url) {
     var ctaLayer = new google.maps.KmlLayer({
         preserveViewport: true,
         suppressInfoWindows: false,
-        clickable: true
+        clickable: false
     });
 
     ctaLayer.setUrl(url);
