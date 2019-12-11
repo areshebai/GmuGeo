@@ -87,14 +87,14 @@
                             <div style="margin-top: 10px; margin-bottom:5px; margin-left: 10px">
                                 <label>Block</label>
                                 <div>
-                                    <div style="float: left; margin-top: 2px; margin-right: 5px">
+                                    <div style="float: left; margin-top: 2px; margin-right: 2px">
                                         <jqx-radio-button id="viewNWSDomainRadio" checked="true" group-name="ViewBlockOption">NWS</jqx-radio-button>
                                     </div>
-                                    <div style="float: left; margin-top: 2px; margin-right: 5px">
+                                    <div style="float: left; margin-top: 2px; margin-right: 2px">
                                         <jqx-radio-button id="viewRegionRadio" group-name="ViewBlockOption">Region</jqx-radio-button>
                                     </div>
-                                    <div style="float: left; margin-top: 2px; margin-right: 5px">
-                                        <jqx-radio-button id="viewCountryRadio" group-name="ViewBlockOption">Country</jqx-radio-button>
+                                    <div style="float: left; margin-top: 2px; margin-right: 2px">
+                                        <jqx-radio-button id="viewCountryRadio" group-name="ViewBlockOption">Country/Area</jqx-radio-button>
                                     </div>
                                     <div class="clearall"></div>
                                 </div>
@@ -410,8 +410,9 @@
             var lat = sessionStorage.getItem("navigation_center_lat");
             var lng = sessionStorage.getItem("navigation_center_lng");
             var zoom = sessionStorage.getItem("navigation_zoom");
-                
-            var map = createMapInstance("googleMap", parseInt(currentTrans), lat, lng, zoom);
+
+            var previous_selectedProduct = sessionStorage.getItem("view_SelectedProduct");
+            var previous_selectedRegion = sessionStorage.getItem("view_SelectedRegion");
 
             var viewByRegion = sessionStorage.getItem("view_ByRegion");
             if(viewByRegion == 1) {
@@ -423,6 +424,19 @@
             if (viewByRegion == 3) {
                 selectedRegion = getSelectedViewCountry();
             }
+
+            var map;
+            if((previous_selectedProduct != selectedProduct) || (previous_selectedRegion != selectedRegion))
+            {
+                map = createMapInstance("googleMap", parseInt(currentTrans), null, null, null);
+            }
+            else
+            {
+                map = createMapInstance("googleMap", parseInt(currentTrans), lat, lng, zoom);
+            }
+
+            sessionStorage.setItem("view_SelectedProduct", selectedProduct);
+            sessionStorage.setItem("view_SelectedRegion", selectedRegion);
 
             displayKmls(map, fromDateText, toDateText, selectedRegion, selectedProduct);
         });
