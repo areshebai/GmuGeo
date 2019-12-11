@@ -179,6 +179,197 @@ namespace GMUFFCommon
         public static int[] Africa = new int[27] {70, 71, 72, 82, 83, 84, 85, 86, 87, 88, 89, 93, 94, 95, 96, 97, 98, 104, 105, 106, 107, 113, 114, 115, 116, 121, 122 };
         public static int[] Australia = new int[21] { 108, 109, 110, 111, 112, 117, 118, 119, 120, 123, 124, 125, 126, 127, 128, 129, 130, 133, 134, 135, 136 };
 
+        public static readonly Dictionary<string, int[]> CountryDistricts = new Dictionary<string, int[]>
+        {
+            {"afghanistan", new int[]{75,88}},
+            {"albania", new int[]{72}},
+            {"algeria", new int[]{70,71,83,84}},
+            {"andorra", new int[]{71}},
+            {"angola", new int[]{104,105,113,114}},
+            {"argentina", new int[]{34,35,37,38,40}},
+            {"armenia", new int[]{73,74}},
+            {"australia", new int[]{111,112,117,118,119,120,123,124,125,126}},
+            {"austria", new int[]{58,59}},
+            {"azerbaijan", new int[]{73,74}},
+            {"azores", new int[]{70}},
+            {"bahrain", new int[]{87}},
+            {"bangladesh", new int[]{89,90}},
+            {"belarus", new int[]{59,60}},
+            {"belgium", new int[]{58}},
+            {"benin", new int[]{95}},
+            {"bermuda", new int[]{21}},
+            {"bhutan", new int[]{89,90}},
+            {"bolivia", new int[]{31,34,35}},
+            {"bosnia and herzegovina", new int[]{59,72}},
+            {"botswana", new int[]{114}},
+            {"brazil", new int[]{28,29,31,32,33,34,35,36,38}},
+            {"brunei darussalam", new int[]{102}},
+            {"bulgaria", new int[]{72}},
+            {"burkina faso", new int[]{83,94,95}},
+            {"burundi", new int[]{105,106}},
+            {"cabo verde", new int[]{82,93}},
+            {"cambodia", new int[]{101,102}},
+            {"cameroon", new int[]{95,96}},
+            {"canada", new int[]{3,4,5,6,7,8,11,12,13,14,15,16,20,21,129}},
+            {"central african republic", new int[]{95,96}},
+            {"central america", new int[]{23,24,25,26,27,28,29}},
+            {"chad", new int[]{84,85,95,96}},
+            {"chile", new int[]{34,37,39,40}},
+            {"china", new int[]{63,64,65,66,75,76,77,78,79,89,90,91,92}},
+            {"christmas island", new int[]{110}},
+            {"clipperton", new int[]{57,58,70,71}},
+            {"cocos islands", new int[]{109}},
+            {"colombia", new int[]{27,28,30,31}},
+            {"comoros", new int[]{106}},
+            {"congo", new int[]{95,96,104,105}},
+            {"congo drc", new int[]{96,97,104,105,106}},
+            {"croatia", new int[]{58,59,71,72}},
+            {"cyprus", new int[]{73}},
+            {"czech republic", new int[]{58,59}},
+            {"denmark", new int[]{58,59}},
+            {"djibouti", new int[]{97}},
+            {"ecuador", new int[]{26,27,30}},
+            {"egypt", new int[]{72,73,85,86}},
+            {"equatorial guinea", new int[]{95}},
+            {"eritrea", new int[]{86,97}},
+            {"estonia", new int[]{59}},
+            {"ethiopia", new int[]{97,98}},
+            {"falkland islands", new int[]{40,41}},
+            {"faroe islands", new int[]{42}},
+            {"fiji", new int[]{135,136}},
+            {"finland", new int[]{44,45,59}},
+            {"gabon", new int[]{95,104}},
+            {"gambia", new int[]{93,94}},
+            {"georgia", new int[]{73,74}},
+            {"germany", new int[]{58,59}},
+            {"ghana", new int[]{94,95}},
+            {"gibraltar", new int[]{70}},
+            {"glorioso islands", new int[]{107}},
+            {"greece", new int[]{72}},
+            {"greenland", new int[]{130,131,132}},
+            {"guernsey", new int[]{57}},
+            {"guinea", new int[]{93,94}},
+            {"guinea-bissau", new int[]{93,94}},
+            {"hungary", new int[]{59}},
+            {"iceland", new int[]{132,42}},
+            {"india", new int[]{75,76,88,89,90,99,100,101}},
+            {"indonesia", new int[]{101,102,103,109,110,111,112}},
+            {"iran", new int[]{73,74,75,87,88}},
+            {"iraq", new int[]{73,74,86,87}},
+            {"ireland", new int[]{57}},
+            {"isle of man", new int[]{57}},
+            {"israel", new int[]{73,86}},
+            {"italy", new int[]{58,59,71,72}},
+            {"ivory coast", new int[]{94}},
+            {"jan mayen", new int[]{42,44}},
+            {"japan", new int[]{67,79,80,92}},
+            {"jersey", new int[]{57}},
+            {"jordan", new int[]{73,86}},
+            {"juan de nova island", new int[]{115}},
+            {"kazakhstan", new int[]{61,62,63,74,75,76}},
+            {"kenya", new int[]{97,106}},
+            {"kuwait", new int[]{74,87}},
+            {"kyrgyzstan", new int[]{75,76}},
+            {"laos", new int[]{90,91,102}},
+            {"latvia", new int[]{59}},
+            {"lebanon", new int[]{73}},
+            {"lesotho", new int[]{114,121}},
+            {"liberia", new int[]{94}},
+            {"libya", new int[]{71,72,84,85}},
+            {"liechtenstein", new int[]{58}},
+            {"lithuania", new int[]{59}},
+            {"luxembourg", new int[]{58}},
+            {"madagascar", new int[]{107,115,116}},
+            {"malawi", new int[]{106,115}},
+            {"malaysia", new int[]{101,102}},
+            {"maldives", new int[]{99}},
+            {"mali", new int[]{83,84,94,95}},
+            {"malta", new int[]{71}},
+            {"mauritania", new int[]{82,83,94}},
+            {"mauritius", new int[]{116}},
+            {"mayotte", new int[]{107}},
+            {"mexico", new int[]{18,19,22,23,24,26}},
+            {"moldova", new int[]{59,60}},
+            {"monaco", new int[]{71}},
+            {"mongolia", new int[]{63,64,65,77,78}},
+            {"montenegro", new int[]{72}},
+            {"morocco", new int[]{70,82,83}},
+            {"mozambique", new int[]{106,115}},
+            {"myanmar", new int[]{90,101}},
+            {"namibia", new int[]{113,114}},
+            {"nepal", new int[]{76,89}},
+            {"netherlands", new int[]{58}},
+            {"new caledonia", new int[]{120,135}},
+            {"new zealand", new int[]{127,128}},
+            {"niger", new int[]{84,85,95}},
+            {"nigeria", new int[]{95}},
+            {"norfolk island", new int[]{135}},
+            {"north korea", new int[]{79}},
+            {"norway", new int[]{43,44,45,58}},
+            {"oman", new int[]{87}},
+            {"pacific islands", new int[]{136}},
+            {"pakistan", new int[]{75,76,88}},
+            {"palau", new int[]{103}},
+            {"palestinian territory", new int[]{73}},
+            {"papua new guinea", new int[]{112,134}},
+            {"paraguay", new int[]{34,35}},
+            {"peru", new int[]{30,31,34}},
+            {"philippines", new int[]{91,92,102,103}},
+            {"poland", new int[]{58,59}},
+            {"qatar", new int[]{87}},
+            {"reunion", new int[]{116}},
+            {"romania", new int[]{59,72}},
+            {"russian federation", new int[]{1,44,45,46,47,48,49,50,51,52,53,54,55,56,59,60,61,62,63,64,65,66,67,68,69,73,74,79,80}},
+            {"rwanda", new int[]{105,106}},
+            {"saint pierre and miquelon", new int[]{16}},
+            {"san marino", new int[]{71}},
+            {"sao tome and principe", new int[]{95}},
+            {"saudi arabia", new int[]{73,86,87}},
+            {"senegal", new int[]{82,83,93,94}},
+            {"serbia", new int[]{59,72}},
+            {"seychelles", new int[]{107}},
+            {"sierra leone", new int[]{94}},
+            {"singapore", new int[]{101}},
+            {"slovakia", new int[]{59}},
+            {"slovenia", new int[]{58,59}},
+            {"solomon islands", new int[]{134}},
+            {"somalia", new int[]{97,98,106}},
+            {"south africa", new int[]{114,115,121,122}},
+            {"south korea", new int[]{79}},
+            {"south sudan", new int[]{96,97}},
+            {"spain", new int[]{70,71,82,83}},
+            {"sri lanka", new int[]{100}},
+            {"sudan", new int[]{85,86,96,97}},
+            {"swaziland", new int[]{115}},
+            {"sweden", new int[]{43,44,58,59}},
+            {"switzerland", new int[]{58}},
+            {"syria", new int[]{73}},
+            {"tajikistan", new int[]{75,76}},
+            {"tanzania", new int[]{105,106}},
+            {"thailand", new int[]{90,91,101,102}},
+            {"the former yugoslav republic of macedonia", new int[]{72}},
+            {"timor-leste", new int[]{111}},
+            {"togo", new int[]{94,95}},
+            {"tunisia", new int[]{71}},
+            {"turkey", new int[]{72,73}},
+            {"turkmenistan", new int[]{74,75}},
+            {"uganda", new int[]{96,97,105,106}},
+            {"ukraine", new int[]{59,60,73}},
+            {"united arab emirates", new int[]{87}},
+            {"united kingdom", new int[]{42,57,58}},
+            {"uruguay", new int[]{38}},
+            {"usa-alaska", new int[]{1,2,3,9,10,11,69,129,}},
+            {"usa-conus", new int[]{11,12,13,14,15,17,18,19,20,21,23,24}},
+            {"usa-hawaii", new int[]{133}},
+            {"uzbekistan", new int[]{61,74,75}},
+            {"vanuatu", new int[]{135}},
+            {"vatican city", new int[]{71}},
+            {"vietnam", new int[]{90,91,101,102}},
+            {"yemen", new int[]{86,87,97,98}},
+            {"zambia", new int[]{105,106,114,115}},
+            {"zimbabwe", new int[]{114,115}},
+        };
+
         public static Region GetRegion (int districtIndex)
         {
             if ((districtIndex >= 1 && districtIndex <= 25) ||
@@ -253,31 +444,23 @@ namespace GMUFFCommon
             if (Name.ToLower() == "nws south west")
                 return Region.USSouthWest;
 
-            if (Name.ToLower() == "usa-conus")
-                return Region.USACONUS;
+            if (Name.ToLower() == "all")
+                return Region.All;
 
-            if (Name.ToLower() == "usa-alaska")
-                return Region.USAAlaska;
+            return Region.Unknown;
+        }
 
-            if (Name.ToLower() == "usa-hawaii")
-                return Region.USAHawaii;
+        public static bool IsDistrictInCountry(int districtIndex, string countryName)
+        {
+            bool isInCountry = false;
 
-            if (Name.ToLower() == "afghanistan")
-                return Region.Afghanistan;
+            int[] districts = CountryDistricts[countryName.ToLower()];
+            if (districts != null)
+            {
+                isInCountry = Array.IndexOf(districts, districtIndex) != -1;
+            }
 
-            if (Name.ToLower() == "albania")
-                return Region.Albania;
-
-            if (Name.ToLower() == "algeria")
-                return Region.Algeria;
-
-            if (Name.ToLower() == "american samoa")
-                return Region.AmericanSamoa;
-
-            if (Name.ToLower() == "andorra")
-                return Region.Andorra;
-
-            return Region.All;
+            return isInCountry;
         }
 
         public static bool IsDistrictInRegion(int districtIndex, string targetRegionName)

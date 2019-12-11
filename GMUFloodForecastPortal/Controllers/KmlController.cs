@@ -69,13 +69,26 @@ namespace GMUFloodForecastPortal.Controllers
                     MySql.Data.Types.MySqlDateTime mySqldate = reader.GetMySqlDateTime(4);
                     string fileName = reader.GetString(5);
 
-                    // Region regionFromDistrict = RegionUtil.GetRegion(districtId);
-                    if (Region.All != RegionUtil.GetRegionFromDisplayName(region) && queryProductId == 1)
+                    if (queryProductId == 1)
                     {
-                        //if (regionFromDistrict != RegionUtil.GetRegionFromDisplayName(region))
-                        if(!RegionUtil.IsDistrictInRegion(districtId, region))
+                        if (Region.Unknown == RegionUtil.GetRegionFromDisplayName(region))
                         {
-                            continue;
+                            if (!RegionUtil.IsDistrictInCountry(districtId, region))
+                            {
+                                continue;
+                            }
+
+                            fileName += "_L2";
+                        }
+                        else if (Region.All != RegionUtil.GetRegionFromDisplayName(region))
+                        {
+                            //if (regionFromDistrict != RegionUtil.GetRegionFromDisplayName(region))
+                            if (!RegionUtil.IsDistrictInRegion(districtId, region))
+                            {
+                                continue;
+                            }
+
+                            fileName += "_L2";
                         }
                     }
 

@@ -113,7 +113,7 @@
                                 <label>Transparency</label>
                                 <div>
                                     <div style="float: left">
-                                        <jqx-input id="viewTransparency" width="50" height="25" value="50" max-length="2"></jqx-input>
+                                        <jqx-input id="viewTransparency" width="50" height="25" value="40" max-length="2"></jqx-input>
                                     </div>
                                     <label style="float: left; margin-left: 5px; margin-top: 5px">%</label>
                                 </div>
@@ -465,7 +465,7 @@
             g_viewRegionInstance['close']();
             g_viewCountryInstance['close']();
 
-            sessionStorage.setItem("viewByRegion", 1);
+            sessionStorage.setItem("view_ByRegion", 1);
         });
 
         $('#viewRegionRadio').on('click', function (event) {

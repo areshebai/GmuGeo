@@ -13,6 +13,7 @@ namespace GMUFFCommon
 
     public enum Region
     {
+        Unknown = -1,
         All = 0,
         NorthAmerica = 1,
         SouthAmerica = 2,
