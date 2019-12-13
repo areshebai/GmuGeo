@@ -341,6 +341,16 @@ function GenerateViirsDisplayImages([string]$fileBaseNameFormat, [string]$curren
 				$destinationFilePath = Join-Path $compressDestination ($fileBaseName + "_L2.kml");
 				Copy-Item -Path $srcKmlFilePath -Destination $destinationFilePath -Force
 
+				$content = Get-Content -Path $destinationFilePath;
+				for($l = 0; $l -lt $content.Count; $l++)
+				{
+					if($content[$l].Contains($fileBaseName + ".png"))
+					{
+						$content[$l] = $content[$l].Replace($fileBaseName, $fileBaseName + "_L2");
+					}
+				}
+				Set-Content -Path $destinationFilePath -Value $content
+
 				Log-Message "Processing $srcPngFilePath finished";
 			}
 

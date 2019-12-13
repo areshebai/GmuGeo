@@ -69,7 +69,7 @@ namespace GMUFloodForecastPortal.Controllers
                     MySql.Data.Types.MySqlDateTime mySqldate = reader.GetMySqlDateTime(4);
                     string fileName = reader.GetString(5);
 
-                    if (queryProductId == 1)
+                    if (queryProductId == 1 || queryProductId == 6)
                     {
                         if (Region.Unknown == RegionUtil.GetRegionFromDisplayName(region))
                         {

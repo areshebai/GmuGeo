@@ -25,21 +25,16 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <!--
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                -->
-                <div style="float:left;margin-top:2px;margin-bottom:2px; margin-right: 5px">
-                    <img style="margin-right: 3px" src="~/images/NOAA_logo_small.png" />
-                    <img style="margin-right: 3px" src="~/images/JPSS_EMBLEM_small.png" />
-                    <img style="margin-right: 3px" src="~/images/GOES-R_logo_small.png" />
-                    <img style="margin-right: 3px" src="~/images/GMU_logo_small.png" />
+                <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    <div style="float:left;margin-top:2px;margin-bottom:2px; margin-right: 5px;display:inline-block">
+                        <img style="margin-right: 3px" src="~/images/NOAA_logo_small.png" />
+                        <img style="margin-right: 3px" src="~/images/JPSS_EMBLEM_small.png" />
+                        <img style="margin-right: 3px" src="~/images/GOES-R_logo_small.png" />
+                        <img style="margin-right: 3px" src="~/images/GMU_logo_small.png" />
+                    </div>
+                    <div class="sitehead">NOAA Satellite Proving Ground Global Flood Products Archive</div>
                 </div>
-                <a asp-page="/Index" class="navbar-brand">NOAA Satellite Proving Ground Global Flood Products Archive</a>
+                <!--<a asp-page="/Index" class="navbar-brand">NOAA Satellite Proving Ground Global Flood Products Archive</a>-->
                 <div class="clearall"></div>
             </div>
             <!--

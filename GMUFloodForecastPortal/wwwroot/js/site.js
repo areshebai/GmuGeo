@@ -44,7 +44,7 @@ function getViewNWSDomainInstance(instance) {
     instance["addItem"]('NWS West Gulf');
     instance["addItem"]('NWS North West');
     instance["addItem"]('NWS South West');
-    instance["selectIndex"](0);
+    instance["selectIndex"](2);
 }
 
 function getViewCountryInstance(instance) {
