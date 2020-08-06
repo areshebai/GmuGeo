@@ -40,13 +40,13 @@ MySQL Database
 ==================================================================
 Install mysql
 
-(```)
+```
     sudo apt-get update
 
     sudo apt-get install mysql-server
 
     mysql -V
-(```)
+```
 
 Reset root password for mysql
     sudo cat /etc/mysql/debian.cnf
