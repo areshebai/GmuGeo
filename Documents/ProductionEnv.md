@@ -22,11 +22,11 @@ Using ‘mysql workbench’ and configure connection as ‘Standard TCP/IP over 
 
 > For localhost:5000, it is a web application started by dotnet runtime.
 
-**Web App Configuration** /etc/httpd/conf.d/gmuffapp.conf  
-**Web App monitor service** /etc/systemd/system/kestrel-gmuffapp.service  
-**Web App deplooyment path** /var/www/gmuffapp  
-**Kml location for Google Map API** /home/www-html/kmls
-**FTP file server for download** /var/ftp/
+**Web App Configuration:** /etc/httpd/conf.d/gmuffapp.conf  
+**Web App monitor service:** /etc/systemd/system/kestrel-gmuffapp.service  
+**Web App deplooyment path:** /var/www/gmuffapp  
+**Kml location for Google Map API:** /home/www-html/kmls  
+**FTP file server for download:** /var/ftp/
 
 ### CronJob Configuration
 
