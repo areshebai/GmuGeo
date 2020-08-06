@@ -23,6 +23,15 @@ For localhost:5000, it is a web application started by dotnet runtime. Already c
 /var/www/gmuffapp
 /home/www-html
 
+### CronJob Configuration
+```
+New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileOrganizer.ps1; $now | Out-File /home/raw-geo-data/job/move.log -Append; MoveFtpFile $now'} -Minute '*/30' | Out-Host
+
+New-CronJob -Command {pwsh -c '$now = [System.DateTime]::get_UtcNow(); $now | Out-File /var/ftp/test.log -Append;'} -Minute '*/1' | Out-Host
+
+New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileCompressor.ps1; Compress-ImagesToZip'} -Minute '*/5' | Out-Host
+```
+
 Google Earth Engine Guide
 ===================================
 ### Account Information
@@ -38,17 +47,16 @@ https://gmugeo-floodforecast.appspot.com/ (retired)
 
 MySQL Database
 ==================================================================
-Install MySQL
+### Install MySQL
 
 ```
-    sudo apt-get update
-
-    sudo apt-get install mysql-server
-
-    mysql -V
+    sudo apt-get update  
+    sudo apt-get install mysql-server  
+    mysql -V  
 ```
 
-Reset root password for mysql
+### Reset root password
+```
     sudo cat /etc/mysql/debian.cnf
     mysql -u debian-sys-maint -p
     USE mysql
@@ -56,18 +64,22 @@ Reset root password for mysql
     UPDATE user SET authentication_string=PASSWORD('07Apples') WHERE user='root';
     FLUSH PRIVILEGES;
     exit
+```
 
-Mysql trial
+### MySQL command trial
+```
     mysql -u root -p
     show databases
+```
 
 Apache web server
 ==================================================================
-    sudo apt-get update
-    sudo apt-get install apache2 -y
-    apache2 - V
-
-    sudo service apache2 restart
+```
+    sudo apt-get update  
+    sudo apt-get install apache2 -y  
+    apache2 - V  
+    sudo service apache2 restart  
+```
 
 ASP.net core and SDK
 ==================================================================
@@ -94,9 +106,9 @@ sudo apt-get update
 sudo apt-get install aspnetcore-runtime-2.1
 sudo apt-get install dotnet-sdk-2.1
 
- New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileOrganizer.ps1; $now | Out-File /home/raw-geo-data/job/move.log -Append; MoveFtpFile $now'} -Minute '*/30' | Out-Host
+New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileOrganizer.ps1; $now | Out-File /home/raw-geo-data/job/move.log -Append; MoveFtpFile $now'} -Minute '*/30' | Out-Host
 
-  New-CronJob -Command {pwsh -c '$now = [System.DateTime]::get_UtcNow(); $now | Out-File /var/ftp/test.log -Append;'} -Minute '*/1' | Out-Host
+New-CronJob -Command {pwsh -c '$now = [System.DateTime]::get_UtcNow(); $now | Out-File /var/ftp/test.log -Append;'} -Minute '*/1' | Out-Host
 
 New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileCompressor.ps1; Compress-ImagesToZip'} -Minute '*/5' | Out-Host
 
