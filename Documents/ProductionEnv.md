@@ -20,7 +20,7 @@ For localhost:5000, it is a web application started by dotnet runtime. Already c
 /var/www/gmuffapp
 /home/www-html
 
-# Google Earth Engine Guide
+Google Earth Engine Guide
 ===================================
 ### Account Information
 yan.wang.gmu@gmail.com (expired)
