@@ -20,30 +20,30 @@ For localhost:5000, it is a web application started by dotnet runtime. Already c
 /var/www/gmuffapp
 /home/www-html
 
-Google Earth Engine Guide<br/>
+# Google Earth Engine Guide
 ===================================
 ### Account Information
-yan.wang.gmu@gmail.com - expired
+yan.wang.gmu@gmail.com (expired)
+
 ywang95.gmu.edu@gmail.com
 
 ### API Key
 AIzaSyDhIevfSa6lw6HauJuesotlyxxbOR_kmsA (expired)
+
 AIzaSyCXVemTzeOvkKbvJFWi60hkwaIwD37s1LA
 
 ### Website
-https://gmugeo-floodforecast.appspot.com/
+https://gmugeo-floodforecast.appspot.com/ (retired)
 
 
-
-Ubuntu Setup</br>
-
-
-Mysql Database
+# MySQL Database
 ==================================================================
-Install mysql    
+Install mysql
+(```)
     sudo apt-get update
     sudo apt-get install mysql-server
     mysql -V
+(```)
 
 Reset root password for mysql
     sudo cat /etc/mysql/debian.cnf
@@ -92,5 +92,9 @@ sudo apt-get install aspnetcore-runtime-2.1
 sudo apt-get install dotnet-sdk-2.1
 
  New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileOrganizer.ps1; $now | Out-File /home/raw-geo-data/job/move.log -Append; MoveFtpFile $now'} -Minute '*/30' | Out-Host
+
+  New-CronJob -Command {pwsh -c '$now = [System.DateTime]::get_UtcNow(); $now | Out-File /var/ftp/test.log -Append;'} -Minute '*/1' | Out-Host
+
+New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileCompressor.ps1; Compress-ImagesToZip'} -Minute '*/5' | Out-Host
 
  sudo -s //login as root user

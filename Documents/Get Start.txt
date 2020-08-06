@@ -22,14 +22,23 @@ Password:9c3f-6ee2b2a492f3
 
 Website: https://jpssflood.gmu.edu/
 
+Gnumber: G01175222
+Title: Website developer
+Department: Geography and Geoinformation Science
+Position #: WGE372
+Suffix: 00
+Org #: 182401
+Exec Level: Provost (I think once you select this, a couple more fields pop up. You should select College of Science and then type in Geography and Geoinformation Science)
+Work：07PineApples+18
 
-[ywang95@JPSSFLOOD ~]$ sudo systemctl stop kestrel-gmuffapp.service
-[ywang95@JPSSFLOOD ~]$  sudo systemctl start kestrel-gmuffapp.service
+Stop/Start/Check Web App service
+sudo systemctl stop kestrel-gmuffapp.service
+sudo systemctl start kestrel-gmuffapp.service
 sudo systemctl status kestrel-gmuffapp.service
 
 
 Webserver config: /etc/httpd/conf.d/gmuffapp.conf
- Monitor webserver daemon /etc/systemd/system/kestrel-gmuffapp.service
+Monitor webserver daemon /etc/systemd/system/kestrel-gmuffapp.service
 
  # apachectl configtest
 
