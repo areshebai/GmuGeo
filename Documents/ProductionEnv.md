@@ -10,7 +10,7 @@ https://jpssflood.gmu.edu/kmls/cspp-viirs-flood-globally_20180815_010000_53.kml
 ### MySQL database connection
 Using ‘mysql workbench’ and configure connection as ‘Standard TCP/IP over SSH’ 
 
-SSH hostname:‘jpssflood.gmu.edu’  
+*SSH hostname:* jpssflood.gmu.edu 
 Username: ywang95  
 Password:9c3f-6ee2b2a492f3  
 MySQL Hostname: localhost
