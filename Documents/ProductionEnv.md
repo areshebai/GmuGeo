@@ -36,12 +36,14 @@ AIzaSyCXVemTzeOvkKbvJFWi60hkwaIwD37s1LA
 https://gmugeo-floodforecast.appspot.com/ (retired)
 
 
-# MySQL Database
+MySQL Database
 ==================================================================
 Install mysql
 (```)
     sudo apt-get update
+
     sudo apt-get install mysql-server
+    
     mysql -V
 (```)
 
