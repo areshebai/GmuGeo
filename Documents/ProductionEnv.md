@@ -10,10 +10,10 @@ https://jpssflood.gmu.edu/kmls/cspp-viirs-flood-globally_20180815_010000_53.kml
 ### MySQL database connection
 Using ‘mysql workbench’ and configure connection as ‘Standard TCP/IP over SSH’ 
 
-*SSH hostname:* jpssflood.gmu.edu 
-Username: ywang95  
-Password:9c3f-6ee2b2a492f3  
-MySQL Hostname: localhost
+**SSH hostname:** jpssflood.gmu.edu 
+**Username:** ywang95  
+**Password:** 9c3f-6ee2b2a492f3  
+**MySQL Hostname:** localhost
 
 ### Web application location
 For localhost:5000, it is a web application started by dotnet runtime. Already created daemon /etc/systemd/system/kestrel-gmuffapp.service
