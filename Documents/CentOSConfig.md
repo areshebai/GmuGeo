@@ -1,12 +1,24 @@
+# CentOS Server Configuration
+
+## Server
+
+**SSH hostname:** jpssflood.gmu.edu  
+**Username:** ywang95  
+**Password:** 9c3f-6ee2b2a492f3  
+
+## Install the .NET Runtime
+
+### register the Microsoft key
 
 Before installing .NET, you'll need to register the Microsoft key, register the product repository, and install required dependencies. This only needs to be done once per machine.
-sudo rpm -Uvh https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm
+sudo rpm -Uvh <https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm>
 
 Install the .NET Runtime
 sudo yum update
 sudo yum install aspnetcore-runtime-2.1
 
-Framework-dependent deployments (FDD)
+## Framework-dependent deployments (FDD)
+
 For an FDD, you deploy only your app and third-party dependencies. Your app will use the version of .NET Core that's present on the target system. This is the default deployment model for .NET Core and ASP.NET Core apps that target .NET Core.
 
 Why create a framework-dependent deployment?
@@ -26,5 +38,6 @@ Your app can run only if the version of .NET Core your app targets, or a later v
 
 It's possible for the .NET Core runtime and libraries to change without your knowledge in future releases. In rare cases, this may change the behavior of your app.
 
+## Apache Server Test
 
 apachectl configtest

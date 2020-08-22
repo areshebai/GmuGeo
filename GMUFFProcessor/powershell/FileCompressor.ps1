@@ -1,6 +1,6 @@
 ﻿############################################################################
 #
-# Pick up download task and compress files in to one zip
+# Pick up download task and copy files in to destination
 #
 ############################################################################
 
@@ -13,7 +13,6 @@ function Compress-ImagesToZip()
     ############################################################
 	$rootFolder = "/home/raw-geo-data/";
     $compressDestination = "/var/ftp/";
-	#$compressDestination = "/home/raw-geo-data/download/";
 
 	Add-type -Assembly /opt/microsoft/powershell/6/MySql.Data.dll;
     
@@ -29,8 +28,10 @@ function Compress-ImagesToZip()
     $cmd.Connection = $con;
 
     # Get Download tasks that has not been processed.
+	# Status: 1 - Scheduled, 2 - Processing, 3 - Completed
+	# Do support pick up multiple tasks. Howerver, only pick 1 task currently for performance consideration
     $tasks = @();
-    $cmd.CommandText = "SELECT * FROM jpssflood.downloadtasks_v2 WHERE Status = 1 LIMIT 2;";
+    $cmd.CommandText = "SELECT * FROM jpssflood.downloadtasks_v2 WHERE Status = 1 LIMIT 1;";
     $cmd.Prepare();
     $reader = $cmd.ExecuteReader();
     while ($reader.Read() -eq $true)
@@ -75,7 +76,10 @@ function Compress-ImagesToZip()
 		$south = $taskItem["South"];
 		$north = $taskItem["North"];
 
+		# Don't compress file for downloading now because of performance consideration'
+		# Only copy files to DestinationPath
 		$compressedFile = Join-Path $compressDestination ($taskItem["Name"]+"_"+$imageFormat+".zip");
+		$folderForDownloading = Join-Path $compressDestination ($taskItem["Name"]+"_"+$imageFormat);
 
 		$con.Open();
 		$cmd = New-Object Mysql.Data.MySqlClient.MySqlCommand;
@@ -121,7 +125,9 @@ function Compress-ImagesToZip()
         }
 		$con.Close();
 
-        Compress-Archive -Path $fileNames -DestinationPath $compressedFile -Force;
+        # Compress-Archive -Path $fileNames -DestinationPath $compressedFile -Force;
+		mkdir $folderForDownloading
+		$fileNames | Copy-Item -Destination $folderForDownloading -Force
 
 		$con.Open();
 		$cmd = New-Object Mysql.Data.MySqlClient.MySqlCommand;
