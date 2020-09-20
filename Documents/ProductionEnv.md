@@ -40,15 +40,17 @@ New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileCompressor.ps1; Comp
 
 # Google Earth Engine Guide
 
-## Account Information
+## Account Information - 07Pine@pples18
 
 yan.wang.gmu@gmail.com (expired)  
-ywang95.gmu.edu@gmail.com  
+ywang95.gmu.edu@gmail.com (expire on 09/20)  
+yanwang.2020.gmu.edu@gmail.com
 
 ## API Key
 
 AIzaSyDhIevfSa6lw6HauJuesotlyxxbOR_kmsA (expired)  
-AIzaSyCXVemTzeOvkKbvJFWi60hkwaIwD37s1LA  
+AIzaSyCXVemTzeOvkKbvJFWi60hkwaIwD37s1LA  (expire on 09/20) 
+AIzaSyBeq7fyT1hzakMXSGC11h6XLkf_NNlAhcc
 
 ## Website
 
