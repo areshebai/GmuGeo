@@ -44,13 +44,15 @@ New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileCompressor.ps1; Comp
 
 yan.wang.gmu@gmail.com (expired)  
 ywang95.gmu.edu@gmail.com (expire on 09/20)  
-yanwang.2020.gmu.edu@gmail.com
+yanwang.2020.gmu.edu@gmail.com (expired)
+yanwang.20211.gmu.edu@gmail.com
 
 ## API Key
 
 AIzaSyDhIevfSa6lw6HauJuesotlyxxbOR_kmsA (expired)  
-AIzaSyCXVemTzeOvkKbvJFWi60hkwaIwD37s1LA  (expire on 09/20) 
-AIzaSyBeq7fyT1hzakMXSGC11h6XLkf_NNlAhcc
+AIzaSyCXVemTzeOvkKbvJFWi60hkwaIwD37s1LA  (expired on 09/20) 
+AIzaSyBeq7fyT1hzakMXSGC11h6XLkf_NNlAhcc (expired)
+AIzaSyBhrY2-9PNtFXJ40lPqgDtRgXNmP4Kmll0 (created on 11/30/2020, for 90 days)
 
 ## Website
 
