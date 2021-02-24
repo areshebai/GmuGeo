@@ -45,14 +45,33 @@ New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileCompressor.ps1; Comp
 yan.wang.gmu@gmail.com (expired)  
 ywang95.gmu.edu@gmail.com (expire on 09/20)  
 yanwang.2020.gmu.edu@gmail.com (expired)
-yanwang.20211.gmu.edu@gmail.com
+yanwang.20211.gmu.edu@gmail.com (expire on 03/02)
+yanwang.202102.gmu.edu@gmail.com
+
+## Google Cloud Platform
+
+1. Login to <https://console.cloud.google.com/>, activate the free trial on top navigation bar.
+Need home address and payment information.
+
+2. Create new project <https://developers.google.com/maps/documentation/javascript/cloud-setup>
+Navigate to "APIs & Services" -> "Credentials", create project in top dropdown list.
+
+3. Enable Billing
+Navigate to "Billing". Actually, it is already enabled when activate the free trail in step 1.
+
+4. Enable APIs
+Navigate to "APIs & Services" -> "Library" -> "Maps JavaScript API" -> Enable
+
+5. Create API Key <https://developers.google.com/maps/documentation/javascript/get-api-key>
+Navigate to "APIs & Services" -> "Credentials", click "Create credentials" -> API Key
 
 ## API Key
 
 AIzaSyDhIevfSa6lw6HauJuesotlyxxbOR_kmsA (expired)  
-AIzaSyCXVemTzeOvkKbvJFWi60hkwaIwD37s1LA  (expired on 09/20) 
+AIzaSyCXVemTzeOvkKbvJFWi60hkwaIwD37s1LA  (expired on 09/20)
 AIzaSyBeq7fyT1hzakMXSGC11h6XLkf_NNlAhcc (expired)
-AIzaSyBhrY2-9PNtFXJ40lPqgDtRgXNmP4Kmll0 (created on 11/30/2020, for 90 days)
+AIzaSyBhrY2-9PNtFXJ40lPqgDtRgXNmP4Kmll0 (expired on 03/01/2021)
+AIzaSyCLqJQZygthhH6AqstMvcZI1-Du7bBds28 (created on 02/24/2021, for 90 days)
 
 ## Website
 

@@ -34,3 +34,24 @@ function Clean-ZipFiles()
 		}
 	}
 }
+
+function Clean-DownloadedFiles()
+{
+	$ftp = [System.Net.FtpWebRequest]::Create("ftp://jpssflood.gmu.edu/")
+	$ftp = [System.Net.FtpWebRequest]$ftp
+	$ftp.Method = [System.Net.WebRequestMethods+Ftp]::ListDirectory
+	$ftp.Credentials = new-object System.Net.NetworkCredential("anonymous","anonymous@jpssflood.gmu.edu")
+	$ftp.UseBinary = $true
+	$ftp.UsePassive = $true
+	$ftpResponse = $ftp.GetResponse()
+	$responseStream = $ftpResponse.GetResponseStream()
+	$streamReader = New-Object System.IO.StreamReader $ResponseStream  
+	
+
+	$filesOrDirectories = New-Object System.Collections.ArrayList
+	While ($fileOrDirectory = $streamReader.ReadLine())
+	{
+	[void] $filesOrDirectories.add("$fileOrDirectory")      
+	}
+	$filesOrDirectories | Out-File "d:\logs\FtpConnectLogs.txt"
+}
