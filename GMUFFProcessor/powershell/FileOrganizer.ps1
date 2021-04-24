@@ -23,7 +23,8 @@ function MoveFtpFile ([DateTime]$inputDate)
     $viirs1DayFileNameFormat = 'WATER_COM_VIIRS_Prj_SVI_*_*_*_*_*_001day_{0}';
     $viirs5DayFileNameFormat = 'WATER_COM_VIIRS_Prj_SVI_*_*_*_*_*_005day_{0}';
     $ahiFileNameFormat = 'COM_H08_AHI_WATER_*_*_*_*_*_*_*_*_*_{0}';
-    $abiFileNameFormat = 'COM_*_ABI_WATER_*_*_*_*_*_*_*_*_*_{0}';
+    # $abiFileNameFormat = 'COM_*_ABI_WATER_*_*_*_*_*_*_*_*_*_{0}';
+    $abiFileNameFormat = 'COM_*_ABI_WATER_*_*_*_*_{0}';
     $viirsAhiFileNameFormat = 'Joint_VIIRS_AHI_WATER_Prj_SVI_*_*_*_*_{0}';
     $viirsAbiFileNameFormat = 'Joint_VIIRS_ABI_WATER_Prj_SVI_*_*_*_*_{0}';
 
