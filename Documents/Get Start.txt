@@ -111,3 +111,15 @@ rm -r ./20201228/archive/
 rm -r ./20201229/archive/
 rm -r ./20201230/archive/
 rm -r ./20201231/archive/
+
+
+
+pushd ./20190921/tif/
+Get-Item *.tif | Foreach-Object { Write-Host $_.Name; Compress-Archive $_.Name ($_.Name + ".zip") }
+del *.tif
+popd
+pushd ./20190921/hdf/
+Get-Item *.hdf | Foreach-Object { Write-Host $_.Name; Compress-Archive $_.Name ($_.Name + ".zip") }
+del *.hdf
+popd
+
