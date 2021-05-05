@@ -123,3 +123,23 @@ Get-Item *.hdf | Foreach-Object { Write-Host $_.Name; Compress-Archive $_.Name (
 del *.hdf
 popd
 
+$date = [System.DateTime]::Parse("2019-09-23 00:00:00")
+
+$now = $now.AddDays(1);
+
+function CompressFiles ([DateTime]$inputDate)
+{
+	$dateString = $inputDate.ToString("yyyyMMdd")
+	$path = "./" + $dateString + "/tif/"
+	Write-Host $path
+	pushd $path
+	Get-Item *.tif | Foreach-Object { Write-Host $_.Name; Compress-Archive $_.Name ($_.Name + ".zip") }
+	del *.tif
+	popd
+	$path = "./" + $dateString + "/hdf/"
+	Write-Host $path
+	pushd $path
+	Get-Item *.hdf | Foreach-Object { Write-Host $_.Name; Compress-Archive $_.Name ($_.Name + ".zip") }
+	del *.hdf
+	popd
+}
