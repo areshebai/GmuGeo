@@ -79,3 +79,35 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
  
 
 MariaDB [(none)]>
+
+rm -r ./20201201/archive/
+rm -r ./20201202/archive/
+rm -r ./20201203/archive/
+rm -r ./20201204/archive/
+rm -r ./20201205/archive/
+rm -r ./20201206/archive/
+rm -r ./20201207/archive/
+rm -r ./20201208/archive/
+rm -r ./20201209/archive/
+rm -r ./20201210/archive/
+rm -r ./20201211/archive/
+rm -r ./20201212/archive/
+rm -r ./20201213/archive/
+rm -r ./20201214/archive/
+rm -r ./20201215/archive/
+rm -r ./20201216/archive/
+rm -r ./20201217/archive/
+rm -r ./20201218/archive/
+rm -r ./20201219/archive/
+rm -r ./20201220/archive/
+rm -r ./20201221/archive/
+rm -r ./20201222/archive/
+rm -r ./20201223/archive/
+rm -r ./20201224/archive/
+rm -r ./20201225/archive/
+rm -r ./20201226/archive/
+rm -r ./20201227/archive/
+rm -r ./20201228/archive/
+rm -r ./20201229/archive/
+rm -r ./20201230/archive/
+rm -r ./20201231/archive/
