@@ -123,9 +123,9 @@ Get-Item *.hdf | Foreach-Object { Write-Host $_.Name; Compress-Archive $_.Name (
 del *.hdf
 popd
 
-$date = [System.DateTime]::Parse("2019-09-23 00:00:00")
+$date = [System.DateTime]::Parse("2021-01-14 00:00:00")
 
-$now = $now.AddDays(1);
+$date = $date.AddDays(1);
 
 function CompressFiles ([DateTime]$inputDate)
 {
@@ -142,4 +142,11 @@ function CompressFiles ([DateTime]$inputDate)
 	Get-Item *.hdf | Foreach-Object { Write-Host $_.Name; Compress-Archive $_.Name ($_.Name + ".zip") }
 	del *.hdf
 	popd
+}
+
+$date = [System.DateTime]::Parse("2021-02-15 00:00:00")
+for ($i = 0; $i -le 100; $i++)
+{
+    CompressFiles $date
+    $date = $date.AddDays(1);
 }
