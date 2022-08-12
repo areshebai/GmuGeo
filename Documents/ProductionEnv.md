@@ -40,7 +40,7 @@ New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileCompressor.ps1; Comp
 
 # Google Earth Engine Guide
 
-## Account Information - 07Pine@pples18
+## Account Information - 07Pine@pples18 - 07PineApples+22 - 07PineApples+2207
 
 yan.wang.gmu@gmail.com (expired)  
 ywang95.gmu.edu@gmail.com (expire on 09/20)  
@@ -50,6 +50,8 @@ yanwang.202102.gmu.edu@gmail.com (expire on 05/24)
 yanwang.202105.gmu.edu@gmail.com (expire on 08/20)
 yanwang.202108.gmu.edu@gmail.com (expire on 11/20)
 yanwang.202111.gmu.edu@gmail.com (expire on 02/20)
+yanwang.202202.gmu.edu@gmail.com (expire on 05/18)
+yanwang.202202.gmu.edu@gmail.com (expire on 08/18)
 
 ## Google Cloud Platform
 
@@ -70,13 +72,9 @@ Navigate to "APIs & Services" -> "Credentials", click "Create credentials" -> AP
 
 ## API Key
 
-AIzaSyDhIevfSa6lw6HauJuesotlyxxbOR_kmsA (expired)  
-AIzaSyCXVemTzeOvkKbvJFWi60hkwaIwD37s1LA  (expired on 09/20)
-AIzaSyBeq7fyT1hzakMXSGC11h6XLkf_NNlAhcc (expired)
-AIzaSyBhrY2-9PNtFXJ40lPqgDtRgXNmP4Kmll0 (expired on 03/01/2021)
-AIzaSyCLqJQZygthhH6AqstMvcZI1-Du7bBds28 (created on 02/24/2021, for 90 days)
-AIzaSyC_yDC1J_5iXKu6Pwqz5-Kg6NLkYNzzjyI (created on 05/22/2021, for 90 days)
-AIzaSyBkOzsMYQoMMvXYQHl5EtfLJGTHY8iRf3Q (created on 11/19/2021, for 90 days)
+AIzaSyBkOzsMYQoMMvXYQHl5EtfLJGTHY8iRf3Q (created on 11/19/2021, for 90 days, expired)
+AIzaSyCJvYmAwEYrsPxxj3QZjZyqDy279ctRa2g (created on 02/18/2022, for 90 days, expired)
+AIzaSyB1G_EskQIOF4_iN8m1oHfRdX9f6Ns6Y84 (created on 05/18/2022, for 90 days)
 
 ## Website
 

@@ -112,8 +112,6 @@ rm -r ./20201229/archive/
 rm -r ./20201230/archive/
 rm -r ./20201231/archive/
 
-
-
 pushd ./20190921/tif/
 Get-Item *.tif | Foreach-Object { Write-Host $_.Name; Compress-Archive $_.Name ($_.Name + ".zip") }
 del *.tif
@@ -126,6 +124,22 @@ popd
 $date = [System.DateTime]::Parse("2021-01-14 00:00:00")
 
 $date = $date.AddDays(1);
+
+function RemoveArchiveFiles ([DateTime]$inputDate)
+{
+	$dateString = $inputDate.ToString("yyyyMMdd")
+	$path = "./" + $dateString + "/archive/"
+	Write-Host $path
+	if (Test-Path $path)
+	{
+	    rm -r $path
+		Write-Host "Deleted Path: " + $Path
+	}
+	else
+	{
+		Write-Host "Path not exist!"
+	}
+}
 
 function CompressFiles ([DateTime]$inputDate)
 {
@@ -144,8 +158,8 @@ function CompressFiles ([DateTime]$inputDate)
 	popd
 }
 
-$date = [System.DateTime]::Parse("2021-02-15 00:00:00")
-for ($i = 0; $i -le 100; $i++)
+$date = [System.DateTime]::Parse("2021-10-16 00:00:00")
+for ($i = 0; $i -le 120; $i++)
 {
     CompressFiles $date
     $date = $date.AddDays(1);
