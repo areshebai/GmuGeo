@@ -75,7 +75,8 @@ Navigate to "APIs & Services" -> "Credentials", click "Create credentials" -> AP
 
 AIzaSyBkOzsMYQoMMvXYQHl5EtfLJGTHY8iRf3Q (created on 11/19/2021, for 90 days, expired)
 AIzaSyCJvYmAwEYrsPxxj3QZjZyqDy279ctRa2g (created on 02/18/2022, for 90 days, expired)
-AIzaSyB1G_EskQIOF4_iN8m1oHfRdX9f6Ns6Y84 (created on 05/18/2022, for 90 days)
+AIzaSyB1G_EskQIOF4_iN8m1oHfRdX9f6Ns6Y84 (created on 05/18/2022, for 90 days, expired)
+AIzaSyB2Ek2b2pRf55xM2sLnLoRuyft3TYj2Hlk (created on 08/17/2022, for 91 days)
 
 ## Website
 
