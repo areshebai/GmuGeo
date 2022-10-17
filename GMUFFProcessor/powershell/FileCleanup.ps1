@@ -4,33 +4,34 @@
 #
 ############################################################################
 
-function Clean-ZipFiles()
+function Clean-ExpiredDownloadFiles()
 {
     ############################################################
     #
     # Definitions
     #
     ############################################################
-	$daysToKeep = 10;
+	$daysToKeep = 30;
     $compressDestination = "/var/ftp/";
-	$files = Get-ChildItem -Path $compressDestination -File;
+	$directories = Get-ChildItem -Path $compressDestination -Directory;
 
 	Add-type -Assembly /opt/microsoft/powershell/6/MySql.Data.dll;
 
-	foreach ($file in $files)
+	foreach ($directory in $directories)
 	{
-		if ($file.CreationTimeUtc.AddDays($daysToKeep) < [System.DateTime]::UtcNow())
+		if ($directory.CreationTimeUtc.AddDays($daysToKeep) -lt [System.DateTime]::UtcNow)
 		{
-			$pos = $file.Name.LastIndexOf('_');
-			$taskName = $files.Name.Substring(0, $pos);
-			$file | Remove-Item -Force;
-
-			$con.Open();
-			$cmd = New-Object Mysql.Data.MySqlClient.MySqlCommand;
-			$cmd.Connection = $con;
-			$cmd.CommandText = "UPDATE jpssflood.downloadtasks_v2 SET Status = 4 WHERE Name = $($taskName)";
-			$cmd.ExecuteNonQuery();
-			$con.Close();
+			# $pos = $directory.Name.LastIndexOf('_');
+			# $taskName = $directory.Name.Substring(0, $pos);
+			# $con.Open();
+			# $cmd = New-Object Mysql.Data.MySqlClient.MySqlCommand;
+			# $cmd.Connection = $con;
+			# $cmd.CommandText = "UPDATE jpssflood.downloadtasks_v2 SET Status = 4 WHERE Name = $($taskName)";
+			# $cmd.ExecuteNonQuery();
+			# $con.Close();
+			Write-Host "Deleting expired download files in $($directory.FullName)"
+			$directory.FullName | Out-File /home/raw-geo-data/job/cleanupdownloadfiles.log -Append
+			$directory | Remove-Item -Force -Recurse
 		}
 	}
 }
@@ -55,3 +56,23 @@ function Clean-DownloadedFiles()
 	}
 	$filesOrDirectories | Out-File "d:\logs\FtpConnectLogs.txt"
 }
+
+function Compress-RawDataFiles ([DateTime]$inputDate)
+{
+	$dateString = $inputDate.ToString("yyyyMMdd")
+	$path = "/home/raw-geo-data/" + $dateString + "/tif/"
+	Write-Host $path
+	pushd $path
+	Get-Item *.tif | Foreach-Object { Write-Host $_.Name; Compress-Archive $_.Name ($_.Name + ".zip") }
+	del *.tif
+	popd
+	$path = "/home/raw-geo-data/" + $dateString + "/hdf/"
+	Write-Host $path
+	pushd $path
+	Get-Item *.hdf | Foreach-Object { Write-Host $_.Name; Compress-Archive $_.Name ($_.Name + ".zip") }
+	del *.hdf
+	popd
+}
+
+$now = [System.DateTime]::get_UtcNow();
+$now = $now.AddDays(-2);

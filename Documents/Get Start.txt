@@ -141,16 +141,16 @@ function RemoveArchiveFiles ([DateTime]$inputDate)
 	}
 }
 
-function CompressFiles ([DateTime]$inputDate)
+function Compress-RawDataFiles ([DateTime]$inputDate)
 {
 	$dateString = $inputDate.ToString("yyyyMMdd")
-	$path = "./" + $dateString + "/tif/"
+	$path = "/home/raw-geo-data/" + $dateString + "/tif/"
 	Write-Host $path
 	pushd $path
 	Get-Item *.tif | Foreach-Object { Write-Host $_.Name; Compress-Archive $_.Name ($_.Name + ".zip") }
 	del *.tif
 	popd
-	$path = "./" + $dateString + "/hdf/"
+	$path = "/home/raw-geo-data/" + $dateString + "/hdf/"
 	Write-Host $path
 	pushd $path
 	Get-Item *.hdf | Foreach-Object { Write-Host $_.Name; Compress-Archive $_.Name ($_.Name + ".zip") }
@@ -158,9 +158,17 @@ function CompressFiles ([DateTime]$inputDate)
 	popd
 }
 
-$date = [System.DateTime]::Parse("2021-10-16 00:00:00")
-for ($i = 0; $i -le 120; $i++)
+$date = [System.DateTime]::Parse("2022-10-04 00:00:00")
+for ($i = 0; $i -le 10; $i++)
 {
-    CompressFiles $date
+    Compress-RawDataFiles $date
+	$date | Out-File /home/raw-geo-data/job/CompressRawDataFiles.log -Append
     $date = $date.AddDays(1);
 }
+
+insert into jpssflood.kmlmetadata2019
+select * from jpssflood.kmlmetadata
+where Date >= '2019-01-01' and Date < '2020-01-01'
+
+select count(*) from jpssflood.kmlmetadata where Date >= '2021-01-01' and Date < '2022-01-01'
+select count(*) from jpssflood.kmlmetadata2021
