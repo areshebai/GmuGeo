@@ -151,8 +151,8 @@ New-CronJob -Command {pwsh -c '$now = [System.DateTime]::get_UtcNow(); $now | Ou
 
 New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileCompressor.ps1; Compress-ImagesToZip'} -Minute '*/5' | Out-Host
 
-New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileCleanup.ps1; Compress-RawDataFiles $now; $now | Out-File /home/raw-geo-data/job/CompressRawDataFiles.log -Append'} -Hour '22' | Out-Host
+New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileCleanup.ps1; Compress-RawDataFiles $now; $now | Out-File /home/raw-geo-data/job/CompressRawDataFiles.log -Append'} -Hour '22' -Minute '1' | Out-Host
 
-New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileCleanup.ps1; Clean-ExpiredDownloadFiles'} -Hour '23' | Out-Host
+New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileCleanup.ps1; Clean-ExpiredDownloadFiles'} -Hour '23' -Minute '1' | Out-Host
 
 sudo -s //login as root user  

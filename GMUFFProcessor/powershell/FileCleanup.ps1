@@ -17,8 +17,15 @@ function Clean-ExpiredDownloadFiles()
 
 	Add-type -Assembly /opt/microsoft/powershell/6/MySql.Data.dll;
 
+    [System.DateTime]::UtcNow | Out-File /home/raw-geo-data/job/cleanupdownloadfiles.log -Append
+
 	foreach ($directory in $directories)
 	{
+        if ($directory.FullName -eq "/var/ftp/pub")
+        {
+            continue;
+        }
+
 		if ($directory.CreationTimeUtc.AddDays($daysToKeep) -lt [System.DateTime]::UtcNow)
 		{
 			# $pos = $directory.Name.LastIndexOf('_');
@@ -34,6 +41,8 @@ function Clean-ExpiredDownloadFiles()
 			$directory | Remove-Item -Force -Recurse
 		}
 	}
+    
+    [System.DateTime]::UtcNow | Out-File /home/raw-geo-data/job/cleanupdownloadfiles.log -Append
 }
 
 function Clean-DownloadedFiles()
