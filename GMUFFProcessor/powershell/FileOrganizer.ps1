@@ -9,7 +9,7 @@ $now = $now.AddDays(-1);
 
 function MoveFtpFile ([DateTime]$inputDate)
 {
-    pushd "/home/raw-geo-data/"
+    Push-Location "/home/raw-geo-data/"
 
     ############################################################
     #
@@ -35,8 +35,9 @@ function MoveFtpFile ([DateTime]$inputDate)
     $kmlFileTypeName = "kml";
     $pngFileTypeName = "png";
     $shapeFileTypeName = "shapefile";
+    $netCdfTypeName = "netCDF";
 
-    $fileTypes = @($tifFileTypeName, $hdfFileTypeName, $shapeFileTypeName, $pngFileTypeName, $kmlFileTypeName);
+    $fileTypes = @($tifFileTypeName, $hdfFileTypeName, $shapeFileTypeName, $netCdfTypeName, $pngFileTypeName, $kmlFileTypeName);
 
     ############################################################
     #
@@ -68,8 +69,15 @@ function MoveFtpFile ([DateTime]$inputDate)
     if(-not(Test-Path $folderName/$shapeFileTypeName))
     {
         # Create folder /home/raw-geo-data/{date}/shapefile
-		mkdir $folderName/$shapeFileTypeName
+        mkdir $folderName/$shapeFileTypeName
         Log-Message "Directory is created. $folderName/$shapeFileTypeName"
+    }
+
+    if(-not(Test-Path $folderName/$netCdfTypeName))
+    {
+        # Create folder /home/raw-geo-data/{date}/netCDF
+		mkdir $folderName/$netCdfTypeName
+        Log-Message "Directory is created. $folderName/$netCdfTypeName"
     }
 
     if(-not(Test-Path $folderName/$archiveFoldername))
@@ -81,12 +89,6 @@ function MoveFtpFile ([DateTime]$inputDate)
 
     # /home/raw-geo-data/20191004
     $currentWorkingFolder = (Resolve-Path ./$folderName).Path;
-
-    # /home/raw-geo-data/20191004/tif
-    $tifFolder = (Resolve-Path ./$folderName/$tifFileTypeName).Path;
-
-    # /home/raw-geo-data/20191004/hdf
-    $hdfFolder = (Resolve-Path ./$folderName/$hdfFileTypeName).Path;
 
     # /home/raw-geo-data/20191004/archive
     $archiveFolder = (Resolve-Path ./$folderName/$archiveFoldername).Path;
@@ -144,15 +146,21 @@ function MoveFtpFile ([DateTime]$inputDate)
     InsertRecordToDatabaseForImages $cmd $viirsAbiFileNameFormat 4 136 $fileDate $currentWorkingFolder;
 
 	$con.Close();
-	popd
+	Pop-Location
 }
 
 function Move-FilesByType([string]$folderName, [string]$fileType)
 {
 	$fileExtension = $fileType;
-	if ($fileType -eq "shapefile")
+	
+    if ($fileType -eq "shapefile")
 	{
 		$fileExtension = "zip";
+	}
+
+    if ($fileType -eq "netCDF")
+	{
+		$fileExtension = "nc";
 	}
 
     $moveDestination = Join-Path ./$folderName $fileType;
@@ -164,7 +172,12 @@ function Move-FilesByType([string]$folderName, [string]$fileType)
 	Log-Message "Move $fileType files to $moveDestination start.";
 
 	# Can not handle files mixed more than 5 days
-    Get-Item -Path ./*$folderName*.$fileExtension | Move-Item -Destination $moveDestination
+    $filePathTemplate = "./*$folderName*.$fileExtension";
+    if ($fileType -eq "netCDF")
+	{
+		$filePathTemplate = "./*_e$folderName*.$fileExtension";
+	}
+    Get-Item -Path $filePathTemplate | Move-Item -Destination $moveDestination
 
     Log-Message "Move $fileType files to $moveDestination finish.";
 }
