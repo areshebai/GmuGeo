@@ -40,9 +40,9 @@ New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileCompressor.ps1; Comp
 
 # Google Earth Engine Guide
 
-## Account Information - 07Pine@pples18 - 07PineApples+2208
-AIzaSyAXc0sgEvIkyQL5iQYfKKLQ-UtNrtSSZcg
-Behind-Solemn-Waste-Ahead-0
+## Account Information - 07Pine@pples18 - 07PineApples+2208 - 07PineApples+2211 - 07PineApples+2212
+AIzaSyC16V2Qu3hoIYoov4Lo45aJNGKUhkKmOTM
+Before-Solemn-Waste-Ahead-9
 
 yan.wang.gmu@gmail.com (expired)  
 ywang95.gmu.edu@gmail.com (expire on 09/20)  
@@ -56,6 +56,9 @@ yanwang.202202.gmu.edu@gmail.com (expire on 05/18)
 yanwang.202205.gmu.edu@gmail.com (expire on 08/18)
 yanwang.202208.gmu.edu@gmail.com (expire on 11/15)
 yanwang.202211.gmu.edu@gmail.com (expire on 02/14)
+yanwang.202302.gmu.edu@gmail.com (expire on 05/24)
+yanwang.202305.gmu.edu@gmail.com (expire on 08/21)
+yanwang.202308.gmu.edu@gmail.com (expire on 11/20)
 
 ## Google Cloud Platform
 
@@ -80,7 +83,10 @@ AIzaSyBkOzsMYQoMMvXYQHl5EtfLJGTHY8iRf3Q (created on 11/19/2021, for 90 days, exp
 AIzaSyCJvYmAwEYrsPxxj3QZjZyqDy279ctRa2g (created on 02/18/2022, for 90 days, expired)
 AIzaSyB1G_EskQIOF4_iN8m1oHfRdX9f6Ns6Y84 (created on 05/18/2022, for 90 days, expired)
 AIzaSyB2Ek2b2pRf55xM2sLnLoRuyft3TYj2Hlk (created on 08/17/2022, for 91 days, expired)
-AIzaSyAXc0sgEvIkyQL5iQYfKKLQ-UtNrtSSZcg (created on 11/14/2022, for 91 days)
+AIzaSyAXc0sgEvIkyQL5iQYfKKLQ-UtNrtSSZcg (created on 11/14/2022, for 91 days, expired)
+AIzaSyBe7RvyOwm5QTPGajOrCphA7nG1mxWMGtQ (created on 02/24/2023, for 91 days, expired)
+AIzaSyC16V2Qu3hoIYoov4Lo45aJNGKUhkKmOTM (created on 05/21/2023, for 91 days, expired)
+AIzaSyBukgDQw-0XLytS9gp3mPoDNT2jC9MOkfk (created on 08/20/2023, for 91 days, expired)
 
 ## Website
 
@@ -150,6 +156,8 @@ sudo apt-get install aspnetcore-runtime-2.1
 sudo apt-get install dotnet-sdk-2.1
 
 New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileOrganizer.ps1; $now | Out-File /home/raw-geo-data/job/move.log -Append; MoveFtpFile $now'} -Minute '*/30' | Out-Host
+
+New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileOrganizer.ps1; $now = $now.AddDays(-1); $now | Out-File /home/raw-geo-data/job/move.log -Append; MoveFtpFile $now'} -Minute '*/30' | Out-Host
 
 New-CronJob -Command {pwsh -c '$now = [System.DateTime]::get_UtcNow(); $now | Out-File /var/ftp/test.log -Append;'} -Minute '*/1' | Out-Host
 

@@ -25,7 +25,7 @@ namespace GMUFloodForecastPortal.Controllers
         private readonly string kmlFullFilePathFormat = @"https://jpssflood.gmu.edu/kmls/{0}.kml";
         private readonly static string DatabaseConnectionstringLocal = @"server=127.0.0.1;userid=root;password=07Apples;database=jpssflood;";
         private readonly static string DatabaseConnectionstringProd = @"server=localhost;userid=root;database=jpssflood;";
-        private string DatabaseConnectionstring = DatabaseConnectionstringLocal;
+        private string DatabaseConnectionstring = DatabaseConnectionstringProd;
 
         // File name formats
         /*
