@@ -41,7 +41,7 @@ New-CronJob -Command {pwsh -c '. /home/raw-geo-data/job/FileCompressor.ps1; Comp
 # Google Earth Engine Guide
 
 ## Account Information - 07Pine@pples18 - 07PineApples+2208 - 07PineApples+2211 - 07PineApples+2212
-AIzaSyC16V2Qu3hoIYoov4Lo45aJNGKUhkKmOTM
+AIzaSyDpjZabQvCct7BsXmOZq8x1hR7We9LDJRw
 Before-Solemn-Waste-Ahead-9
 
 yan.wang.gmu@gmail.com (expired)  
@@ -59,6 +59,7 @@ yanwang.202211.gmu.edu@gmail.com (expire on 02/14)
 yanwang.202302.gmu.edu@gmail.com (expire on 05/24)
 yanwang.202305.gmu.edu@gmail.com (expire on 08/21)
 yanwang.202308.gmu.edu@gmail.com (expire on 11/20)
+yanwang.202311.gmu.edu@gmail.com (expire on 02/19)
 
 ## Google Cloud Platform
 
@@ -87,6 +88,7 @@ AIzaSyAXc0sgEvIkyQL5iQYfKKLQ-UtNrtSSZcg (created on 11/14/2022, for 91 days, exp
 AIzaSyBe7RvyOwm5QTPGajOrCphA7nG1mxWMGtQ (created on 02/24/2023, for 91 days, expired)
 AIzaSyC16V2Qu3hoIYoov4Lo45aJNGKUhkKmOTM (created on 05/21/2023, for 91 days, expired)
 AIzaSyBukgDQw-0XLytS9gp3mPoDNT2jC9MOkfk (created on 08/20/2023, for 91 days, expired)
+AIzaSyDpjZabQvCct7BsXmOZq8x1hR7We9LDJRw (created on 11/19/2023, for 91 days, expired)
 
 ## Website
 
