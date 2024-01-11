@@ -1,0 +1,37 @@
+ssh ywang95@jpssflood.gmu.edu
+GiveYouAPen2401
+
+cd ./www-html/kmls/
+
+function Move-DownloadFiles
+{
+    param (
+        $startDate
+    )
+
+    $folderName =  $startDate.ToString("yyyyMMdd")
+    if(-not(Test-Path $folderName))
+    {
+        mkdir $folderName
+    }
+    Write-Host $folderName +" START!"
+    $fileNameTemplate = "./*_d" + $startDate.ToString("yyyyMMdd") + "_*.*"
+    $files = Get-ChildItem -Path $fileNameTemplate
+    foreach ($file in $files)
+    {
+        Write-Host $file.Name
+        if($file.Name.EndsWith(".png") -or $file.Name.EndsWith(".kml"))
+        {
+            $file | Copy-Item -Destination $folderName
+        }
+        $file | Remove-Item -Force 
+    }
+    Write-Host $folderName + " DONE!"
+}
+
+$startDate = [System.DateTime]::Parse("2019-09-26")
+for($i = 0; $i -le 100; $i++)
+{
+    Move-DownloadFiles $startDate
+    $startDate = $startDate.AddDays(1);
+}
