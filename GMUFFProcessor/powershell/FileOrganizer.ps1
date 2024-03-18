@@ -96,6 +96,9 @@ function MoveFtpFile ([DateTime]$inputDate)
     ############################################################
     #
     # 2. Move files by type
+    #    GEO files are uploaded to home/raw-geo-data every day.
+    #    Move files to targe folder by date and type.
+    #    For example, to /home/raw-geo-data/{date}/shapefile
     #
     ############################################################
     $fileTypes | ForEach-Object { Move-FilesByType $folderName $_;};
